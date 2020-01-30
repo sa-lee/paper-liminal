@@ -15,6 +15,53 @@ output: distill::distill_article
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
+<!--
+- review of embedding algorithms, interactive graphics, tours
+- technology
+- design
+- examples/benchmarks
+  - Kevin moon
+  - pdfsense
+  - single cell
+  - quick draw
+-->
+
+# Introduction
+
+
+## Goals of high dimensional vis
+
+## How do analysts actually use these methods
+
+# Related Work
+
+## Embedding methods
+
+## Tours 
+
+## Interactive graphics
+
+
+# Methods
+
+## Tours as a streaming data problem
+
+## Multiple views, multiple contexts
+
+
+## Interactions and visual analytics for embeddings
+
+
+# Results
+
+## Case Study 1: Fake trees
+
+## Case Study 2: non-spherical clusters, pdfsense
+
+## Case Study 3: well-clustered data, single cell 
+
+## Case Study 4: quickdraw 
+
 
 
 
