@@ -1,0 +1,33 @@
+Package: liminalPaper
+Type: Package
+Title: Evaluating embeddings and tours
+Version: 0.0.1
+Authors@R: c(
+             person(role = c("aut", "cre"), "Stuart", "Lee", email = "lee.s@wehi.edu.au"),
+             )
+Description: Packages and data required for reproducing paper.
+License: MIT 
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.0.2
+VignetteBuilder:
+    knitr,
+    rmarkdown
+Depends: R (>= 4.0)
+Imports:
+    liminal
+Suggests:
+    knitr,
+    rmarkdown,
+    distill,
+    ggplot2,
+    dplyr,
+    TENxPBMCData,
+    scater,
+    scran
+    Rtsne,
+    uwot
+Remotes:
+    sa-lee/liminal
+    
+
