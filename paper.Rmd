@@ -1,7 +1,5 @@
 ---
 title: " Casting multiple shadows: interactive data visualisation with tours and embeddings"
-description: |
-  A new article created using the Distill format.
 author:
   - name: Stuart Lee
     affiliation: Monash University
@@ -9,6 +7,7 @@ author:
     affiliation: Monash University
 date: "`r Sys.Date()`"
 output: distill::distill_article
+bibliography: liminal.bib
 ---
 
 ```{r setup, include=FALSE}
