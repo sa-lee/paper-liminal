@@ -27,32 +27,38 @@ knitr::opts_chunk$set(echo = FALSE)
 
 # Introduction
 
+High dimensional data is increasingly prevalent in
+the natural sciences and beyond but presents a challenge to the analyst in terms of both data
+cleaning / preprocessing and visualisation. Methods
+to embed data from a high-dimesional space into a low-dimensional one now form a core step of the data analysis workflow where they are used to ascertain hidden structure and denoise data for downstream analysis (thereby nullifying the 'curse of dimensionality').  
 
-
-## Goals of high dimensional vis
-
-## How do analysts actually use these methods
-
+Choosing an appropriate embedding presents a 
+challenge to the analyst. How does an analyst know
+whether the embedding has captured the underlying
+topology and geometry of the high dimensional space?
+The answer depends on the analyst's workflow. 
 @Brehmer2014-hk characterised two main workflow
-steps that an analyst performs when using embedding methods: dimension reduction
+steps that an analyst performs when using embedding techniques: dimension reduction
 and cluster orientation. The first relates to 
 dimension reduction achieved by using an embedding method, here an analyst
 wants to characterise and map meaning onto the embedded form, for example
 identifying batch effects from a high throughput sequencing experiment, or
-identifying a gradient along the embedded form. The second relates to using
+identifying a gradient or trajectory along the embedded form. The second relates to using
 embeddings as part of a clustering workflow. Here analysts are interested
 in identifying  and naming clusters and verifying them by either applying 
 known labels or colouring by variables that are a-priori known to distinguish 
-clusters. Both of these workflow steps rely on the embedding being 'faithful' to
-the underlying high dimensional data, and become much more difficult when
-there is no underlying ground truth. A further empirical study by @Sedlmair2013-pn, showed that when using embedding teqhinques, simple 2d scatter plots were an apporiate visualisation to help analysts perform these tasks but they did note that 
-depending on the underlying goal multiple dimensionality reduction techniques
-are necessary. 
+clusters. Both of these workflow steps rely on the embedding being 'faithful' or the original high dimensional dataset, and become much more difficult when there is no underlying ground truth.  
+
+
 
 
 # Related Work
 
+
+
 ## Embedding methods
+
+We discuss the use of 
 
 - PCA
 - tSNE
