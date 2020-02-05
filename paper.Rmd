@@ -28,9 +28,23 @@ knitr::opts_chunk$set(echo = FALSE)
 # Introduction
 
 
+
 ## Goals of high dimensional vis
 
 ## How do analysts actually use these methods
+
+Broadly characterised by @Brehmer2014-hk, characterised two main workflow
+steps that an analyst performs when using embedding methods: dimension reduction
+and cluster orientation. The first relates to 
+dimension reduction achieved by using an embedding method, here an analyst
+wants to characterise and map meaning onto the embedded form, for example
+identifying batch effects from a high throughput sequencing experiment, or
+identifying a gradient along the embedded form. The second relates to using
+embeddings as part of a clustering workflow. Here analysts are interested
+in identifying  and naming clusters and verifying them by either applying 
+known labels or colouring by variables that are a-priori known to distinguish 
+clusters. 
+
 
 # Related Work
 
@@ -55,11 +69,12 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Case Study 1: Fake trees
 
-## Case Study 2: non-spherical clusters, pdfsense
+## Case Study 2: well-clustered smallish single cell 
 
-## Case Study 3: well-clustered data, single cell 
+## Case Study 3: largeish single cell data
 
-## Case Study 4: quickdraw 
+## Case Study 4: non-spherical clusters, pdfsense
+
 
 # Discussion
 
