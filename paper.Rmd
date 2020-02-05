@@ -43,7 +43,9 @@ identifying a gradient along the embedded form. The second relates to using
 embeddings as part of a clustering workflow. Here analysts are interested
 in identifying  and naming clusters and verifying them by either applying 
 known labels or colouring by variables that are a-priori known to distinguish 
-clusters. 
+clusters. Both of these workflow steps rely on the embedding being 'faithful' to
+the underlying high dimensional data, and become much more difficult when
+there is no underlying ground truth.
 
 
 # Related Work
