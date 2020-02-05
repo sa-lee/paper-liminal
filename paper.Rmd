@@ -33,7 +33,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## How do analysts actually use these methods
 
-Broadly characterised by @Brehmer2014-hk, characterised two main workflow
+@Brehmer2014-hk characterised two main workflow
 steps that an analyst performs when using embedding methods: dimension reduction
 and cluster orientation. The first relates to 
 dimension reduction achieved by using an embedding method, here an analyst
@@ -45,12 +45,19 @@ in identifying  and naming clusters and verifying them by either applying
 known labels or colouring by variables that are a-priori known to distinguish 
 clusters. Both of these workflow steps rely on the embedding being 'faithful' to
 the underlying high dimensional data, and become much more difficult when
-there is no underlying ground truth.
+there is no underlying ground truth. A further empirical study by @Sedlmair2013-pn, showed that when using embedding teqhinques, simple 2d scatter plots were an apporiate visualisation to help analysts perform these tasks but they did note that 
+depending on the underlying goal multiple dimensionality reduction techniques
+are necessary. 
 
 
 # Related Work
 
 ## Embedding methods
+
+- PCA
+- tSNE
+- UMAP
+- PHATE
 
 ## Tours 
 
