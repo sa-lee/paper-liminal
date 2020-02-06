@@ -58,10 +58,7 @@ identification, @Lewis2012-ai showed experimentally that novice
 users of non-linear embedding techniques were more likely to consider clusters
 of points on a 2d scatter plot to be the result of a spurious embedding
 compared to advanced users who were aware of the inner workings of the embedding
-algorithm. @Wattenberg2016-ji noted that in the case of t-distributed stochastic
-neighbourhood embeddings (t-SNE) it was important for users to modify algorithm
-parameters in order to preserve global structure in the low dimensional
-embedding. 
+algorithm. 
 
 Embedding methods can be classified into two broad groups: linear
 and non-linear methods. Linear methods perform a linear transformation
@@ -69,21 +66,38 @@ of the data; one example is principal components analysis (PCA)
 which performs an eigendecomposition of the estimated sample covariance matrix.
 The eigenvalues are sorted in decreasing order and represent the variance
 explained by each component (eigenvector). A common approach to deciding on
-the number of principal components to retain is to plot the proportion of variance explained by each component and choose a cut-off. Non-linear methods
+the number of principal components to retain is to plot the proportion of variance explained by each component and choose a cut-off. 
+
+Non-linear methods
 generally perform preprocessing on the high-dimensional data such as generating
 a neighborhood graph and perform transformations on the preprocessed form. We
 restrict our attention to three methods that are commonly used in
-high-throughput biology (though this is by no means exhaustive): t-SNE, 
-uniform manifold alignment and projection (UMAP), and PHATE. 
+high-throughput biology: t-distributed stochastic neighbor embedding (t-SNE), 
+uniform manifold alignment and projection (UMAP), and PHATE. The t-SNE algorithm estimates the similarity of (Euclidean) distances of points in a high dimensional space using a Gaussian distribution and then  
+estimates a configuration in the low dimensional embedding space by modelling
+similarities using a t-distribution with 1 degree of freedom. The resulting
+configuration is the one that minimizes the Kulback-Leibler divergence
+between the two distributions. A recent theoretical contribution by @Linderman2019-dq proved that t-SNE can recover spherical and well separated 
+cluster shapes, and proposed new approaches for tuning the optimisation parameters. It is a known problem that t-SNE can have trouble recovering
+global structure and that configurations can be highly dependent on
+how the algorithm is initialised and parameterised 
+[@Wattenberg2016-ji; @Kobak2019-lm]. UMAP is a method that is
+related to LargeVis, and like t-SNE acts on the k-nearest neighbor graph. Its
+main differences are that it uses a different cost function (cross entropy) which is optimized using stochastic gradient descent and defines a different
+kernel for similiarites in the low dimensional space. Finally, PHATE is based
 
-Clearly, finding an appropriate embedding is a difficult and somewhat
-poorly defined problem. We propose a more pragmatic workflow inspired by (wickham blindfold paper) by incorporating
+
+
+
+There is no one-size fits all: finding an appropriate embedding for a given
+dataset is a difficult and somewhat poorly defined problem. For non-linear methods, there are a lot of parameters to explore that can have an effeft on the resulting visualisation and interpretation. We propose a more pragmatic workflow inspired by (wickham blindfold paper) by incorporating
 interactive graphics and tours with embeddings that allows users to see a
 global overview of their high dimensional data and assists them with cluster
 orientation tasks. This workflow is incorporated into an R package
 called `liminal` (Available: https://github.com/sa-lee/liminal).
 
 
+https://jlmelville.github.io/smallvis/init.html#other_initialization_options
 
 ## Tours
 
