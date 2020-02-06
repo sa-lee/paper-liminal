@@ -82,6 +82,17 @@ matrix over a fixed number of time steps. Then the diffused probabilities
 are transformed once more to construct a distance matrix, and multidimensional
 scaling is performed to construct a 2d embedding for visualization.  
 
+A complimentary approach for visualizing structure in high dimensional data
+is the tour. A tour is a sequence of projections of a high dimensional dataset
+onto a low-dimensional orthonormal basis matrix, that is represented as a dynamic visualization. The sequence of generated bases are interpolated to form the tour path, allowing a user to explore the subspace of projections. A
+grand tour corresponds to choosing new bases at random, and can give an
+overview of the structure in the data. Instead of picking projections at random, a guided tour can be used to generate a sequence 'interesting' projections
+as quantified by an index function. The tour has been used previously 
+by @Wickham2015-cx as tool for exploring statistical model fits.  
+
+## Interactive graphics
+
+
 As part of a visualization workflow, it's important to consider the perception 
 and interpretation of embedding methods as well. @Sedlmair2013-pn showed that 2D
 scatter plots were mostly suffucient for detecting class seperation, however
@@ -91,10 +102,6 @@ users of non-linear embedding techniques were more likely to consider clusters
 of points on a 2d scatter plot to be the result of a spurious embedding
 compared to advanced users who were aware of the inner workings of the embedding
 algorithm. 
-
-## Tours
-
-## Interactive graphics
 
 
 There is no one-size fits all: finding an appropriate embedding for a given
