@@ -92,6 +92,10 @@ of points on a 2d scatter plot to be the result of a spurious embedding
 compared to advanced users who were aware of the inner workings of the embedding
 algorithm. 
 
+## Tours
+
+## Interactive graphics
+
 
 There is no one-size fits all: finding an appropriate embedding for a given
 dataset is a difficult and somewhat poorly defined problem. For non-linear methods, there are a lot of parameters to explore that can have an effeft on the resulting visualisation and interpretation. We propose a more pragmatic workflow inspired by (wickham blindfold paper) by incorporating
@@ -103,16 +107,18 @@ called `liminal` (Available: https://github.com/sa-lee/liminal).
 
 https://jlmelville.github.io/smallvis/init.html#other_initialization_options
 
-## Tours
 
-## Interactive graphics
 
 
 # Methods
 
+my contribution + design of interface
+
 ## Tours as a streaming data problem
 
+
 ## Multiple views, multiple contexts
+
 
 
 ## Interactions and visual analytics for embeddings
