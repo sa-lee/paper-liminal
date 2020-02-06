@@ -27,45 +27,65 @@ knitr::opts_chunk$set(echo = FALSE)
 
 # Introduction
 
-High dimensional data is increasingly prevalent in
-the natural sciences and beyond but presents a challenge to the analyst in terms of both data
-cleaning / preprocessing and visualisation. Methods
-to embed data from a high-dimesional space into a low-dimensional one now form a core step of the data analysis workflow where they are used to ascertain hidden structure and denoise data for downstream analysis (thereby nullifying the 'curse of dimensionality').  
+High dimensional data is increasingly prevalent in the natural sciences and
+beyond but presents a challenge to the analyst in terms of both data cleaning /
+preprocessing and visualisation. Methods to embed data from a high-dimesional
+space into a low-dimensional one now form a core step of the data analysis
+workflow where they are used to ascertain hidden structure and denoise data for
+downstream analysis (thereby nullifying the 'curse of dimensionality').
 
-Choosing an appropriate embedding presents a 
-challenge to the analyst. How does an analyst know
-whether the embedding has captured the underlying
-topology and geometry of the high dimensional space?
-The answer depends on the analyst's workflow. 
-@Brehmer2014-hk characterised two main workflow
-steps that an analyst performs when using embedding techniques: dimension reduction
-and cluster orientation. The first relates to 
-dimension reduction achieved by using an embedding method, here an analyst
-wants to characterise and map meaning onto the embedded form, for example
-identifying batch effects from a high throughput sequencing experiment, or
-identifying a gradient or trajectory along the embedded form. The second relates to using
-embeddings as part of a clustering workflow. Here analysts are interested
-in identifying  and naming clusters and verifying them by either applying 
-known labels or colouring by variables that are a-priori known to distinguish 
-clusters. Both of these workflow steps rely on the embedding being 'faithful' or the original high dimensional dataset, and become much more difficult when there is no underlying ground truth.  
+Choosing an appropriate embedding presents a challenge to the analyst. How does
+an analyst know whether the embedding has captured the underlying topology and
+geometry of the high dimensional space? The answer depends on the analyst's
+workflow.  @Brehmer2014-hk characterised two main workflow steps that an
+analyst performs when using embedding techniques: dimension reduction and
+cluster orientation. The first relates to dimension reduction achieved by using
+an embedding method, here an analyst wants to characterise and map meaning onto
+the embedded form, for example identifying batch effects from a high throughput
+sequencing experiment, or identifying a gradient or trajectory along the
+embedded form. The second relates to using embeddings as part of a clustering
+workflow. Here analysts are interested in identifying and naming clusters and
+verifying them by either applying known labels or colouring by variables that
+are a-priori known to distinguish clusters. Both of these workflow steps rely
+on the embedding being 'faithful' or the original high dimensional dataset, and
+become much more difficult when there is no underlying ground truth.
+
+As part of a visualization workflow, it's important to consider the perception 
+and interpretation of embedding methods as well. @Sedlmair2013-pn showed that 2D
+scatter plots were mostly suffucient for detecting class seperation, however
+they noted that often multiple embeddings were required. For the task of cluster
+identification, @Lewis2012-ai showed experimentally that novice
+users of non-linear embedding techniques were more likely to consider clusters
+of points on a 2d scatter plot to be the result of a spurious embedding
+compared to advanced users who were aware of the inner workings of the embedding
+algorithm. @Wattenberg2016-ji noted that in the case of t-distributed stochastic
+neighbourhood embeddings (t-SNE) it was important for users to modify algorithm
+parameters in order to preserve global structure in the low dimensional
+embedding. 
+
+Embedding methods can be classified into two broad groups: linear
+and non-linear methods. Linear methods perform a linear transformation
+of the data; one example is principal components analysis (PCA)
+which performs an eigendecomposition of the estimated sample covariance matrix.
+The eigenvalues are sorted in decreasing order and represent the variance
+explained by each component (eigenvector). A common approach to deciding on
+the number of principal components to retain is to plot the proportion of variance explained by each component and choose a cut-off. Non-linear methods
+generally perform preprocessing on the high-dimensional data such as generating
+a neighborhood graph and perform transformations on the preprocessed form. We
+restrict our attention to three methods that are commonly used in
+high-throughput biology (though this is by no means exhaustive): t-SNE, 
+uniform manifold alignment and projection (UMAP), and PHATE. 
+
+Clearly, finding an appropriate embedding is a difficult and somewhat
+poorly defined problem. We propose a more pragmatic workflow inspired by (wickham blindfold paper) by incorporating
+interactive graphics and tours with embeddings that allows users to see a
+global overview of their high dimensional data and assists them with cluster
+orientation tasks. This workflow is incorporated into an R package
+called `liminal` (Available: https://github.com/sa-lee/liminal).
 
 
 
-
-# Related Work
-
-
-
-## Embedding methods
-
-We discuss the use of 
-
-- PCA
-- tSNE
-- UMAP
-- PHATE
-
-## Tours 
+## Tours
 
 ## Interactive graphics
 
@@ -84,7 +104,7 @@ We discuss the use of
 
 ## Case Study 1: Fake trees
 
-## Case Study 2: well-clustered smallish single cell 
+## Case Study 2: well-clustered smallish single cell
 
 ## Case Study 3: largeish single cell data
 
@@ -94,11 +114,3 @@ We discuss the use of
 # Discussion
 
 # References
-
-
-
-
-
-
-
-
