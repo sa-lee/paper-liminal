@@ -118,9 +118,9 @@ and by @Buja1996-fk for exploring factorial experimental designs.
 While there has been much work on the algorithmic details of the aformentioned
 embedding methods, there has been relatively few tools designed to assist users
 to interact with these techniques and assist them in making comparsions between
-embeddings and performing the aforementioned cluster orientation tasks.
-Several interactive interfaces have been proposed for evaluating or using
-embedding techniques: the Sleepwalk interface provides a click and highlight
+embeddings and performing the aforementioned cluster orientation tasks. Several
+interactive interfaces have been proposed for evaluating or using embedding
+techniques: the Sleepwalk interface provides a click and highlight
 visualisation for colouring points in an embedding according to their distance
 in the original high-dimensional space [@Ovchinnikova2019-gf]. The work by
 @Pezzotti2017-cz provides a user guided and modified form of the t-SNE
@@ -142,9 +142,41 @@ called `liminal` (Available: https://github.com/sa-lee/liminal).
 
 # Design
 
-## Multiple views, multiple contexts
+We propose using tours as part of an analyst's workflow in in performing
+dimensionality reduction tasks. We have made extensive use of ensemble
+graphics, that is aligning related plots alongside each other to provide
+context. As we will see in the case studies, this allows analysts to quickly
+compare views from embedding methods and allows them to see how the embedding
+method alters the global structure of their data. Using ensembles allows the
+use of interaction techniques, that allow analysts to perform cluster
+orientation tasks via linking multiple views. This approach allows our
+interface, to achieve the three principles for interactive high-dimensional
+data visualisation outlined by @Buja1996-fk: finding gestalt, posing queries,
+and making comparisons.
 
-## Interactions and visual analytics for embeddings
+## Finding Gestalt: focus and context
+
+To investigate latent structure and the shape of a high dimensional dataset, a
+tour can be run without the use of an external embedding. It is often useful to
+first run principal components on the input as an intial dimension reduction
+step, and then tour a subset of those components instead, i.e. by selecting
+them from a scree plot. The default tour layout is a scatter plot with an axis
+layout displaying the magnitude and direction of each basis vector. Since the
+tour is dynamic, it is often useful to be able to pause and highlight a
+particular view. In our interface, brushing will pause the tour path, allowing
+users to identify 'interesting' projections. The domain of the axis scales from
+running a tour is called the half range, and is computed by rescaling the input
+data onto hyperdimensional unit cube. We bind the half range to a mouse wheel
+event, allowing a user to pan and zoom on the tour view dynamically. This is
+useful for peeling back dense clumps of points to reveal structure.
+
+## Posing Queries: multiple views, multiple contexts
+
+
+
+## Making comparsions
+
+
 
 # Implementation
 
