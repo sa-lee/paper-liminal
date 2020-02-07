@@ -172,7 +172,22 @@ useful for peeling back dense clumps of points to reveal structure.
 
 ## Posing Queries: multiple views, multiple contexts
 
-
+We combine the tour view in a side by side layout with a scatter
+plot view from an embedding algorithm. The views are linked; analysts can brush a group of points in the embedding view, and see its shape in the tour view.
+This can be used for either manually identifying clusers, or verifying the location of clusters relative to other groupings. Consequently, simple linked
+brushing can alleviate a downfall of non-linear methods such as UMAP or t-SNE
+that break hierachial structure of clusterings. Aside from simple
+linked brushing, we can also pose more complex queries via interrogating
+the neighbourhood graph. Using a linked neighbourhood brush, we can 
+visually investigate the nearest neighbour relationships in the 
+high-dimensional space via brushing in the embedding view. The user can select
+the number of nearest neighbours directly, and modify the distance metric 
+used for determining the neighbours. This allows users to interrogate the stability of clusters generated in the embedding view. Multiple brushes
+can be used to pose queries in either the tour view or the embedding view;
+interface controls allow these brushes to combine using logical operators
+such as 'and', 'or', or 'not'. The use of linked brushing goes beyond
+single point highlights or colorings, allowing analysts to get a more holistic
+view of the effect of an embedding algorithm.
 
 ## Making comparsions
 
