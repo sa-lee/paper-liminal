@@ -191,7 +191,7 @@ view of the effect of an embedding algorithm.
 
 ## Making comparsions
 
-
+TODO
 
 # Implementation
 
@@ -205,9 +205,7 @@ package for constructing tour paths.
 ## Tours as a streaming data problem
 
 
-
-
-## Interactivity for embedding exploration
+## Linking views via spatial brushes
 
 
 
