@@ -170,7 +170,7 @@ data onto hyperdimensional unit cube. We bind the half range to a mouse wheel
 event, allowing a user to pan and zoom on the tour view dynamically. This is
 useful for peeling back dense clumps of points to reveal structure.
 
-## Posing Queries: multiple views, multiple contexts
+## Posing Queries: multiple views, many contexts
 
 We combine the tour view in a side by side layout with a scatter
 plot view from an embedding algorithm. The views are linked; analysts can brush a group of points in the embedding view, and see its shape in the tour view.
