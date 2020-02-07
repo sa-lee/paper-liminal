@@ -21,7 +21,7 @@ knitr::opts_chunk$set(echo = FALSE)
   - pdfsense
   - single cell
   - quick draw
-  
+
 https://jlmelville.github.io/smallvis/init.html#other_initialization_options
 
 -->
@@ -44,98 +44,116 @@ cluster orientation. The first relates to dimension reduction achieved by using
 an embedding method, here an analyst wants to characterise and map meaning onto
 the embedded form, for example identifying batch effects from a high throughput
 sequencing experiment, or identifying a gradient or trajectory along the
-embedded form @Nguyen2019-yh. The second relates to using embeddings as part of a clustering
-workflow. Here analysts are interested in identifying and naming clusters and
-verifying them by either applying known labels or colouring by variables that
-are a-priori known to distinguish clusters. Both of these workflow steps rely
-on the embedding being 'faithful' or the original high dimensional dataset, and
-become much more difficult when there is no underlying ground truth.
+embedded form @Nguyen2019-yh. The second relates to using embeddings as part of
+a clustering workflow. Here analysts are interested in identifying and naming
+clusters and verifying them by either applying known labels or colouring by
+variables that are a-priori known to distinguish clusters. Both of these
+workflow steps rely on the embedding being 'faithful' or the original high
+dimensional dataset, and become much more difficult when there is no underlying
+ground truth.
 
-Embedding methods can be classified into two broad groups: linear
-and non-linear methods. Linear methods perform a linear transformation
-of the data; one example is principal components analysis (PCA)
-which performs an eigendecomposition of the estimated sample covariance matrix.
-The eigenvalues are sorted in decreasing order and represent the variance
-explained by each component (eigenvector). A common approach to deciding on
-the number of principal components to retain is to plot the proportion of variance explained by each component and choose a cut-off. 
+Embedding methods can be classified into two broad groups: linear and
+non-linear methods. Linear methods perform a linear transformation of the data;
+one example is principal components analysis (PCA) which performs an
+eigendecomposition of the estimated sample covariance matrix. The eigenvalues
+are sorted in decreasing order and represent the variance explained by each
+component (eigenvector). A common approach to deciding on the number of
+principal components to retain is to plot the proportion of variance explained
+by each component and choose a cut-off.
 
-Non-linear methods
-generally perform preprocessing on the high-dimensional data such as generating
-a neighborhood graph and perform transformations on the preprocessed form. We
-restrict our attention to three methods that are commonly used in
-high-throughput biology: t-distributed stochastic neighbor embedding (t-SNE), 
-uniform manifold alignment and projection (UMAP), and potential of heat-diffusion for affinity-based transition embedding (PHATE). The t-SNE algorithm estimates the similarity of (Euclidean) distances of points in a high dimensional space using a Gaussian distribution and then  
-estimates a configuration in the low dimensional embedding space by modelling
-similarities using a t-distribution with 1 degree of freedom. The resulting
-configuration is the one that minimizes the Kulback-Leibler divergence
-between the two distributions. A recent theoretical contribution by @Linderman2019-dq proved that t-SNE can recover spherical and well separated 
-cluster shapes, and proposed new approaches for tuning the optimisation parameters. It is a known problem that t-SNE can have trouble recovering
-global structure and that configurations can be highly dependent on
-how the algorithm is initialised and parameterised 
-[@Wattenberg2016-ji; @Kobak2019-lm]. UMAP is a method that is
-related to LargeVis [@Tang2016-oz], and like t-SNE acts on the k-nearest neighbor graph. Its
-main differences are that it uses a different cost function (cross entropy) which is optimized using stochastic gradient descent and defines a different
-kernel for similiarites in the low dimensional space. Due to it's computational
-speed it's possible to generate UMAP embeddings in more than three dimensions. Finally, PHATE, inspired by diffusion maps, is based on estimating an affinity matrix via a distance matrix and k-nearest neighbors graph. The algorithm
-denoises estimated distances in high dimensional space via transforming the
-affinity matrix into a Markov transition probaility matrix and diffusing this 
-matrix over a fixed number of time steps. Then the diffused probabilities
-are transformed once more to construct a distance matrix, and multidimensional
-scaling is performed to construct a 2d embedding for visualization.  
+Non-linear methods generally perform preprocessing on the high-dimensional data
+such as generating a neighborhood graph and perform transformations on the
+preprocessed form. We restrict our attention to three methods that are commonly
+used in high-throughput biology: t-distributed stochastic neighbor embedding
+(t-SNE), uniform manifold alignment and projection (UMAP), and potential of
+heat-diffusion for affinity-based transition embedding (PHATE). The t-SNE
+algorithm estimates the similarity of (Euclidean) distances of points in a high
+dimensional space using a Gaussian distribution and then estimates a
+configuration in the low dimensional embedding space by modelling similarities
+using a t-distribution with 1 degree of freedom. The resulting configuration is
+the one that minimizes the Kulback-Leibler divergence between the two
+distributions. A recent theoretical contribution by @Linderman2019-dq proved
+that t-SNE can recover spherical and well separated cluster shapes, and
+proposed new approaches for tuning the optimisation parameters. It is a known
+problem that t-SNE can have trouble recovering global structure and that
+configurations can be highly dependent on how the algorithm is initialised and
+parameterised [@Wattenberg2016-ji; @Kobak2019-lm]. UMAP is a method that is
+related to LargeVis [@Tang2016-oz], and like t-SNE acts on the k-nearest
+neighbor graph. Its main differences are that it uses a different cost function
+(cross entropy) which is optimized using stochastic gradient descent and
+defines a different kernel for similiarites in the low dimensional space. Due
+to it's computational speed it's possible to generate UMAP embeddings in more
+than three dimensions. Finally, PHATE, inspired by diffusion maps, is based on
+estimating an affinity matrix via a distance matrix and k-nearest neighbors
+graph. The algorithm denoises estimated distances in high dimensional space via
+transforming the affinity matrix into a Markov transition probaility matrix and
+diffusing this matrix over a fixed number of time steps. Then the diffused
+probabilities are transformed once more to construct a distance matrix, and
+multidimensional scaling is performed to construct a 2d embedding for
+visualization.
 
-As part of a visualization workflow, it's important to consider the perception 
-and interpretation of embedding methods as well. @Sedlmair2013-pn showed that 2D
-scatter plots were mostly suffucient for detecting class seperation, however
-they noted that often multiple embeddings were required. For the task of cluster
-identification, @Lewis2012-ai showed experimentally that novice
-users of non-linear embedding techniques were more likely to consider clusters
-of points on a 2d scatter plot to be the result of a spurious embedding
-compared to advanced users who were aware of the inner workings of the embedding
-algorithm. 
+As part of a visualization workflow, it's important to consider the perception
+and interpretation of embedding methods as well. @Sedlmair2013-pn showed that
+2D scatter plots were mostly suffucient for detecting class seperation, however
+they noted that often multiple embeddings were required. For the task of
+cluster identification, @Lewis2012-ai showed experimentally that novice users
+of non-linear embedding techniques were more likely to consider clusters of
+points on a 2d scatter plot to be the result of a spurious embedding compared
+to advanced users who were aware of the inner workings of the embedding
+algorithm.
 
-A complimentary approach for visualizing structure in high dimensional data
-is the tour. A tour is a sequence of projections of a high dimensional dataset
-onto a low-dimensional orthonormal basis matrix, that is represented as a dynamic visualization. The sequence of generated bases are interpolated to form the tour path, allowing a user to explore the subspace of projections. A
-grand tour corresponds to choosing new bases at random, and can give an
-overview of the structure in the data. Instead of picking projections at random, a guided tour can be used to generate a sequence 'interesting' projections
-as quantified by an index function. Given the dynamic nature of the tour, user interaction is important for controlling and exploring the visualisation: the tour has been used previously by @Wickham2015-cx as tool for exploring statistical model fits and by @Buja1996-fk for exploring factorial experimental
-designs.  
+A complimentary approach for visualizing structure in high dimensional data is
+the tour. A tour is a sequence of projections of a high dimensional dataset
+onto a low-dimensional orthonormal basis matrix, that is represented as a
+dynamic visualization. The sequence of generated bases are interpolated to form
+the tour path, allowing a user to explore the subspace of projections. A grand
+tour corresponds to choosing new bases at random, and can give an overview of
+the structure in the data. Instead of picking projections at random, a guided
+tour can be used to generate a sequence 'interesting' projections as quantified
+by an index function. Given the dynamic nature of the tour, user interaction is
+important for controlling and exploring the visualisation: the tour has been
+used previously by @Wickham2015-cx as tool for exploring statistical model fits
+and by @Buja1996-fk for exploring factorial experimental designs.
 
 While there has been much work on the algorithmic details of the aformentioned
-embedding methods, there has been relatively few tools designed to assist
-users to interact with these techniques and assist them in making comparsions
-between embeddings and performing the aforementioned cluster orientation tasks. 
+embedding methods, there has been relatively few tools designed to assist users
+to interact with these techniques and assist them in making comparsions between
+embeddings and performing the aforementioned cluster orientation tasks.
 Several interactive interfaces have been proposed for evaluating or using
-embedding techniques: the Sleepwalk interface provides a click and highlight visualisation for colouring points in an embedding according to their distance
-in the original high-dimensional space [@Ovchinnikova2019-gf]. The work by 
-@Pezzotti2017-cz provides a user guided and modified form of the t-SNE algorithm, that allows users to modified optimisation parameters in real-time.
-Similarly, the embedding projector is a web interface to running UMAP, t-SNE
-or PCA live in the browser and provides interactions to color points, and
-highlights nearest neighbors [@Smilkov2016-hp]. 
+embedding techniques: the Sleepwalk interface provides a click and highlight
+visualisation for colouring points in an embedding according to their distance
+in the original high-dimensional space [@Ovchinnikova2019-gf]. The work by
+@Pezzotti2017-cz provides a user guided and modified form of the t-SNE
+algorithm, that allows users to modified optimisation parameters in real-time.
+Similarly, the embedding projector is a web interface to running UMAP, t-SNE or
+PCA live in the browser and provides interactions to color points, and
+highlights nearest neighbors [@Smilkov2016-hp].
 
 There is no one-size fits all: finding an appropriate embedding for a given
-dataset is a difficult and somewhat poorly defined problem. For non-linear methods, there are a lot of parameters to explore that can have an effeft on the resulting visualisation and interpretation. Interfaces for evaluating embeddings
-require interaction but should also be able to be incorporated into an analysts workflow. We propose a more pragmatic workflow inspired by incorporating
-interactive graphics and tours with embeddings that allows users to see a
-global overview of their high dimensional data and assists them with cluster
-orientation tasks. This workflow is incorporated into an R package
+dataset is a difficult and somewhat poorly defined problem. For non-linear
+methods, there are a lot of parameters to explore that can have an effeft on
+the resulting visualisation and interpretation. Interfaces for evaluating
+embeddings require interaction but should also be able to be incorporated into
+an analysts workflow. We propose a more pragmatic workflow inspired by
+incorporating interactive graphics and tours with embeddings that allows users
+to see a global overview of their high dimensional data and assists them with
+cluster orientation tasks. This workflow is incorporated into an R package
 called `liminal` (Available: https://github.com/sa-lee/liminal).
 
 # Design
 
-
 ## Multiple views, multiple contexts
-
 
 ## Interactions and visual analytics for embeddings
 
 # Implementation
 
-The `liminal` software is implemented as an open source R package @baseR. All 
+The `liminal` software is implemented as an open source R package @baseR. All
 visualisations produced by the package were constructed using the `vegawidget`
-package, which is  an R interface to the Vega-Lite grammar of interactive graphics. Ensemble graphics for arranging tour and embedding views 
-are generated using the `shiny` packages. We have made extensive use of the 
-`tourr` package for constructing tour paths. 
+package, which is an R interface to the Vega-Lite grammar of interactive
+graphics. Ensemble graphics for arranging tour and embedding views are
+generated using the `shiny` packages. We have made extensive use of the `tourr`
+package for constructing tour paths.
 
 ## Tours as a streaming data problem
 
