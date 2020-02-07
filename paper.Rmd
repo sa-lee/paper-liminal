@@ -73,7 +73,7 @@ cluster shapes, and proposed new approaches for tuning the optimisation paramete
 global structure and that configurations can be highly dependent on
 how the algorithm is initialised and parameterised 
 [@Wattenberg2016-ji; @Kobak2019-lm]. UMAP is a method that is
-related to LargeVis, and like t-SNE acts on the k-nearest neighbor graph. Its
+related to LargeVis [@Tang2016-oz], and like t-SNE acts on the k-nearest neighbor graph. Its
 main differences are that it uses a different cost function (cross entropy) which is optimized using stochastic gradient descent and defines a different
 kernel for similiarites in the low dimensional space. Due to it's computational
 speed it's possible to generate UMAP embeddings in more than three dimensions. Finally, PHATE, inspired by diffusion maps, is based on estimating an affinity matrix via a distance matrix and k-nearest neighbors graph. The algorithm
