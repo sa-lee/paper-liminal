@@ -44,7 +44,7 @@ cluster orientation. The first relates to dimension reduction achieved by using
 an embedding method, here an analyst wants to characterise and map meaning onto
 the embedded form, for example identifying batch effects from a high throughput
 sequencing experiment, or identifying a gradient or trajectory along the
-embedded form. The second relates to using embeddings as part of a clustering
+embedded form @Nguyen2019-yh. The second relates to using embeddings as part of a clustering
 workflow. Here analysts are interested in identifying and naming clusters and
 verifying them by either applying known labels or colouring by variables that
 are a-priori known to distinguish clusters. Both of these workflow steps rely
@@ -122,10 +122,6 @@ orientation tasks. This workflow is incorporated into an R package
 called `liminal` (Available: https://github.com/sa-lee/liminal).
 
 # Design
-
-
-
-my contribution + design of interface
 
 
 ## Multiple views, multiple contexts
