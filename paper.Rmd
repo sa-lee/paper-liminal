@@ -113,13 +113,14 @@ called `liminal` (Available: https://github.com/sa-lee/liminal).
 
 In the following section, we provide a brief overview of the goals
 of DR methods with respect to the data analyst, in addition to their high level the 
-mathematical details. To begin we suppose the data is in the form of an $n \times p$ 
-rectangular matrix of real numbers, $X$, where $n$ is the number of  observations
-in $p$ dimensions. The purpose of any DR algorithm is to find low-dimensonal
-representation of the data, $Y$, such that $Y$ is an $n \times d$ matrix 
-where $d \ll p$. The aspiration is that the DR procedure will remove noise
-in the data while revealing hidden patterns and structure.
-
+mathematical details. To begin we suppose the data is in the form 
+rectangular matrix of real numbers, $X = [\mathbf{x_1}, \dots, \mathbf{x_n}]$, 
+where $n$ is the number of observations in $p$ dimensions. 
+The purpose of any DR algorithm is to find low-dimensonal
+representation of the data, $Y = [\mathbf{y_1}, \dots, \mathbf{y_n}]$, such that
+$Y$ is an $n \times d$ matrix where $d \ll p$. The hope of the analyst is that
+the DR procedure to produces $Y$ will remove noise in the original dataset while
+retaining latent structure.
 
 DR methods can be classified into two broad groups: linear and
 non-linear methods. Linear methods perform a linear transformation of the data,
@@ -133,38 +134,107 @@ by each component and choose a cut-off.
 
 For non-linear methods $Y$ is generated via a pre-processed form of the input 
 $X$ such as the $k$-nearest neighbours graph or via a kernel transformation. 
-In this paper we restrict our attention to two methods that are commonly
+Here we restrict our attention to two recent methods that are commonly
 used in the literature: t-distributed stochastic neighbor embedding (t-SNE) and
 uniform manifold alignment and projection (UMAP). The t-SNE algorithm estimates
 the pairwise similarity of (Euclidean) distances of points in a high
 dimensional space using a Gaussian distribution and then estimates a
 configuration in the low dimensional embedding space by modelling similarities
-using a t-distribution with 1 degree of freedom. The resulting configuration is
-the one that minimizes the Kullback-Leibler divergence between the two
-distributions. A recent theoretical contribution by @Linderman2019-dq proved
-that t-SNE can recover spherical and well separated cluster shapes, and
-proposed new approaches for tuning the optimisation parameters. It is a known
-problem that t-SNE can have trouble recovering global structure and that
+using a t-distribution with 1 degree of freedom. There are several subtleties
+to the to use of the algorithm that are revealed by stepping through its
+machinery.
+
+To begin, t-SNE transforms pairwise distances between  
+$\mathbf{x_i}$ and $\mathbf{x_j}$  to similiarties using a Gaussian kernel:
+
+$$
+p_{i|j} = \frac{\exp(-\lVert \mathbf{x_i - x_j} \rVert ^ 2 / 2\sigma_i^2)}{\sum_{k \ne i}\exp(-\lVert \mathbf{x_j - x_k} \rVert ^ 2 / 2\sigma_i^2)}
+$$ 
+
+The conditional probabilities are then normalised and symmetrised to form a 
+joint probability  distrubition via averaging:
+
+$$
+p_{ij} = \frac{p_{i|j} + p_{j|i}}{2n}
+$$
+
+The variance parameter of the 
+Gaussian kernel is controlled by the analyst using a fixed value of perplexity
+for all observations:
+
+$$
+\text{perplexity}_i = \exp(-\log(2) \sum_{i \ne j}p_{j|i}\log_2(p_{j|i}))
+$$
+As the perplexity increases, $sigma_^2_{i}$ increases, until its bounded
+above by the number of observations , $n-1$, in the data, corresponding to  
+$\sigma^2_{i} \rightarrow \infty$. This essentially turns $t-SNE$ into a 
+nearest neighbours algorithm, $p_{i|j}$ will be close to zero for all 
+observations that are not in the $\mathcal{O}(\text{perplexity}_i)$
+neighbourhood graph of the $i$th observation [@Van_Der_Maaten2014-zn].
+
+Next, the target low-dimensional space, $Y$, pairwise distances between 
+$\mathbf{y_i}$ and $\mathbf{y_j}$ are modelled as a symmetric probability 
+distrubtion using a Cauchy kernel:
+
+$$
+q_{ij} = \frac{w_{ij}}{Z} \\
+\text{where } w_{ij} = \frac{1}{ 1 + \lVert \mathbf{y_i - y_j} \rVert ^ 2} 
+\text{ and } Z = \sum_{k \ne l} w_{kl}.
+$$ 
+
+
+The resulting configuration $Y$ is
+the one that minimizes the Kullback-Leibler divergence between 
+the probability distrubtions formed via similiarties of observations in $X$, $\mathcal{P}$ 
+and similiarities of observations in $Y$, $\mathcal{Q}$:
+
+$$ \mathcal{L(\mathcal{P}, \mathcal{Q})} = \sum_{i \ne j} p_{ij} \log \frac{p_{ij}}{q_{ij}}$$
+
+Re-writing the loss function in terms of attractive (right) and repulsive (left) 
+forces we obtain:
+
+$$
+\mathcal{L(\mathcal{P}, \mathcal{Q})} = -\sum_{i \ne j} p_{ij}\log w_{ij} + \log\sum_{i \ne j} w_{ij}
+$$
+
+So when the the loss function is minimised this corresponds to large
+attractive forces, that is, the pairwise distances in $Y$ are small when
+there are non-zero $p_{ij}$, i.e. $x_i$ and $x_j$ are close together. The
+repulsive force should also be small when the loss function is minimised, 
+that is, when pairwise distances in $Y$ are large irregardless of the magnitude
+of the corresponding distances in $X$. 
+
+Taken together, these details reveal the sheer number of decisions that an 
+anlayst must make. How does one choose the perplexity? How should the parameters
+that control the optimisation of the loss function (done with stochastic
+gradient descent), like the number of iterations, or early exaggeration (
+a multiplier of the attractive force at the beginning of the optimisation),
+or the learning rate be selected?  It is a known
+problem that t-SNE can have trouble recovering topology and that
 configurations can be highly dependent on how the algorithm is initialised and
-parameterized [@Wattenberg2016-ji; @Kobak2019-lm]. UMAP is a method that is
+parameterized [@Wattenberg2016-ji; @Kobak2019-lm]. If the goal is cluster
+orientation a recent theoretical contribution by @Linderman2019-dq proved
+that t-SNE can recover spherical and well separated cluster shapes, and
+proposed new approaches for tuning the optimisation parameters. However,
+the cluster sizes and their relative orientation from a $t-SNE$ view can be 
+misleading perceptually, due to the algorithms emphasis on locality.
+
+Another recent method UMAP has seen a large rise in popularity (at least in
+single cell transcriptomics) [@McInnes2018-co]. is a method that is
 related to LargeVis [@Tang2016-oz], and like t-SNE acts on the k-nearest
 neighbor graph. Its main differences are that it uses a different cost function
 (cross entropy) which is optimized using stochastic gradient descent and
 defines a different kernel for similarities in the low dimensional space. Due
 to it's computational speed it's possible to generate UMAP embeddings in more
-than three dimensions.
+than three dimensions. It appears to suffer from the same perceptual issues
+as t-SNE, however it supposedly preservers global structure better
+than t-SNE [@Coenen2019-to].
 
-
-- there's a lot of parameters to tweak
-- emphasises locality, distance between clusters of points can be misleading
-- size of clusters can be misleading
-- may require a few different runs to capture topology of data
-- if there are clusters it will find them
 
 ## Visual Design
 
-We propose using tours as part of an analyst's workflow in in performing
-dimensionality reduction tasks. We have made extensive use of ensemble
+We propose using tours as part of an analyst's workflow when using embedding
+methods like t-SNE. We have made extensive use of ensemble
 graphics, that is aligning related plots alongside each other to provide
 context. As we will see in the case studies, this allows analysts to quickly
 compare views from embedding methods and allows them to see how the embedding
@@ -197,7 +267,7 @@ We have combined the tour view in a side by side layout with a scatter plot
 view that represents the output of an embedding algorithm.  These views are
 linked; analysts can brush regions or highlight collections of points in either
 view. Linked highlighting can be performed when points have been previously
-labeled according to some discrete structure, i.e. cluster labels are
+labelled according to some discrete structure, i.e. cluster labels are
 available. This is achieved via the analyst clicking on groups in the legend,
 which causes unselected groupings to have their points become less opaque.
 Consequently, simple linked highlighting can alleviate a known downfall of
@@ -228,7 +298,7 @@ in the original dataset. This implies that the embedding is not continuous.
 Diffusions occur when points are far from each other in the embedding view are
 near in the original data.  Whether, points are near or far is reliant on the
 distance metric used; distortions and diffusions can be thought of as the
-preservation of distances or the nearest neighbors graphs between the
+preservation of distances or the nearest neighbours graphs between the
 high-dimensional space and the embedding space. As distances can be noisy in
 high-dimensions, ranks can be used instead as has been proposed by ...
 Identifying distortions and diffusions allows an analyst to investigate the
@@ -256,7 +326,7 @@ users to interrogate the stability of clusters generated in the embedding view.
 Multiple brushes can be used to pose queries in either the tour view or the
 embedding view; interface controls allow these brushes to combine using logical
 operators such as 'and', 'or', or 'not'. The use of linked brushing goes beyond
-simple color highlights, allowing analysts to get a more holistic view of the
+simple colour highlights, allowing analysts to get a more holistic view of the
 effect of an embedding algorithm.
 
 
