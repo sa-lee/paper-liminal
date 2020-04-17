@@ -144,8 +144,8 @@ using a t-distribution with 1 degree of freedom. There are several subtleties
 to the to use of the algorithm that are revealed by stepping through its
 machinery.
 
-To begin, t-SNE transforms pairwise distances between  
-$\mathbf{x_i}$ and $\mathbf{x_j}$  to similiarties using a Gaussian kernel:
+To begin, t-SNE transforms pairwise distances between   $\mathbf{x_i}$ and 
+$\mathbf{x_j}$  to similiarties using a Gaussian kernel:
 
 $$
 p_{i|j} = \frac{\exp(-\lVert \mathbf{x_i - x_j} \rVert ^ 2 / 2\sigma_i^2)}{\sum_{k \ne i}\exp(-\lVert \mathbf{x_j - x_k} \rVert ^ 2 / 2\sigma_i^2)}
@@ -165,7 +165,7 @@ for all observations:
 $$
 \text{perplexity}_i = \exp(-\log(2) \sum_{i \ne j}p_{j|i}\log_2(p_{j|i}))
 $$
-As the perplexity increases, $sigma_^2_{i}$ increases, until its bounded
+As the perplexity increases, $\sigma^2_{i}$ increases, until its bounded
 above by the number of observations , $n-1$, in the data, corresponding to  
 $\sigma^2_{i} \rightarrow \infty$. This essentially turns $t-SNE$ into a 
 nearest neighbours algorithm, $p_{i|j}$ will be close to zero for all 
