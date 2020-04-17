@@ -212,8 +212,8 @@ a multiplier of the attractive force at the beginning of the optimisation),
 or the learning rate be selected?  It is a known
 problem that t-SNE can have trouble recovering topology and that
 configurations can be highly dependent on how the algorithm is initialised and
-parameterized [@Wattenberg2016-ji; @Kobak2019-lm]. If the goal is cluster
-orientation a recent theoretical contribution by @Linderman2019-dq proved
+parameterized [@Wattenberg2016-ji; @Kobak2019-lm; @Melville2020]. If the goal is
+cluster orientation a recent theoretical contribution by @Linderman2019-dq proved
 that t-SNE can recover spherical and well separated cluster shapes, and
 proposed new approaches for tuning the optimisation parameters. However,
 the cluster sizes and their relative orientation from a $t-SNE$ view can be 
