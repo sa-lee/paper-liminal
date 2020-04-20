@@ -30,8 +30,9 @@ see the shadows the high-dimensional data casts in a lower dimensional view. By
 linking the tour to a view obtained from an NLDR method, we can preserve global
 structure and through user interactions like spatial linked brushing observe
 where the NLDR view may be misleading. We display several case studies from
-single cell genomics, that shows our approach is useful for cluster orientation
-tasks.  The implementation of our framework is available as an R package called
+single cell transciptomics and image processing, that shows our approach is 
+useful for cluster orientation tasks.  The implementation of our framework 
+is available as an R package called
 `liminal` available at https://github.com/sa-lee/liminal.
 
 
@@ -354,17 +355,30 @@ our approach to generating tour paths and user interactions.
 
 ## Case Studies
 
+The next section steps through three use cases of our approach 
+using simulated and real data. In the first case study, we step through
+data that lies on tree structure (similar to trajectories in single
+cell transcriptomics) to that highlights an iterative approach to modifying
+t-SNE views based on what we learn in the high-dimensional space. We show
+how through simple linked brushing, we can see when the assumptions
+of continuity of the embedding map are broken. In the second case study,
+we explore a well-clustered single cell transcriptomics data of mice retina...
+Finally, in the last case study we explore a subset of the QuickDraw dataset,
+we use `liminal` to identify instances of images from different labels that
+appear similiar. 
 
 ### Case Study 1: Exploring tree structured data with tours and t-SNE
 
-(ref:fake-trees) Example from PHATE
 
-```{r fake-trees, echo = FALSE, out.width = "50%", fig.cap="(ref:fake-trees)"}
+
+(ref:fake-trees) Example high-dimensional tree shaped data, $n = 3000$ and $p = 100$. The data lies 2-d tree like structure consisting of ten branches. This data is available in the `phateR` package and is simulated via diffusion-limited aggregation (a random walk along the branches of the tree) with Gaussian noise added [@Moon2019-ce].  
+
+```{r fake-trees, echo = FALSE, out.width = "50%", fig.align = "center", fig.cap="(ref:fake-trees)"}
 knitr::include_graphics(here::here("img", "tree.png"))
 ```
 
 
-### Case Study 2: Clustering PBMC 10x single cell RNA-seq data
+### Case Study 2: Clustering single cell RNA-seq data
 
 ### Case Study 3: QuickDraw images
 
