@@ -231,6 +231,7 @@ than three dimensions. It appears to suffer from the same perceptual issues
 as t-SNE, however it supposedly preservers global structure better
 than t-SNE [@Coenen2019-to].
 
+?? include details of tour here 
 
 ## Visual Design
 
@@ -369,13 +370,25 @@ appear similiar.
 
 ### Case Study 1: Exploring tree structured data with tours and t-SNE
 
-
+In this case study we explore some simulated noisy tree structured data (figure \@ref(fig:fake-trees)), our interest here is how t-SNE visualisations break topology of the data, and then seeing if we can resolve this by tweaking the default parameters
+with reference to the global view of the data set. 
 
 (ref:fake-trees) Example high-dimensional tree shaped data, $n = 3000$ and $p = 100$. The data lies 2-d tree like structure consisting of ten branches. This data is available in the `phateR` package and is simulated via diffusion-limited aggregation (a random walk along the branches of the tree) with Gaussian noise added [@Moon2019-ce].  
 
 ```{r fake-trees, echo = FALSE, out.width = "50%", fig.align = "center", fig.cap="(ref:fake-trees)"}
 knitr::include_graphics(here::here("img", "tree.png"))
 ```
+
+First, we apply principal components and restrict the results down to the first twelve principal components (which makes up approximately 70% of the variance explained in the data) to use with the grand tour. 
+
+<!-- can we show R code? -->
+
+Moreover,
+we run t-SNE using the default arguments on the complete data (this keeps the first 50 PCs, sets the perpelxity to equal 30 and performs random initalisation) using the `Rtsne` package [@Rtsne]. We then create a linked tour with t-SNE layout with `liminal` as shown in the following video :
+
+<embededded video 1>
+
+From the video, we see that the t-SNE view has been unable to recapitulate the topology of the tree - the backbone (blue) branch has been split into two fragments. We can see this immediately via the linked highlighting over both plots. If we click on the legend for the zeroth branch, the blue colored points on each view are higlighted and the remaining points are made transparent. From, here it becomes apparent from the tour view that the blue branch forms the backbone of the tree and is connected to all other branches.
 
 
 ### Case Study 2: Clustering single cell RNA-seq data
