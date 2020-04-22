@@ -37,9 +37,7 @@ limn_tour_xylink(
 tsne_v2 <- Rtsne::Rtsne(
   dplyr::select(fake_trees, dplyr::starts_with("dim")),
   Y_init = clamp_sd(as.matrix(dplyr::select(fake_trees, PC1,PC2)), sd = 1e-4),
-  perplexity = nrow(fake_trees) / 100,
-  eta = nrow(fake_trees) / 48,
-  max_iter = 3000
+  perplexity = 100
 )
 
 tsne_v2_df <- data.frame(

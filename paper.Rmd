@@ -388,8 +388,17 @@ we run t-SNE using the default arguments on the complete data (this keeps the fi
 
 <embededded video 1>
 
-From the video, we see that the t-SNE view has been unable to recapitulate the topology of the tree - the backbone (blue) branch has been split into two fragments. We can see this immediately via the linked highlighting over both plots. If we click on the legend for the zeroth branch, the blue colored points on each view are higlighted and the remaining points are made transparent. From, here it becomes apparent from the tour view that the blue branch forms the backbone of the tree and is connected to all other branches.
+From the video, we see that the t-SNE view has been unable to recapitulate the topology of the tree - the backbone (blue) branch has been split into three fragments. We can see this immediately via the linked highlighting over both plots. If we click on the legend for the zeroth branch, the blue colored points on each view are higlighted and the remaining points are made transparent. From, here it becomes apparent from the tour view that the blue branch forms the backbone of the tree and is connected to all other branches.
+We can also again see that cluster sizes formed via t-SNE can be misleading; from the tour view there is a lot of noise along the branches, while this does not appear to
+be the case for the t-SNE result.
 
+From the first view, we modify the inputs to the t-SNE view, to try and produce a better trade-off between local structure and retain the topology of the data. We keep every parameter the same except that we initialise $Y$ with the first two PCs (scaled to have standard deviation 1e-4) instead of the default random initialisation and increase the perplexity from 30 to 100. We then combine these results
+with our tour view as displayed in the video:
+
+<embedded video 2>
+
+The video shows that this selection of parameters results
+in the the tips of the branch
 
 ### Case Study 2: Clustering single cell RNA-seq data
 
