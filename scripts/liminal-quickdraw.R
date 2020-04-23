@@ -49,3 +49,9 @@ if (!has_run) {
 
 ## ----load-cache--------------------------------------------------------------
 drawings <- readRDS(here::here("data/qd.rds"))
+
+set.seed(5099)
+tsne <- Rtsne::Rtsne(dplyr::select(drawings, dplyr::starts_with("px")))
+tsne_df <- data.frame(x = tsne$Y[,1], y = tsne$Y[,2], animal = drawings$word)
+
+limn_xy(tsne_df, x = x , y = y, color = animal)
