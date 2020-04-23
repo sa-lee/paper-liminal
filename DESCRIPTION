@@ -19,15 +19,16 @@ Imports:
 Suggests:
     knitr,
     rmarkdown,
-    distill,
     ggplot2,
     dplyr,
     TENxPBMCData,
     scater,
     scran
     Rtsne,
-    uwot
+    uwot,
+    quickdraw
 Remotes:
-    sa-lee/liminal
+    sa-lee/liminal,
+    huizezhang-sherry/quickdraw
     
 

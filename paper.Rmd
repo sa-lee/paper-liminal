@@ -415,7 +415,16 @@ it via simple interactivity.
 
 ### Case Study 2: Clustering single cell RNA-seq data
 
-### Case Study 3: QuickDraw images
+This will be Macosko data
+
+### Case Study 3: How do people draw animals?
+
+In the final case study, we explore a subset of the Google QuickDraw dataset [@quickdraw]. The data are sketches drawn by people of common concepts
+like 'airplane' or 'shoe', and corresponding metadata about the humans who
+created the sketches, such as country, the word category, whether the sketch
+was recognised by Google's neural network, and the number of strokes taken.
+We downloaded the metadata and normalised 28 by 28 pixel bitmaps via the `quickdraw` package in R. We sampled 500 images from each of the following  animal categories: "dog", "cat", "octopus", "spider", and "whale" and unravelled the bitmaps into a 784 dimension image vector. 
+
 
 
 ## Discussion
