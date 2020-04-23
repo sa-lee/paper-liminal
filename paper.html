@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2020-04-20" />
+<meta name="date" content="2020-04-23" />
 
 <title>Casting multiple shadows: high-dimensional interactive data visualisation with tours and embeddings</title>
 
@@ -365,7 +365,7 @@ summary {
 <h1 class="title toc-ignore">Casting multiple shadows: high-dimensional interactive data visualisation with tours and embeddings</h1>
 <h4 class="author">Stuart Lee</h4>
 <h4 class="author">Di Cook</h4>
-<h4 class="date">2020-04-20</h4>
+<h4 class="date">2020-04-23</h4>
 
 </div>
 
@@ -385,9 +385,9 @@ linking the tour to a view obtained from an NLDR method, we can preserve global
 structure and through user interactions like spatial linked brushing observe
 where the NLDR view may be misleading. We display several case studies from
 single cell transciptomics and image processing, that shows our approach is
-useful for cluster orientation tasks. The implementation of our framework
-is available as an R package called
-<code>liminal</code> available at <a href="https://github.com/sa-lee/liminal" class="uri">https://github.com/sa-lee/liminal</a>.</p>
+useful for cluster orientation tasks. The implementation of our framework is
+available as an R package called <code>liminal</code> available at
+<a href="https://github.com/sa-lee/liminal" class="uri">https://github.com/sa-lee/liminal</a>.</p>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
 <p>High dimensional data is increasingly prevalent in the natural sciences and
@@ -444,8 +444,8 @@ in the original high-dimensional space <span class="citation">(Ovchinnikova and 
 <span class="citation">Pezzotti et al. (2017)</span> provides a user guided and modified form of the t-SNE
 algorithm, that allows users to modified optimisation parameters in real-time.
 Similarly, the embedding projector is a web interface to running UMAP, t-SNE or
-PCA live in the browser and provides interactions to color points, and
-highlights nearest neighbors <span class="citation">(Smilkov et al. 2016)</span>.</p>
+PCA live in the browser and provides interactions to colour points, and
+highlights nearest neighbours <span class="citation">(Smilkov et al. 2016)</span>.</p>
 <p>There is no one-size fits all: finding an appropriate embedding for a given
 dataset is a difficult and somewhat poorly defined problem. For non-linear
 methods, there are a lot of parameters to explore that can have an effect on
@@ -459,120 +459,108 @@ called <code>liminal</code> (Available: <a href="https://github.com/sa-lee/limin
 </div>
 <div id="dimensionality-reduction-overview" class="section level2">
 <h2>Dimensionality Reduction Overview</h2>
-<p>In the following section, we provide a brief overview of the goals
-of DR methods with respect to the data analyst, in addition to their high level the
-mathematical details. To begin we suppose the data is in the form
-rectangular matrix of real numbers, <span class="math inline">\(X = [\mathbf{x_1}, \dots, \mathbf{x_n}]\)</span>,
-where <span class="math inline">\(n\)</span> is the number of observations in <span class="math inline">\(p\)</span> dimensions.
-The purpose of any DR algorithm is to find low-dimensonal
-representation of the data, <span class="math inline">\(Y = [\mathbf{y_1}, \dots, \mathbf{y_n}]\)</span>, such that
-<span class="math inline">\(Y\)</span> is an <span class="math inline">\(n \times d\)</span> matrix where <span class="math inline">\(d \ll p\)</span>. The hope of the analyst is that
-the DR procedure to produces <span class="math inline">\(Y\)</span> will remove noise in the original dataset while
-retaining latent structure.</p>
-<p>DR methods can be classified into two broad groups: linear and
-non-linear methods. Linear methods perform a linear transformation of the data,
-that is, <span class="math inline">\(Y\)</span> is a linear transformation of <span class="math inline">\(X\)</span>;
-one example is principal components analysis (PCA) which performs an
-eigendecomposition of the estimated sample covariance matrix. The eigenvalues
-are sorted in decreasing order and represent the variance explained by each
-component (eigenvector). A common approach to deciding on the number of
-principal components to retain is to plot the proportion of variance explained
-by each component and choose a cut-off.</p>
+<p>In the following section, we provide a brief overview of the goals of DR
+methods with respect to the data analyst, in addition to their high level the
+mathematical details. To begin we suppose the data is in the form rectangular
+matrix of real numbers, <span class="math inline">\(X = [\mathbf{x_1}, \dots, \mathbf{x_n}]\)</span>, where <span class="math inline">\(n\)</span> is
+the number of observations in <span class="math inline">\(p\)</span> dimensions. The purpose of any DR algorithm
+is to find low-dimensional representation of the data, <span class="math inline">\(Y = [\mathbf{y_1}, \dots, \mathbf{y_n}]\)</span>, such that <span class="math inline">\(Y\)</span> is an <span class="math inline">\(n \times d\)</span> matrix where <span class="math inline">\(d \ll p\)</span>.
+The hope of the analyst is that the DR procedure to produces <span class="math inline">\(Y\)</span> will remove
+noise in the original dataset while retaining latent structure.</p>
+<p>DR methods can be classified into two broad groups: linear and non-linear
+methods. Linear methods perform a linear transformation of the data, that is,
+<span class="math inline">\(Y\)</span> is a linear transformation of <span class="math inline">\(X\)</span>; one example is principal components
+analysis (PCA) which performs an eigendecomposition of the estimated sample
+covariance matrix. The eigenvalues are sorted in decreasing order and represent
+the variance explained by each component (eigenvector). A common approach to
+deciding on the number of principal components to retain is to plot the
+proportion of variance explained by each component and choose a cut-off.</p>
 <p>For non-linear methods <span class="math inline">\(Y\)</span> is generated via a pre-processed form of the input
 <span class="math inline">\(X\)</span> such as the <span class="math inline">\(k\)</span>-nearest neighbours graph or via a kernel transformation.
-Here we restrict our attention to two recent methods that are commonly
-used in the literature: t-distributed stochastic neighbor embedding (t-SNE) and
+Here we restrict our attention to two recent methods that are commonly used in
+the literature: t-distributed stochastic neighbour embedding (t-SNE) and
 uniform manifold alignment and projection (UMAP). The t-SNE algorithm estimates
-the pairwise similarity of (Euclidean) distances of points in a high
+the pair-wise similarity of (Euclidean) distances of points in a high
 dimensional space using a Gaussian distribution and then estimates a
 configuration in the low dimensional embedding space by modelling similarities
 using a t-distribution with 1 degree of freedom. There are several subtleties
 to the to use of the algorithm that are revealed by stepping through its
 machinery.</p>
-<p>To begin, t-SNE transforms pairwise distances between <span class="math inline">\(\mathbf{x_i}\)</span> and
-<span class="math inline">\(\mathbf{x_j}\)</span> to similiarties using a Gaussian kernel:</p>
-<p><span class="math display">\[
-p_{i|j} = \frac{\exp(-\lVert \mathbf{x_i - x_j} \rVert ^ 2 / 2\sigma_i^2)}{\sum_{k \ne i}\exp(-\lVert \mathbf{x_j - x_k} \rVert ^ 2 / 2\sigma_i^2)}
-\]</span></p>
+<p>To begin, t-SNE transforms pair-wise distances between <span class="math inline">\(\mathbf{x_i}\)</span> and
+<span class="math inline">\(\mathbf{x_j}\)</span> to similarities using a Gaussian kernel:</p>
+<p><span class="math display">\[ p_{i|j} = \frac{\exp(-\lVert \mathbf{x_i - x_j} \rVert ^ 2 /
+2\sigma_i^2)}{\sum_{k \ne i}\exp(-\lVert \mathbf{x_j - x_k} \rVert ^ 2 /
+2\sigma_i^2)} \]</span></p>
 <p>The conditional probabilities are then normalised and symmetrised to form a
-joint probability distrubition via averaging:</p>
-<p><span class="math display">\[
-p_{ij} = \frac{p_{i|j} + p_{j|i}}{2n}
-\]</span></p>
-<p>The variance parameter of the
-Gaussian kernel is controlled by the analyst using a fixed value of perplexity
-for all observations:</p>
-<p><span class="math display">\[
-\text{perplexity}_i = \exp(-\log(2) \sum_{i \ne j}p_{j|i}\log_2(p_{j|i}))
-\]</span>
-As the perplexity increases, <span class="math inline">\(\sigma^2_{i}\)</span> increases, until its bounded
-above by the number of observations , <span class="math inline">\(n-1\)</span>, in the data, corresponding to<br />
+joint probability distribution via averaging:</p>
+<p><span class="math display">\[ p_{ij} = \frac{p_{i|j} + p_{j|i}}{2n} \]</span></p>
+<p>The variance parameter of the Gaussian kernel is controlled by the analyst
+using a fixed value of perplexity for all observations:</p>
+<p><span class="math display">\[ \text{perplexity}_i = \exp(-\log(2) \sum_{i \ne j}p_{j|i}\log_2(p_{j|i})) \]</span>
+As the perplexity increases, <span class="math inline">\(\sigma^2_{i}\)</span> increases, until its bounded above
+by the number of observations , <span class="math inline">\(n-1\)</span>, in the data, corresponding to
 <span class="math inline">\(\sigma^2_{i} \rightarrow \infty\)</span>. This essentially turns <span class="math inline">\(t-SNE\)</span> into a
 nearest neighbours algorithm, <span class="math inline">\(p_{i|j}\)</span> will be close to zero for all
 observations that are not in the <span class="math inline">\(\mathcal{O}(\text{perplexity}_i)\)</span>
 neighbourhood graph of the <span class="math inline">\(i\)</span>th observation <span class="citation">(L. Van Der Maaten 2014)</span>.</p>
-<p>Next, the target low-dimensional space, <span class="math inline">\(Y\)</span>, pairwise distances between
+<p>Next, the target low-dimensional space, <span class="math inline">\(Y\)</span>, pair-wise distances between
 <span class="math inline">\(\mathbf{y_i}\)</span> and <span class="math inline">\(\mathbf{y_j}\)</span> are modelled as a symmetric probability
-distrubtion using a Cauchy kernel:</p>
-<p><span class="math display">\[
-q_{ij} = \frac{w_{ij}}{Z} \\
-\text{where } w_{ij} = \frac{1}{ 1 + \lVert \mathbf{y_i - y_j} \rVert ^ 2} 
-\text{ and } Z = \sum_{k \ne l} w_{kl}.
-\]</span></p>
-<p>The resulting configuration <span class="math inline">\(Y\)</span> is
-the one that minimizes the Kullback-Leibler divergence between
-the probability distrubtions formed via similiarties of observations in <span class="math inline">\(X\)</span>, <span class="math inline">\(\mathcal{P}\)</span>
-and similiarities of observations in <span class="math inline">\(Y\)</span>, <span class="math inline">\(\mathcal{Q}\)</span>:</p>
-<p><span class="math display">\[ \mathcal{L(\mathcal{P}, \mathcal{Q})} = \sum_{i \ne j} p_{ij} \log \frac{p_{ij}}{q_{ij}}\]</span></p>
-<p>Re-writing the loss function in terms of attractive (right) and repulsive (left)
-forces we obtain:</p>
-<p><span class="math display">\[
-\mathcal{L(\mathcal{P}, \mathcal{Q})} = -\sum_{i \ne j} p_{ij}\log w_{ij} + \log\sum_{i \ne j} w_{ij}
-\]</span></p>
-<p>So when the the loss function is minimised this corresponds to large
-attractive forces, that is, the pairwise distances in <span class="math inline">\(Y\)</span> are small when
-there are non-zero <span class="math inline">\(p_{ij}\)</span>, i.e. <span class="math inline">\(x_i\)</span> and <span class="math inline">\(x_j\)</span> are close together. The
-repulsive force should also be small when the loss function is minimised,
-that is, when pairwise distances in <span class="math inline">\(Y\)</span> are large irregardless of the magnitude
-of the corresponding distances in <span class="math inline">\(X\)</span>.</p>
+distribution using a Cauchy kernel:</p>
+<p><span class="math display">\[ q_{ij} = \frac{w_{ij}}{Z} \\ \text{where } w_{ij} = \frac{1}{ 1 + \lVert
+\mathbf{y_i - y_j} \rVert ^ 2} \text{ and } Z = \sum_{k \ne l} w_{kl}. \]</span></p>
+<p>The resulting configuration <span class="math inline">\(Y\)</span> is the one that minimizes the Kullback-Leibler
+divergence between the probability distributions formed via similarities of
+observations in <span class="math inline">\(X\)</span>, <span class="math inline">\(\mathcal{P}\)</span> and similarities of observations in <span class="math inline">\(Y\)</span>,
+<span class="math inline">\(\mathcal{Q}\)</span>:</p>
+<p><span class="math display">\[ \mathcal{L(\mathcal{P}, \mathcal{Q})} = \sum_{i \ne j} p_{ij} \log
+\frac{p_{ij}}{q_{ij}}\]</span></p>
+<p>Re-writing the loss function in terms of attractive (right) and repulsive
+(left) forces we obtain:</p>
+<p><span class="math display">\[ \mathcal{L(\mathcal{P}, \mathcal{Q})} = -\sum_{i \ne j} p_{ij}\log w_{ij} +
+\log\sum_{i \ne j} w_{ij} \]</span></p>
+<p>So when the the loss function is minimised this corresponds to large attractive
+forces, that is, the pair-wise distances in <span class="math inline">\(Y\)</span> are small when there are
+non-zero <span class="math inline">\(p_{ij}\)</span>, i.e. <span class="math inline">\(x_i\)</span> and <span class="math inline">\(x_j\)</span> are close together. The repulsive force
+should also be small when the loss function is minimised, that is, when
+pair-wise distances in <span class="math inline">\(Y\)</span> are large regardless of the magnitude of the
+corresponding distances in <span class="math inline">\(X\)</span>.</p>
 <p>Taken together, these details reveal the sheer number of decisions that an
-anlayst must make. How does one choose the perplexity? How should the parameters
-that control the optimisation of the loss function (done with stochastic
-gradient descent), like the number of iterations, or early exaggeration (
-a multiplier of the attractive force at the beginning of the optimisation),
-or the learning rate be selected? It is a known
-problem that t-SNE can have trouble recovering topology and that
-configurations can be highly dependent on how the algorithm is initialised and
-parameterized <span class="citation">(Wattenberg, Viégas, and Johnson 2016; Kobak and Berens 2019; Melville, n.d.)</span>. If the goal is
-cluster orientation a recent theoretical contribution by <span class="citation">Linderman and Steinerberger (2019)</span> proved
-that t-SNE can recover spherical and well separated cluster shapes, and
-proposed new approaches for tuning the optimisation parameters. However,
-the cluster sizes and their relative orientation from a <span class="math inline">\(t-SNE\)</span> view can be
-misleading perceptually, due to the algorithms emphasis on locality.</p>
+analyst must make. How does one choose the perplexity? How should the
+parameters that control the optimisation of the loss function (done with
+stochastic gradient descent), like the number of iterations, or early
+exaggeration ( a multiplier of the attractive force at the beginning of the
+optimisation), or the learning rate be selected? It is a known problem that
+t-SNE can have trouble recovering topology and that configurations can be
+highly dependent on how the algorithm is initialised and parameterized
+<span class="citation">(Wattenberg, Viégas, and Johnson 2016; Kobak and Berens 2019; Melville, n.d.)</span>. If the goal is cluster
+orientation a recent theoretical contribution by <span class="citation">Linderman and Steinerberger (2019)</span> proved that
+t-SNE can recover spherical and well separated cluster shapes, and proposed new
+approaches for tuning the optimisation parameters. However, the cluster sizes
+and their relative orientation from a <span class="math inline">\(t-SNE\)</span> view can be misleading
+perceptually, due to the algorithms emphasis on locality.</p>
 <p>Another recent method UMAP has seen a large rise in popularity (at least in
-single cell transcriptomics) <span class="citation">(McInnes, Healy, and Melville 2018)</span>. is a method that is
-related to LargeVis <span class="citation">(Tang et al. 2016)</span>, and like t-SNE acts on the k-nearest
-neighbor graph. Its main differences are that it uses a different cost function
-(cross entropy) which is optimized using stochastic gradient descent and
-defines a different kernel for similarities in the low dimensional space. Due
-to it’s computational speed it’s possible to generate UMAP embeddings in more
-than three dimensions. It appears to suffer from the same perceptual issues
-as t-SNE, however it supposedly preservers global structure better
-than t-SNE <span class="citation">(Coenen and Pearce 2019)</span>.</p>
+single cell transcriptomics) <span class="citation">(McInnes, Healy, and Melville 2018)</span>. is a method that is related to
+LargeVis <span class="citation">(Tang et al. 2016)</span>, and like t-SNE acts on the k-nearest neighbour graph.
+Its main differences are that it uses a different cost function (cross entropy)
+which is optimized using stochastic gradient descent and defines a different
+kernel for similarities in the low dimensional space. Due to it’s computational
+speed it’s possible to generate UMAP embeddings in more than three dimensions.
+It appears to suffer from the same perceptual issues as t-SNE, however it
+supposedly preservers global structure better than t-SNE <span class="citation">(Coenen and Pearce 2019)</span>.</p>
+<p>?? include details of tour here</p>
 </div>
 <div id="visual-design" class="section level2">
 <h2>Visual Design</h2>
 <p>We propose using tours as part of an analyst’s workflow when using embedding
-methods like t-SNE. We have made extensive use of ensemble
-graphics, that is aligning related plots alongside each other to provide
-context. As we will see in the case studies, this allows analysts to quickly
-compare views from embedding methods and allows them to see how the embedding
-method alters the global structure of their data. Using ensembles allows the
-use of interaction techniques, that allow analysts to perform cluster
-orientation tasks via linking multiple views. This approach allows our
-interface, to achieve the three principles for interactive high-dimensional
-data visualisation outlined by <span class="citation">Buja, Cook, and Swayne (1996)</span>: finding gestalt, posing queries,
-and making comparisons.</p>
+methods like t-SNE. We have made extensive use of ensemble graphics, that is
+aligning related plots alongside each other to provide context. As we will see
+in the case studies, this allows analysts to quickly compare views from
+embedding methods and allows them to see how the embedding method alters the
+global structure of their data. Using ensembles allows the use of interaction
+techniques, that allow analysts to perform cluster orientation tasks via
+linking multiple views. This approach allows our interface, to achieve the
+three principles for interactive high-dimensional data visualisation outlined
+by <span class="citation">Buja, Cook, and Swayne (1996)</span>: finding gestalt, posing queries, and making comparisons.</p>
 <div id="finding-gestalt-focus-and-context" class="section level3">
 <h3>Finding Gestalt: focus and context</h3>
 <p>To investigate latent structure and the shape of a high dimensional dataset, a
@@ -678,19 +666,22 @@ our approach to generating tour paths and user interactions.</p>
 </div>
 <div id="case-studies" class="section level2">
 <h2>Case Studies</h2>
-<p>The next section steps through three use cases of our approach
-using simulated and real data. In the first case study, we step through
-data that lies on tree structure (similar to trajectories in single
-cell transcriptomics) to that highlights an iterative approach to modifying
-t-SNE views based on what we learn in the high-dimensional space. We show
-how through simple linked brushing, we can see when the assumptions
-of continuity of the embedding map are broken. In the second case study,
-we explore a well-clustered single cell transcriptomics data of mice retina…
-Finally, in the last case study we explore a subset of the QuickDraw dataset,
-we use <code>liminal</code> to identify instances of images from different labels that
-appear similiar.</p>
+<p>The next section steps through three use cases of our approach using simulated
+and real data. In the first case study, we step through data that lies on tree
+structure (similar to trajectories in single cell transcriptomics) to that
+highlights an iterative approach to modifying t-SNE views based on what we
+learn in the high-dimensional space. We show how through simple linked
+brushing, we can see when the assumptions of continuity of the embedding map
+are broken. In the second case study, we explore a well-clustered single cell
+transcriptomics data of mice retina… Finally, in the last case study we
+explore a subset of the QuickDraw dataset, we use <code>liminal</code> to identify
+instances of images from different labels that appear similar.</p>
 <div id="case-study-1-exploring-tree-structured-data-with-tours-and-t-sne" class="section level3">
 <h3>Case Study 1: Exploring tree structured data with tours and t-SNE</h3>
+<p>In this case study we explore some simulated noisy tree structured data (figure
+<a href="#fig:fake-trees">1</a>), our interest here is how t-SNE visualisations break
+topology of the data, and then seeing if we can resolve this by tweaking the
+default parameters with reference to the global view of the data set.</p>
 
 <div class="figure" style="text-align: center"><span id="fig:fake-trees"></span>
 <img src="data:image/png;base64,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" alt="Example high-dimensional tree shaped data, \(n = 3000\) and \(p = 100\). The data lies 2-d tree like structure consisting of ten branches. This data is available in the phateR package and is simulated via diffusion-limited aggregation (a random walk along the branches of the tree) with Gaussian noise added (Moon et al. 2019)." width="50%" />
@@ -698,6 +689,42 @@ appear similiar.</p>
 Figure 1: Example high-dimensional tree shaped data, <span class="math inline">\(n = 3000\)</span> and <span class="math inline">\(p = 100\)</span>. The data lies 2-d tree like structure consisting of ten branches. This data is available in the <code>phateR</code> package and is simulated via diffusion-limited aggregation (a random walk along the branches of the tree) with Gaussian noise added <span class="citation">(Moon et al. 2019)</span>.
 </p>
 </div>
+<p>First, we apply principal components and restrict the results down to the first
+twelve principal components (which makes up approximately 70% of the variance
+explained in the data) to use with the grand tour.</p>
+<!-- can we show R code? -->
+<p>Moreover, we run t-SNE using the default arguments on the complete data (this
+keeps the first 50 PCs, sets the perplexity to equal 30 and performs random
+initialisation) using the <code>Rtsne</code> package <span class="citation">(Krijthe 2015)</span>. We then create a linked
+tour with t-SNE layout with <code>liminal</code> as shown in the following video :</p>
+<p>&lt;embedded video 1&gt;</p>
+<p>From the video, we see that the t-SNE view has been unable to recapitulate the
+topology of the tree - the backbone (blue) branch has been split into three
+fragments. We can see this immediately via the linked highlighting over both
+plots. If we click on the legend for the zero branch, the blue coloured points
+on each view are highlighted and the remaining points are made transparent.
+From, here it becomes apparent from the tour view that the blue branch forms
+the backbone of the tree and is connected to all other branches. We can also
+again see that cluster sizes formed via t-SNE can be misleading; from the tour
+view there is a lot of noise along the branches, while this does not appear to
+be the case for the t-SNE result.</p>
+<p>From the first view, we modify the inputs to the t-SNE view, to try and produce
+a better trade-off between local structure and retain the topology of the data.
+We keep every parameter the same except that we initialise <span class="math inline">\(Y\)</span> with the first
+two PCs (scaled to have standard deviation 1e-4) instead of the default random
+initialisation and increase the perplexity from 30 to 100. We then combine
+these results with our tour view as displayed in the video:</p>
+<p>&lt;embedded video 2&gt;</p>
+<p>The video shows that this selection of parameters results in the the tips of
+the branches (the three black dots in figure <a href="#fig:fake-trees">1</a>) being split
+into three clusters representing the final branches of the tree. However, there
+are perceptual issues following the placement of the three groupings on the
+t-SNE view that become apparent via simple linked brushing. If we brush the
+tips of the yellow and brown branches (which appear to be close to each other
+on the t-SNE view), we immediately see the placement is distorted in the t-SNE
+view, and in the tour view these tips are at opposite ends of the tree.
+Although, this is a known issue of the t-SNE algorithm, we can easily identify
+it via simple interactivity.</p>
 </div>
 <div id="case-study-2-clustering-single-cell-rna-seq-data" class="section level3">
 <h3>Case Study 2: Clustering single cell RNA-seq data</h3>
@@ -726,6 +753,9 @@ Figure 1: Example high-dimensional tree shaped data, <span class="math inline">\
 </div>
 <div id="ref-Kobak2019-lm">
 <p>Kobak, Dmitry, and Philipp Berens. 2019. “The Art of Using t-SNE for Single-Cell Transcriptomics.” <em>Nat. Commun.</em> 10 (1):5416. <a href="https://doi.org/10.1038/s41467-019-13056-x">https://doi.org/10.1038/s41467-019-13056-x</a>.</p>
+</div>
+<div id="ref-Rtsne">
+<p>Krijthe, Jesse H. 2015. <em>Rtsne: T-Distributed Stochastic Neighbor Embedding Using Barnes-Hut Implementation</em>. <a href="https://github.com/jkrijthe/Rtsne">https://github.com/jkrijthe/Rtsne</a>.</p>
 </div>
 <div id="ref-Lewis2012-ai">
 <p>Lewis, Joshua, Laurens Van der Maaten, and Virginia de Sa. 2012. “A Behavioral Investigation of Dimensionality Reduction.” In <em>Proceedings of the Annual Meeting of the Cognitive Science Society</em>. Vol. 34. escholarship.org. <a href="https://escholarship.org/content/qt0ss3m55c/qt0ss3m55c.pdf">https://escholarship.org/content/qt0ss3m55c/qt0ss3m55c.pdf</a>.</p>

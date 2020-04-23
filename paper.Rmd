@@ -30,10 +30,10 @@ see the shadows the high-dimensional data casts in a lower dimensional view. By
 linking the tour to a view obtained from an NLDR method, we can preserve global
 structure and through user interactions like spatial linked brushing observe
 where the NLDR view may be misleading. We display several case studies from
-single cell transciptomics and image processing, that shows our approach is 
-useful for cluster orientation tasks.  The implementation of our framework 
-is available as an R package called
-`liminal` available at https://github.com/sa-lee/liminal.
+single cell transciptomics and image processing, that shows our approach is
+useful for cluster orientation tasks.  The implementation of our framework is
+available as an R package called `liminal` available at
+https://github.com/sa-lee/liminal.
 
 
 ## Introduction
@@ -96,8 +96,8 @@ in the original high-dimensional space [@Ovchinnikova2019-gf]. The work by
 @Pezzotti2017-cz provides a user guided and modified form of the t-SNE
 algorithm, that allows users to modified optimisation parameters in real-time.
 Similarly, the embedding projector is a web interface to running UMAP, t-SNE or
-PCA live in the browser and provides interactions to color points, and
-highlights nearest neighbors [@Smilkov2016-hp].
+PCA live in the browser and provides interactions to colour points, and
+highlights nearest neighbours [@Smilkov2016-hp].
 
 There is no one-size fits all: finding an appropriate embedding for a given
 dataset is a difficult and somewhat poorly defined problem. For non-linear
@@ -112,140 +112,128 @@ called `liminal` (Available: https://github.com/sa-lee/liminal).
 
 ## Dimensionality Reduction Overview
 
-In the following section, we provide a brief overview of the goals
-of DR methods with respect to the data analyst, in addition to their high level the 
-mathematical details. To begin we suppose the data is in the form 
-rectangular matrix of real numbers, $X = [\mathbf{x_1}, \dots, \mathbf{x_n}]$, 
-where $n$ is the number of observations in $p$ dimensions. 
-The purpose of any DR algorithm is to find low-dimensonal
-representation of the data, $Y = [\mathbf{y_1}, \dots, \mathbf{y_n}]$, such that
-$Y$ is an $n \times d$ matrix where $d \ll p$. The hope of the analyst is that
-the DR procedure to produces $Y$ will remove noise in the original dataset while
-retaining latent structure.
+In the following section, we provide a brief overview of the goals of DR
+methods with respect to the data analyst, in addition to their high level the
+mathematical details. To begin we suppose the data is in the form rectangular
+matrix of real numbers, $X = [\mathbf{x_1}, \dots, \mathbf{x_n}]$, where $n$ is
+the number of observations in $p$ dimensions.  The purpose of any DR algorithm
+is to find low-dimensional representation of the data, $Y = [\mathbf{y_1},
+\dots, \mathbf{y_n}]$, such that $Y$ is an $n \times d$ matrix where $d \ll p$.
+The hope of the analyst is that the DR procedure to produces $Y$ will remove
+noise in the original dataset while retaining latent structure.
 
-DR methods can be classified into two broad groups: linear and
-non-linear methods. Linear methods perform a linear transformation of the data,
-that is, $Y$ is a linear transformation of $X$;
-one example is principal components analysis (PCA) which performs an
-eigendecomposition of the estimated sample covariance matrix. The eigenvalues
-are sorted in decreasing order and represent the variance explained by each
-component (eigenvector). A common approach to deciding on the number of
-principal components to retain is to plot the proportion of variance explained
-by each component and choose a cut-off.
+DR methods can be classified into two broad groups: linear and non-linear
+methods. Linear methods perform a linear transformation of the data, that is,
+$Y$ is a linear transformation of $X$; one example is principal components
+analysis (PCA) which performs an eigendecomposition of the estimated sample
+covariance matrix. The eigenvalues are sorted in decreasing order and represent
+the variance explained by each component (eigenvector). A common approach to
+deciding on the number of principal components to retain is to plot the
+proportion of variance explained by each component and choose a cut-off.
 
-For non-linear methods $Y$ is generated via a pre-processed form of the input 
-$X$ such as the $k$-nearest neighbours graph or via a kernel transformation. 
-Here we restrict our attention to two recent methods that are commonly
-used in the literature: t-distributed stochastic neighbor embedding (t-SNE) and
+For non-linear methods $Y$ is generated via a pre-processed form of the input
+$X$ such as the $k$-nearest neighbours graph or via a kernel transformation.
+Here we restrict our attention to two recent methods that are commonly used in
+the literature: t-distributed stochastic neighbour embedding (t-SNE) and
 uniform manifold alignment and projection (UMAP). The t-SNE algorithm estimates
-the pairwise similarity of (Euclidean) distances of points in a high
+the pair-wise similarity of (Euclidean) distances of points in a high
 dimensional space using a Gaussian distribution and then estimates a
 configuration in the low dimensional embedding space by modelling similarities
 using a t-distribution with 1 degree of freedom. There are several subtleties
 to the to use of the algorithm that are revealed by stepping through its
 machinery.
 
-To begin, t-SNE transforms pairwise distances between   $\mathbf{x_i}$ and 
-$\mathbf{x_j}$  to similiarties using a Gaussian kernel:
+To begin, t-SNE transforms pair-wise distances between $\mathbf{x_i}$ and
+$\mathbf{x_j}$ to similarities using a Gaussian kernel:
 
-$$
-p_{i|j} = \frac{\exp(-\lVert \mathbf{x_i - x_j} \rVert ^ 2 / 2\sigma_i^2)}{\sum_{k \ne i}\exp(-\lVert \mathbf{x_j - x_k} \rVert ^ 2 / 2\sigma_i^2)}
-$$ 
+$$ p_{i|j} = \frac{\exp(-\lVert \mathbf{x_i - x_j} \rVert ^ 2 /
+2\sigma_i^2)}{\sum_{k \ne i}\exp(-\lVert \mathbf{x_j - x_k} \rVert ^ 2 /
+2\sigma_i^2)} $$
 
-The conditional probabilities are then normalised and symmetrised to form a 
-joint probability  distrubition via averaging:
+The conditional probabilities are then normalised and symmetrised to form a
+joint probability distribution via averaging:
 
-$$
-p_{ij} = \frac{p_{i|j} + p_{j|i}}{2n}
-$$
+$$ p_{ij} = \frac{p_{i|j} + p_{j|i}}{2n} $$
 
-The variance parameter of the 
-Gaussian kernel is controlled by the analyst using a fixed value of perplexity
-for all observations:
+The variance parameter of the Gaussian kernel is controlled by the analyst
+using a fixed value of perplexity for all observations:
 
-$$
-\text{perplexity}_i = \exp(-\log(2) \sum_{i \ne j}p_{j|i}\log_2(p_{j|i}))
-$$
-As the perplexity increases, $\sigma^2_{i}$ increases, until its bounded
-above by the number of observations , $n-1$, in the data, corresponding to  
-$\sigma^2_{i} \rightarrow \infty$. This essentially turns $t-SNE$ into a 
-nearest neighbours algorithm, $p_{i|j}$ will be close to zero for all 
+$$ \text{perplexity}_i = \exp(-\log(2) \sum_{i \ne j}p_{j|i}\log_2(p_{j|i})) $$
+As the perplexity increases, $\sigma^2_{i}$ increases, until its bounded above
+by the number of observations , $n-1$, in the data, corresponding to
+$\sigma^2_{i} \rightarrow \infty$. This essentially turns $t-SNE$ into a
+nearest neighbours algorithm, $p_{i|j}$ will be close to zero for all
 observations that are not in the $\mathcal{O}(\text{perplexity}_i)$
 neighbourhood graph of the $i$th observation [@Van_Der_Maaten2014-zn].
 
-Next, the target low-dimensional space, $Y$, pairwise distances between 
-$\mathbf{y_i}$ and $\mathbf{y_j}$ are modelled as a symmetric probability 
-distrubtion using a Cauchy kernel:
+Next, the target low-dimensional space, $Y$, pair-wise distances between
+$\mathbf{y_i}$ and $\mathbf{y_j}$ are modelled as a symmetric probability
+distribution using a Cauchy kernel:
 
-$$
-q_{ij} = \frac{w_{ij}}{Z} \\
-\text{where } w_{ij} = \frac{1}{ 1 + \lVert \mathbf{y_i - y_j} \rVert ^ 2} 
-\text{ and } Z = \sum_{k \ne l} w_{kl}.
-$$ 
+$$ q_{ij} = \frac{w_{ij}}{Z} \\ \text{where } w_{ij} = \frac{1}{ 1 + \lVert
+\mathbf{y_i - y_j} \rVert ^ 2} \text{ and } Z = \sum_{k \ne l} w_{kl}. $$
 
 
-The resulting configuration $Y$ is
-the one that minimizes the Kullback-Leibler divergence between 
-the probability distrubtions formed via similiarties of observations in $X$, $\mathcal{P}$ 
-and similiarities of observations in $Y$, $\mathcal{Q}$:
+The resulting configuration $Y$ is the one that minimizes the Kullback-Leibler
+divergence between the probability distributions formed via similarities of
+observations in $X$, $\mathcal{P}$ and similarities of observations in $Y$,
+$\mathcal{Q}$:
 
-$$ \mathcal{L(\mathcal{P}, \mathcal{Q})} = \sum_{i \ne j} p_{ij} \log \frac{p_{ij}}{q_{ij}}$$
+$$ \mathcal{L(\mathcal{P}, \mathcal{Q})} = \sum_{i \ne j} p_{ij} \log
+\frac{p_{ij}}{q_{ij}}$$
 
-Re-writing the loss function in terms of attractive (right) and repulsive (left) 
-forces we obtain:
+Re-writing the loss function in terms of attractive (right) and repulsive
+(left) forces we obtain:
 
-$$
-\mathcal{L(\mathcal{P}, \mathcal{Q})} = -\sum_{i \ne j} p_{ij}\log w_{ij} + \log\sum_{i \ne j} w_{ij}
-$$
+$$ \mathcal{L(\mathcal{P}, \mathcal{Q})} = -\sum_{i \ne j} p_{ij}\log w_{ij} +
+\log\sum_{i \ne j} w_{ij} $$
 
-So when the the loss function is minimised this corresponds to large
-attractive forces, that is, the pairwise distances in $Y$ are small when
-there are non-zero $p_{ij}$, i.e. $x_i$ and $x_j$ are close together. The
-repulsive force should also be small when the loss function is minimised, 
-that is, when pairwise distances in $Y$ are large irregardless of the magnitude
-of the corresponding distances in $X$. 
+So when the the loss function is minimised this corresponds to large attractive
+forces, that is, the pair-wise distances in $Y$ are small when there are
+non-zero $p_{ij}$, i.e. $x_i$ and $x_j$ are close together. The repulsive force
+should also be small when the loss function is minimised, that is, when
+pair-wise distances in $Y$ are large regardless of the magnitude of the
+corresponding distances in $X$.
 
-Taken together, these details reveal the sheer number of decisions that an 
-anlayst must make. How does one choose the perplexity? How should the parameters
-that control the optimisation of the loss function (done with stochastic
-gradient descent), like the number of iterations, or early exaggeration (
-a multiplier of the attractive force at the beginning of the optimisation),
-or the learning rate be selected?  It is a known
-problem that t-SNE can have trouble recovering topology and that
-configurations can be highly dependent on how the algorithm is initialised and
-parameterized [@Wattenberg2016-ji; @Kobak2019-lm; @Melville2020]. If the goal is
-cluster orientation a recent theoretical contribution by @Linderman2019-dq proved
-that t-SNE can recover spherical and well separated cluster shapes, and
-proposed new approaches for tuning the optimisation parameters. However,
-the cluster sizes and their relative orientation from a $t-SNE$ view can be 
-misleading perceptually, due to the algorithms emphasis on locality.
+Taken together, these details reveal the sheer number of decisions that an
+analyst must make. How does one choose the perplexity? How should the
+parameters that control the optimisation of the loss function (done with
+stochastic gradient descent), like the number of iterations, or early
+exaggeration ( a multiplier of the attractive force at the beginning of the
+optimisation), or the learning rate be selected?  It is a known problem that
+t-SNE can have trouble recovering topology and that configurations can be
+highly dependent on how the algorithm is initialised and parameterized
+[@Wattenberg2016-ji; @Kobak2019-lm; @Melville2020]. If the goal is cluster
+orientation a recent theoretical contribution by @Linderman2019-dq proved that
+t-SNE can recover spherical and well separated cluster shapes, and proposed new
+approaches for tuning the optimisation parameters. However, the cluster sizes
+and their relative orientation from a $t-SNE$ view can be misleading
+perceptually, due to the algorithms emphasis on locality.
 
 Another recent method UMAP has seen a large rise in popularity (at least in
-single cell transcriptomics) [@McInnes2018-co]. is a method that is
-related to LargeVis [@Tang2016-oz], and like t-SNE acts on the k-nearest
-neighbor graph. Its main differences are that it uses a different cost function
-(cross entropy) which is optimized using stochastic gradient descent and
-defines a different kernel for similarities in the low dimensional space. Due
-to it's computational speed it's possible to generate UMAP embeddings in more
-than three dimensions. It appears to suffer from the same perceptual issues
-as t-SNE, however it supposedly preservers global structure better
-than t-SNE [@Coenen2019-to].
+single cell transcriptomics) [@McInnes2018-co]. is a method that is related to
+LargeVis [@Tang2016-oz], and like t-SNE acts on the k-nearest neighbour graph.
+Its main differences are that it uses a different cost function (cross entropy)
+which is optimized using stochastic gradient descent and defines a different
+kernel for similarities in the low dimensional space. Due to it's computational
+speed it's possible to generate UMAP embeddings in more than three dimensions.
+It appears to suffer from the same perceptual issues as t-SNE, however it
+supposedly preservers global structure better than t-SNE [@Coenen2019-to].
 
-?? include details of tour here 
+?? include details of tour here
 
 ## Visual Design
 
 We propose using tours as part of an analyst's workflow when using embedding
-methods like t-SNE. We have made extensive use of ensemble
-graphics, that is aligning related plots alongside each other to provide
-context. As we will see in the case studies, this allows analysts to quickly
-compare views from embedding methods and allows them to see how the embedding
-method alters the global structure of their data. Using ensembles allows the
-use of interaction techniques, that allow analysts to perform cluster
-orientation tasks via linking multiple views. This approach allows our
-interface, to achieve the three principles for interactive high-dimensional
-data visualisation outlined by @Buja1996-fk: finding gestalt, posing queries,
-and making comparisons.
+methods like t-SNE. We have made extensive use of ensemble graphics, that is
+aligning related plots alongside each other to provide context. As we will see
+in the case studies, this allows analysts to quickly compare views from
+embedding methods and allows them to see how the embedding method alters the
+global structure of their data. Using ensembles allows the use of interaction
+techniques, that allow analysts to perform cluster orientation tasks via
+linking multiple views. This approach allows our interface, to achieve the
+three principles for interactive high-dimensional data visualisation outlined
+by @Buja1996-fk: finding gestalt, posing queries, and making comparisons.
 
 ### Finding Gestalt: focus and context
 
@@ -356,49 +344,74 @@ our approach to generating tour paths and user interactions.
 
 ## Case Studies
 
-The next section steps through three use cases of our approach 
-using simulated and real data. In the first case study, we step through
-data that lies on tree structure (similar to trajectories in single
-cell transcriptomics) to that highlights an iterative approach to modifying
-t-SNE views based on what we learn in the high-dimensional space. We show
-how through simple linked brushing, we can see when the assumptions
-of continuity of the embedding map are broken. In the second case study,
-we explore a well-clustered single cell transcriptomics data of mice retina...
-Finally, in the last case study we explore a subset of the QuickDraw dataset,
-we use `liminal` to identify instances of images from different labels that
-appear similiar. 
+The next section steps through three use cases of our approach using simulated
+and real data. In the first case study, we step through data that lies on tree
+structure (similar to trajectories in single cell transcriptomics) to that
+highlights an iterative approach to modifying t-SNE views based on what we
+learn in the high-dimensional space. We show how through simple linked
+brushing, we can see when the assumptions of continuity of the embedding map
+are broken. In the second case study, we explore a well-clustered single cell
+transcriptomics data of mice retina... Finally, in the last case study we
+explore a subset of the QuickDraw dataset, we use `liminal` to identify
+instances of images from different labels that appear similar.
 
 ### Case Study 1: Exploring tree structured data with tours and t-SNE
 
-In this case study we explore some simulated noisy tree structured data (figure \@ref(fig:fake-trees)), our interest here is how t-SNE visualisations break topology of the data, and then seeing if we can resolve this by tweaking the default parameters
-with reference to the global view of the data set. 
+In this case study we explore some simulated noisy tree structured data (figure
+\@ref(fig:fake-trees)), our interest here is how t-SNE visualisations break
+topology of the data, and then seeing if we can resolve this by tweaking the
+default parameters with reference to the global view of the data set.
 
-(ref:fake-trees) Example high-dimensional tree shaped data, $n = 3000$ and $p = 100$. The data lies 2-d tree like structure consisting of ten branches. This data is available in the `phateR` package and is simulated via diffusion-limited aggregation (a random walk along the branches of the tree) with Gaussian noise added [@Moon2019-ce].  
+(ref:fake-trees) Example high-dimensional tree shaped data, $n = 3000$ and $p = 100$. The data lies 2-d tree like structure consisting of ten branches. This data is available in the `phateR` package and is simulated via diffusion-limited aggregation (a random walk along the branches of the tree) with Gaussian noise added [@Moon2019-ce].
 
 ```{r fake-trees, echo = FALSE, out.width = "50%", fig.align = "center", fig.cap="(ref:fake-trees)"}
 knitr::include_graphics(here::here("img", "tree.png"))
 ```
 
-First, we apply principal components and restrict the results down to the first twelve principal components (which makes up approximately 70% of the variance explained in the data) to use with the grand tour. 
+First, we apply principal components and restrict the results down to the first
+twelve principal components (which makes up approximately 70% of the variance
+explained in the data) to use with the grand tour.
 
 <!-- can we show R code? -->
 
-Moreover,
-we run t-SNE using the default arguments on the complete data (this keeps the first 50 PCs, sets the perpelxity to equal 30 and performs random initalisation) using the `Rtsne` package [@Rtsne]. We then create a linked tour with t-SNE layout with `liminal` as shown in the following video :
+Moreover, we run t-SNE using the default arguments on the complete data (this
+keeps the first 50 PCs, sets the perplexity to equal 30 and performs random
+initialisation) using the `Rtsne` package [@Rtsne]. We then create a linked
+tour with t-SNE layout with `liminal` as shown in the following video :
 
-<embededded video 1>
+<embedded video 1>
 
-From the video, we see that the t-SNE view has been unable to recapitulate the topology of the tree - the backbone (blue) branch has been split into three fragments. We can see this immediately via the linked highlighting over both plots. If we click on the legend for the zeroth branch, the blue colored points on each view are higlighted and the remaining points are made transparent. From, here it becomes apparent from the tour view that the blue branch forms the backbone of the tree and is connected to all other branches.
-We can also again see that cluster sizes formed via t-SNE can be misleading; from the tour view there is a lot of noise along the branches, while this does not appear to
+From the video, we see that the t-SNE view has been unable to recapitulate the
+topology of the tree - the backbone (blue) branch has been split into three
+fragments. We can see this immediately via the linked highlighting over both
+plots. If we click on the legend for the zero branch, the blue coloured points
+on each view are highlighted and the remaining points are made transparent.
+From, here it becomes apparent from the tour view that the blue branch forms
+the backbone of the tree and is connected to all other branches. We can also
+again see that cluster sizes formed via t-SNE can be misleading; from the tour
+view there is a lot of noise along the branches, while this does not appear to
 be the case for the t-SNE result.
 
-From the first view, we modify the inputs to the t-SNE view, to try and produce a better trade-off between local structure and retain the topology of the data. We keep every parameter the same except that we initialise $Y$ with the first two PCs (scaled to have standard deviation 1e-4) instead of the default random initialisation and increase the perplexity from 30 to 100. We then combine these results
-with our tour view as displayed in the video:
+From the first view, we modify the inputs to the t-SNE view, to try and produce
+a better trade-off between local structure and retain the topology of the data.
+We keep every parameter the same except that we initialise $Y$ with the first
+two PCs (scaled to have standard deviation 1e-4) instead of the default random
+initialisation and increase the perplexity from 30 to 100. We then combine
+these results with our tour view as displayed in the video:
 
 <embedded video 2>
 
-The video shows that this selection of parameters results
-in the the tips of the branch
+The video shows that this selection of parameters results in the the tips of
+the branches (the three black dots in figure \@ref(fig:fake-trees)) being split
+into three clusters representing the final branches of the tree. However, there
+are perceptual issues following the placement of the three groupings on the
+t-SNE view that become apparent via simple linked brushing. If we brush the
+tips of the yellow and brown branches (which appear to be close to each other
+on the t-SNE view), we immediately see the placement is distorted in the t-SNE
+view, and in the tour view these tips are at opposite ends of the tree.
+Although, this is a known issue of the t-SNE algorithm, we can easily identify
+it via simple interactivity.
+
 
 ### Case Study 2: Clustering single cell RNA-seq data
 
