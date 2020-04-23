@@ -220,7 +220,8 @@ speed it's possible to generate UMAP embeddings in more than three dimensions.
 It appears to suffer from the same perceptual issues as t-SNE, however it
 supposedly preservers global structure better than t-SNE [@Coenen2019-to].
 
-?? include details of tour here
+synthesis of some other techniques like LLE, Isomap and PHATE
+
 
 ## Visual Design
 
@@ -333,6 +334,8 @@ our approach to generating tour paths and user interactions.
 
 
 ### Tours as a streaming data problem
+
+?? include details of tour here
 
 - don't need to realise the entire sequence
 - instead generate new bases according to a fixed frame rate
