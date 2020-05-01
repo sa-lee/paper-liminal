@@ -339,35 +339,17 @@ Recall our $n \times p$ data matrix $X$
 
 A tour is sequence of $p \times d$ orthonormal projection matrices (bases) $A_{t \in \mathbb{N}}$, where $d$ is typically $1$ or $2$.
 
-A tour allows us to explore the set of all $d$-dimensional subspaces via the projection of $X$ onto $A$. 
-]
+A tour allows us to explore the set of all $d$-dimensional subspaces via the projection of $X$ onto $A$.
 
----
-
-# How does it work?
-
-.large[
 We visualise the sequence of low dimensional projections:
 
 $$Y_{t} = XA_{t}$$
 
 as animated scatter or density plots. 
-]
 
----
+**Grand Tour:** generate a set of random orthnormal bases, interpolate between them.
 
-.large[**Grand Tour:** generate a set of random orthnormal bases, interpolate between them.]
-
-```{r basis-view, out.width="50%", echo = FALSE}
-include_graphics("img/bases-generation.png")
-```
-
-(From _Buja, Cook, Asimov and Hurley, 2004_)
----
-
-class: middle
-
-.large[The tour is enhanced by **interactivity**:
+The tour is enhanced by **interactivity**:
 
 - play/pause the current projection
 - zooming to find 'interesting' points
