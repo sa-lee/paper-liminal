@@ -19,6 +19,13 @@ slice_bitmap <- function(a, row_number) {
   tibble::as_tibble(res[row_number, , drop = FALSE])
 } 
 
+tidy_tsne <- function(model, data) {
+  enframe <- as.data.frame(model[["Y"]])
+  colnames(enframe) <- c("x", "y", "z")[seq_len(ncol(enframe))]
+  dplyr::bind_cols(enframe, data)
+} 
+
+
 ## ----check-cache--------------------------------------------------------------
 has_run <- file.exists(here::here("data/qd.rds"))
 
@@ -50,8 +57,52 @@ if (!has_run) {
 ## ----load-cache--------------------------------------------------------------
 drawings <- readRDS(here::here("data/qd.rds"))
 
+# default t-SNE does not split the categories
 set.seed(5099)
 tsne <- Rtsne::Rtsne(dplyr::select(drawings, dplyr::starts_with("px")))
-tsne_df <- data.frame(x = tsne$Y[,1], y = tsne$Y[,2], animal = drawings$word)
+tsne_df <- tidy_tsne(tsne, list(animal = drawings$word))
 
+# cat-dog gradient is spread through the other animal categories
 limn_xy(tsne_df, x = x , y = y, color = animal)
+
+# try the PCA initialisation trick
+qd_pca <- prcomp(dplyr::select(drawings, dplyr::starts_with("px")),
+                 center = TRUE)
+
+# bind the PCs to the drawings
+drawings_pcs <- dplyr::bind_cols(drawings,dplyr::as_tibble(qd_pca$x))
+
+# PCA plot, blobby like the tSNE view
+limn_xy(drawings_pcs, x = PC1, y = PC2, color = word)
+
+qd_var_explained <- data.frame(
+  component = seq_len(length(qd_pca$sdev)),
+  sd = qd_pca$sdev,
+  var_explained = qd_pca$sdev^2 / sum(qd_pca$sdev^2),
+  cum_var_explained = cumsum(qd_pca$sdev^2) / sum(qd_pca$sdev^2)
+)
+
+# a lot of variability unexplained by PCA, need quite a few PCs
+limn_xy(qd_var_explained, x = component, y = cum_var_explained)
+
+
+# try tSNE again this time scaling initialising at first two PCs
+y_init <- clamp_sd(as.matrix(dplyr::select(drawings_pcs, PC1, PC2)), 
+                   sd = 1e-4)
+
+qd_tsne <- Rtsne::Rtsne(
+  dplyr::select(drawings, dplyr::starts_with("px")),
+  Y_init = y_init
+)
+
+qd_tsne_df <- tidy_tsne(qd_tsne, list(animal = drawings$word))
+
+limn_xy(qd_tsne_df, x = x , y = y, color = animal)
+
+
+
+limn_tour_xylink(x = dplyr::select(drawings_pcs, PC1:PC20, animal = word),
+                 y = qd_tsne_df,
+                 x_color = animal, 
+                 y_color = animal)
+
