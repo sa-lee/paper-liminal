@@ -1,4 +1,5 @@
 ## ----init--------------------------------------------------------------------
+library(dplyr)
 library(liminal)
 # remotes::install_github("huizezhang-sherry/quickdraw")
 library(quickdraw)
@@ -16,7 +17,7 @@ slice_image_meta <- function(a, size = 500L) {
 slice_bitmap <- function(a, row_number) {
   res <- qd_read_bitmap(a)
   colnames(res) <- paste0("px", seq_len(ncol(res)))
-  tibble::as_tibble(res[row_number, , drop = FALSE])
+  dplyr::as_tibble(res[row_number, , drop = FALSE])
 } 
 
 tidy_tsne <- function(model, data) {
@@ -57,20 +58,31 @@ if (!has_run) {
 ## ----load-cache--------------------------------------------------------------
 drawings <- readRDS(here::here("data/qd.rds"))
 
+
+# normalise the pixel intensities for each image by centering each
+# image by their average pixel intensity 
+px_mat <- as.matrix(select(drawings, starts_with("px")))
+px_means <- rowMeans(px_mat)
+px_mat2 <- sweep(px_mat, 1, px_means)
+colnames(px_mat2) <- paste0("norm_", colnames(px_mat2))
+drawings <- bind_cols(drawings, as_tibble(px_mat2))
+
 # default t-SNE does not split the categories
 set.seed(5099)
-tsne <- Rtsne::Rtsne(dplyr::select(drawings, dplyr::starts_with("px")))
+tsne <- Rtsne::Rtsne(select(drawings, starts_with("norm_px")),
+                     pca_center = FALSE, 
+                     normalize = FALSE)
 tsne_df <- tidy_tsne(tsne, list(animal = drawings$word))
 
 # cat-dog gradient is spread through the other animal categories
 limn_xy(tsne_df, x = x , y = y, color = animal)
 
 # try the PCA initialisation trick
-qd_pca <- prcomp(dplyr::select(drawings, dplyr::starts_with("px")),
-                 center = TRUE)
+qd_pca <- prcomp(select(drawings, starts_with("norm_px")),
+                 center = FALSE)
 
 # bind the PCs to the drawings
-drawings_pcs <- dplyr::bind_cols(drawings,dplyr::as_tibble(qd_pca$x))
+drawings_pcs <- bind_cols(drawings,as_tibble(qd_pca$x))
 
 # PCA plot, blobby like the tSNE view
 limn_xy(drawings_pcs, x = PC1, y = PC2, color = word)
@@ -82,17 +94,24 @@ qd_var_explained <- data.frame(
   cum_var_explained = cumsum(qd_pca$sdev^2) / sum(qd_pca$sdev^2)
 )
 
-# a lot of variability unexplained by PCA, need quite a few PCs
+# a lot of variability unexplained by PCA, 
+# need quite a few PCs to get to fifty percent
 limn_xy(qd_var_explained, x = component, y = cum_var_explained)
 
+# look at tour, looks like each category forms a face of cube?
+limn_tour(drawings_pcs, PC1:PC20, color = word)
 
 # try tSNE again this time scaling initialising at first two PCs
-y_init <- clamp_sd(as.matrix(dplyr::select(drawings_pcs, PC1, PC2)), 
+y_init <- clamp_sd(as.matrix(select(drawings_pcs, PC1, PC2)), 
                    sd = 1e-4)
 
 qd_tsne <- Rtsne::Rtsne(
-  dplyr::select(drawings, dplyr::starts_with("px")),
-  Y_init = y_init
+  select(drawings, starts_with("norm_px")),
+  normalize = FALSE,
+  pca_center = FALSE,
+  Y_init = y_init,
+  perplexity = 5,
+  max_iter = 5000
 )
 
 qd_tsne_df <- tidy_tsne(qd_tsne, list(animal = drawings$word))
@@ -101,8 +120,15 @@ limn_xy(qd_tsne_df, x = x , y = y, color = animal)
 
 
 
-limn_tour_xylink(x = dplyr::select(drawings_pcs, PC1:PC20, animal = word),
+limn_tour_xylink(x = select(drawings_pcs, PC1:PC20, animal = word),
                  y = qd_tsne_df,
                  x_color = animal, 
                  y_color = animal)
+
+
+
+
+# # try a projection pursuit guided tour
+# pda_inx <- tourr::guided_tour(tourr::pda_pp(drawings_pcs$word), d = 2)
+# limn_tour(drawings_pcs, PC1:PC10, color = word, pda_inx)
 
