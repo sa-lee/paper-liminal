@@ -63,9 +63,20 @@ drawings <- readRDS(here::here("data/qd.rds"))
 # image by their average pixel intensity 
 px_mat <- as.matrix(select(drawings, starts_with("px")))
 px_means <- rowMeans(px_mat)
-px_mat2 <- sweep(px_mat, 1, px_means)
-colnames(px_mat2) <- paste0("norm_", colnames(px_mat2))
-drawings <- bind_cols(drawings, as_tibble(px_mat2))
+px_norm <- sweep(px_mat, 1, px_means)
+
+# Sphere the images by taking the SVD of covariance matrix
+# this removes covariance between pixels
+# px_cov <- tcrossprod(px_norm) / ncol(px_norm)
+# svals <- svd(px_cov)
+# px_rot <-
+#   diag(1 / (sqrt(svals$d) + 1e-5)) %*%
+#   crossprod(svals$u, px_norm)
+
+
+colnames(px_norm) <- paste0("norm_", colnames(px_norm))
+
+drawings <- bind_cols(drawings, as_tibble(px_norm))
 
 # default t-SNE does not split the categories
 set.seed(5099)
