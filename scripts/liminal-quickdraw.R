@@ -113,6 +113,11 @@ limn_xy(qd_var_explained, x = component, y = cum_var_explained)
 # look at tour, looks like each category forms a face of cube?
 limn_tour(drawings_pcs, PC1:PC20, color = word)
 
+rf_data <- select(drawings, word, starts_with("norm_px")) %>% 
+  mutate(word = factor(word)) %>% 
+  as.data.frame()
+rf <- randomForest::randomForest(word ~ . , data = rf_data)
+
 # try tSNE again this time scaling initialising at first two PCs
 y_init <- clamp_sd(as.matrix(select(drawings_pcs, PC1, PC2)), 
                    sd = 1e-4)
