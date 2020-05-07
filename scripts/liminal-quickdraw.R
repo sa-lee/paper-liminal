@@ -88,6 +88,7 @@ tsne_df <- tidy_tsne(tsne, list(animal = drawings$word))
 # cat-dog gradient is spread through the other animal categories
 limn_xy(tsne_df, x = x , y = y, color = animal)
 
+
 # try the PCA initialisation trick
 qd_pca <- prcomp(select(drawings, starts_with("norm_px")),
                  center = FALSE)
@@ -117,8 +118,7 @@ y_init <- clamp_sd(as.matrix(select(drawings_pcs, PC1, PC2)),
                    sd = 1e-4)
 
 qd_tsne <- Rtsne::Rtsne(
-  select(drawings, starts_with("norm_px")),
-  normalize = FALSE,
+  select(drawings_pcs, starts_with("norm_px")),
   pca_center = FALSE,
   Y_init = y_init,
   perplexity = 5,
@@ -129,14 +129,10 @@ qd_tsne_df <- tidy_tsne(qd_tsne, list(animal = drawings$word))
 
 limn_xy(qd_tsne_df, x = x , y = y, color = animal)
 
-
-
-limn_tour_xylink(x = select(drawings_pcs, PC1:PC20, animal = word),
-                 y = qd_tsne_df,
-                 x_color = animal, 
-                 y_color = animal)
-
-
+# limn_tour_xylink(x = select(drawings_pcs, PC1:PC20, animal = word),
+#                  y = qd_tsne_df,
+#                  x_color = animal, 
+#                  y_color = animal)
 
 
 # # try a projection pursuit guided tour
