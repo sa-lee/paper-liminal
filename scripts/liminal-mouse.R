@@ -49,7 +49,25 @@ dplyr::count(pc_df, cluster_membership)
 ## ---- tsne
 tsne <- Rtsne::Rtsne(dplyr::select(pc_df, -cluster_membership),
                      pca = FALSE,
-                     Y_init = clamp_sd(reducedDim(sce)[ , 1:2], sd = 1e-4)
+                     Y_init = clamp_sd(reducedDim(sce)[ , 1:2], sd = 1e-4),
                      perplexity = 30)
+
+tsne_df <- tidy_tsne(tsne, list(cluster_membership = pc_df$cluster_membership))
+
+
+library(dplyr)
+# down sample so each group is down 10%
+set.seed(2099)
+pc_df_sub <- pc_df %>% 
+  mutate(row_number = row_number()) %>% 
+  group_by(cluster_membership) %>% 
+  sample_frac(size = 0.1) %>%
+  ungroup() 
+
+tsne_df %>% 
+  slice(pc_df_sub$row_number) %>% 
+  limn_xy(x = x, y = y , color = forcats::fct_relevel(cluster_membership)
+
+limn_tour(pc_df_sub, PC1:PC5, color = cluster_membership)
 
 
