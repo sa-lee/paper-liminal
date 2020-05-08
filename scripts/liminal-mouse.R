@@ -1,12 +1,20 @@
 ## ----init-----------------------------------------------------------
-library(scRNAseq)
 library(scater)
 library(scran)
-sce <- MacoskoRetinaData()
+library(liminal)
+source(here::here("scripts", "helpers.R"))
+
+sce <- scRNAseq::MacoskoRetinaData(ensembl = TRUE)
+# annotation ensembl database
+anno_db <- AnnotationHub::AnnotationHub()[["AH73905"]] 
+anno <- AnnotationDbi::select(anno_db, 
+               keys=rownames(sce), 
+               keytype="GENEID", columns=c("SYMBOL", "SEQNAME", "GENEBIOTYPE"))
+rowData(sce) <- anno[match(rownames(sce), anno$GENEID), ]
 
 
 ## ----qc-------------------------------------------------------------
-is.mito <- grepl("^MT-", rownames(sce))
+is.mito <- grepl("^mt-", rowData(sce)$SYMBOL)
 qcstats <- perCellQCMetrics(sce, subsets=list(Mito=is.mito))
 filtered <- quickPerCellQC(qcstats, percent_subsets="subsets_Mito_percent")
 sce <- sce[, !filtered$discard]
@@ -16,18 +24,14 @@ sce <- logNormCounts(sce)
 
 ## ----gene-selection-------------------------------------------------
 dec <- modelGeneVar(sce) # fits mean-variance trend using `nls`.
-hvg <- getTopHVGs(dec, prop=0.2) # selects ~20% of nrow(sce) that are HVGs
+hvg <- getTopHVGs(dec, prop=0.1) # selects ~10% of nrow(sce) that are HVGs
 
 ## ----pca------------------------------------------------------------
 sce <- runPCA(sce, ncomponents = 50, subset_row = hvg)
-# looking at elbow-plot looks like we get the first 10PCs explain most of the 
-# variation
-library(ggplot2)
-ggplot(data.frame(x = 1:50,  y = attr(reducedDim(sce), "percentVar")), 
-       aes(x,y)) + 
-  geom_point() +
-  labs(x = "Component", y =  "% Var Explained") +
-  scale_x_continuous(breaks = seq(0, 50, by = 5))
+# looking at elbow-plot looks like we get the first ten PCs explain most of the 
+# variation, with the elbow at five
+var_explained <- tidy_var_explained(sce)
+limn_xy(var_explained, x = component, y = var_explained)
 
 ## ----cluster--------------------------------------------------------
 # the recommended workflow is to use graph based clustering on the principal 
@@ -43,4 +47,9 @@ pc_df$cluster_membership <- sce$cluster_membership
 dplyr::count(pc_df, cluster_membership)
 
 ## ---- tsne
+tsne <- Rtsne::Rtsne(dplyr::select(pc_df, -cluster_membership),
+                     pca = FALSE,
+                     Y_init = clamp_sd(reducedDim(sce)[ , 1:2], sd = 1e-4)
+                     perplexity = 30)
+
 

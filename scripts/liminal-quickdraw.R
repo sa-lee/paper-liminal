@@ -3,32 +3,10 @@ library(dplyr)
 library(liminal)
 # remotes::install_github("huizezhang-sherry/quickdraw")
 library(quickdraw)
-
-# downsample the number of images to have 500 images in each category
-slice_image_meta <- function(a, size = 500L) {
-  res <- qd_read(a)
-  nr <- nrow(res)
-  slice <- sample.int(nr, size)
-  slab <- res[slice, , drop = FALSE]
-  slab[["row_number"]] <- slice
-  slab
-}
-
-slice_bitmap <- function(a, row_number) {
-  res <- qd_read_bitmap(a)
-  colnames(res) <- paste0("px", seq_len(ncol(res)))
-  dplyr::as_tibble(res[row_number, , drop = FALSE])
-} 
-
-tidy_tsne <- function(model, data) {
-  enframe <- as.data.frame(model[["Y"]])
-  colnames(enframe) <- c("x", "y", "z")[seq_len(ncol(enframe))]
-  dplyr::bind_cols(enframe, data)
-} 
-
+source(here::here("scripts", "helpers.R"))
 
 ## ----check-cache--------------------------------------------------------------
-has_run <- file.exists(here::here("data/qd.rds"))
+has_run <- file.exists(here::here("data", "qd.rds"))
 
 ## ----download-categories-----------------------------------------------------
 if (!has_run) {
@@ -99,16 +77,10 @@ drawings_pcs <- bind_cols(drawings,as_tibble(qd_pca$x))
 # PCA plot, blobby like the tSNE view
 limn_xy(drawings_pcs, x = PC1, y = PC2, color = word)
 
-qd_var_explained <- data.frame(
-  component = seq_len(length(qd_pca$sdev)),
-  sd = qd_pca$sdev,
-  var_explained = qd_pca$sdev^2 / sum(qd_pca$sdev^2),
-  cum_var_explained = cumsum(qd_pca$sdev^2) / sum(qd_pca$sdev^2)
-)
+qd_var_explained <- tidy_var_explained(qd_pca)
 
-# a lot of variability unexplained by PCA, 
-# need quite a few PCs to get to fifty percent
-limn_xy(qd_var_explained, x = component, y = cum_var_explained)
+# a lot of variability left unexplained by PCA, 
+limn_xy(qd_var_explained, x = component, y = var_explained)
 
 # look at tour, looks like each category forms a face of cube?
 limn_tour(drawings_pcs, PC1:PC20, color = word)
