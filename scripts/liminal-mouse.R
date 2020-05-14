@@ -1,6 +1,6 @@
 ## ----init-----------------------------------------------------------
-library(scater)
-library(scran)
+suppressPackageStartupMessages(library(scater))
+suppressPackageStartupMessages(library(scran))
 library(liminal)
 source(here::here("scripts", "helpers.R"))
 
@@ -26,8 +26,14 @@ sce <- logNormCounts(sce)
 dec <- modelGeneVar(sce) # fits mean-variance trend using `nls`.
 hvg <- getTopHVGs(dec, prop=0.1) # selects ~10% of nrow(sce) that are HVGs
 
+# looking at top ten most variable genes as a tour
+hvg_df <- tibble::as_tibble(as.matrix(t(logcounts(sce[hvg[1:10],]))))
+colnames(hvg_df) <- rowData(sce)[hvg[1:10],]$SYMBOL
+
+limn_tour(hvg_df[sample.int(nrow(hvg_df), 3000),], cols = 1:10)
+
 ## ----pca------------------------------------------------------------
-sce <- runPCA(sce, ncomponents = 50, subset_row = hvg)
+sce <- runPCA(sce, ncomponents = 25, subset_row = hvg)
 # looking at elbow-plot looks like we get the first ten PCs explain most of the 
 # variation, with the elbow at five
 var_explained <- tidy_var_explained(sce)
@@ -46,6 +52,9 @@ pc_df$cluster_membership <- sce$cluster_membership
 
 dplyr::count(pc_df, cluster_membership)
 
+# tour the first 5 PCs, this forms a tetarahedron...
+limn_tour(pc_df, PC1:PC5, color = cluster_membership)
+
 ## ---- tsne
 tsne <- Rtsne::Rtsne(dplyr::select(pc_df, -cluster_membership),
                      pca = FALSE,
@@ -55,8 +64,9 @@ tsne <- Rtsne::Rtsne(dplyr::select(pc_df, -cluster_membership),
 tsne_df <- tidy_tsne(tsne, list(cluster_membership = pc_df$cluster_membership))
 
 
+## ---- down-sample-linked-plot
 library(dplyr)
-# down sample so each group is down 10%
+# down sample so each group is down 10%, speeds up vis
 set.seed(2099)
 pc_df_sub <- pc_df %>% 
   mutate(row_number = row_number()) %>% 
@@ -66,8 +76,7 @@ pc_df_sub <- pc_df %>%
 
 tsne_df %>% 
   slice(pc_df_sub$row_number) %>% 
-  limn_xy(x = x, y = y , color = forcats::fct_relevel(cluster_membership)
+  limn_xy(x = x, y = y ,color = cluster_membership)
 
 limn_tour(pc_df_sub, PC1:PC5, color = cluster_membership)
-
 
