@@ -88,9 +88,11 @@ set.seed(1980)
 # use a default rf 
 rf <- randomForest::randomForest(word ~ . , 
                                  ntree = 500, 
+                                 importance = TRUE,
                                  data = rf_data)
 
 print(rf)
+
 var_imp <- randomForest::importance(rf)
 var_imp_df <- data.frame(var = rownames(var_imp), value = unname(var_imp))
 
@@ -109,3 +111,5 @@ tsne_rf_df <- tidy_tsne(tsne_rf, drawings[, "word"])
 
 limn_xy(tsne_rf_df, x = x , y = y, color = word)
 
+
+# selection of top variables from top class
