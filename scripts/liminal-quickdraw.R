@@ -10,7 +10,7 @@ has_run <- file.exists(here::here("data", "qd.rds"))
 
 ## ----download-categories-----------------------------------------------------
 if (!has_run) {
-  animals <- c("cat", "dog", "octopus", "spider", "whale")
+  animals <- c("broccoli", "flying saucer", "ice cream", "octopus", "pineapple", "whale")
   # download and cache
   for (a in animals) {
     qd_download(a)
@@ -39,9 +39,11 @@ drawings <- readRDS(here::here("data/qd.rds"))
 
 # normalise the pixel intensities for each image by centering each
 # image by their average pixel intensity 
-px_mat <- as.matrix(select(drawings, starts_with("px")))
-px_means <- rowMeans(px_mat)
-px_norm <- sweep(px_mat, 1, px_means)
+# px_mat <- as.matrix(select(drawings, starts_with("px")))
+# px_means <- rowMeans(px_mat)
+# px_norm <- sweep(px_mat, 1, px_means)
+# colnames(px_norm) <- paste0("norm_", colnames(px_norm))
+# drawings <- bind_cols(drawings, as_tibble(px_norm))
 
 # Sphere the images by taking the SVD of covariance matrix
 # this removes covariance between pixels
@@ -52,29 +54,22 @@ px_norm <- sweep(px_mat, 1, px_means)
 #   crossprod(svals$u, px_norm)
 
 
-colnames(px_norm) <- paste0("norm_", colnames(px_norm))
-
-drawings <- bind_cols(drawings, as_tibble(px_norm))
-
-# default t-SNE does not split the categories
+# default t-SNE does pretty well at splitting the categories
 set.seed(5099)
-tsne <- Rtsne::Rtsne(select(drawings, starts_with("norm_px")),
-                     pca_center = FALSE, 
-                     normalize = FALSE)
-tsne_df <- tidy_tsne(tsne, list(animal = drawings$word))
+tsne <- Rtsne::Rtsne(select(drawings, starts_with("px")))
+tsne_df <- tidy_tsne(tsne, drawings[,"word"])
 
-# cat-dog gradient is spread through the other animal categories
-limn_xy(tsne_df, x = x , y = y, color = animal)
+limn_xy(tsne_df, x = x , y = y, color = word)
 
 
 # try the PCA initialisation trick
-qd_pca <- prcomp(select(drawings, starts_with("norm_px")),
-                 center = FALSE)
+qd_pca <- prcomp(select(drawings, starts_with("px")),
+                 center = TRUE)
 
 # bind the PCs to the drawings
 drawings_pcs <- bind_cols(drawings,as_tibble(qd_pca$x))
 
-# PCA plot, blobby like the tSNE view
+# PCA plot, blobby the tSNE view
 limn_xy(drawings_pcs, x = PC1, y = PC2, color = word)
 
 qd_var_explained <- tidy_var_explained(qd_pca)
@@ -83,36 +78,34 @@ qd_var_explained <- tidy_var_explained(qd_pca)
 limn_xy(qd_var_explained, x = component, y = var_explained)
 
 # look at tour, looks like each category forms a face of cube?
-limn_tour(drawings_pcs, PC1:PC20, color = word)
+limn_tour(drawings_pcs, PC1:PC15, color = word)
 
-rf_data <- select(drawings, word, starts_with("norm_px")) %>% 
+rf_data <- select(drawings_pcs, word, starts_with("px")) %>% 
   mutate(word = factor(word)) %>% 
   as.data.frame()
-rf <- randomForest::randomForest(word ~ . , data = rf_data)
 
+set.seed(1980)
+# use a default rf 
+rf <- randomForest::randomForest(word ~ . , 
+                                 ntree = 500, 
+                                 data = rf_data)
+
+print(rf)
+var_imp <- randomForest::importance(rf)
+var_imp_df <- data.frame(var = rownames(var_imp), value = unname(var_imp))
+
+
+top_px <- dplyr::top_n(var_imp_df, n = 100, wt = value)$var
 # try tSNE again this time scaling initialising at first two PCs
+# using top features from rf
 y_init <- clamp_sd(as.matrix(select(drawings_pcs, PC1, PC2)), 
                    sd = 1e-4)
+set.seed(1988)
+tsne_rf <- Rtsne::Rtsne(X = drawings[, top_px],
+                        Y_init = y_init,
+                        perplexity = 15)
 
-qd_tsne <- Rtsne::Rtsne(
-  select(drawings_pcs, starts_with("norm_px")),
-  pca_center = FALSE,
-  Y_init = y_init,
-  perplexity = 5,
-  max_iter = 5000
-)
+tsne_rf_df <- tidy_tsne(tsne_rf, drawings[, "word"])
 
-qd_tsne_df <- tidy_tsne(qd_tsne, list(animal = drawings$word))
-
-limn_xy(qd_tsne_df, x = x , y = y, color = animal)
-
-# limn_tour_xylink(x = select(drawings_pcs, PC1:PC20, animal = word),
-#                  y = qd_tsne_df,
-#                  x_color = animal, 
-#                  y_color = animal)
-
-
-# # try a projection pursuit guided tour
-# pda_inx <- tourr::guided_tour(tourr::pda_pp(drawings_pcs$word), d = 2)
-# limn_tour(drawings_pcs, PC1:PC10, color = word, pda_inx)
+limn_xy(tsne_rf_df, x = x , y = y, color = word)
 
