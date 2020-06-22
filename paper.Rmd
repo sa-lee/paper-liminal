@@ -103,40 +103,56 @@ to see a global overview of their high dimensional data and assists them with
 cluster orientation tasks. This workflow is incorporated into an R package
 called `liminal` (Available: https://github.com/sa-lee/liminal).
 
-## Dimensionality Reduction Overview
+## Dimensionality Reduction Background
 
 In the following section, we provide a brief overview of the goals of DR
 methods with respect to the data analyst, in addition to their high level the
-mathematical details. To begin we suppose the data is in the form rectangular
+mathematical details. Here we restrict our attention to two recent methods that are commonly used in the literature: t-distributed stochastic neighbour embedding 
+(t-SNE) and uniform manifold alignment and projection (UMAP); however we do 
+mention several other techniques. 
+
+To begin we suppose the data is in the form rectangular
 matrix of real numbers, $X = [\mathbf{x_1}, \dots, \mathbf{x_n}]$, where $n$ is
 the number of observations in $p$ dimensions.  The purpose of any DR algorithm
-is to find low-dimensional representation of the data, $Y = [\mathbf{y_1},
-\dots, \mathbf{y_n}]$, such that $Y$ is an $n \times d$ matrix where $d \ll p$.
-The hope of the analyst is that the DR procedure to produces $Y$ will remove
-noise in the original dataset while retaining latent structure.
+is to find a low-dimensional representation of the data, 
+$Y = [\mathbf{y_1}, \dots, \mathbf{y_n}]$, such that $Y$ is an $n \times d$
+matrix where $d \ll p$. The hope of the analyst is that the DR procedure to 
+produces $Y$ will remove noise in the original dataset while retaining any 
+latent structure.
 
-DR methods can be classified into two broad groups: linear and non-linear
+DR methods can be classified into two broad classes: linear and non-linear
 methods. Linear methods perform a linear transformation of the data, that is,
 $Y$ is a linear transformation of $X$; one example is principal components
 analysis (PCA) which performs an eigendecomposition of the estimated sample
 covariance matrix. The eigenvalues are sorted in decreasing order and represent
-the variance explained by each component (eigenvector). A common approach to
-deciding on the number of principal components to retain is to plot the
-proportion of variance explained by each component and choose a cut-off.
+the variance explained by each component (eigenvector). 
+A common approach to deciding on the number of principal components to retain is
+to plot the proportion of variance explained by each component and choose a 
+cut-off.
 
 For non-linear methods $Y$ is generated via a pre-processed form of the input
 $X$ such as the $k$-nearest neighbours graph or via a kernel transformation.
-Here we restrict our attention to two recent methods that are commonly used in
-the literature: t-distributed stochastic neighbour embedding (t-SNE) and
-uniform manifold alignment and projection (UMAP). The t-SNE algorithm estimates
-the pair-wise similarity of (Euclidean) distances of points in a high
+Multidimensional scaling (MDS) is a class of DR methods that aims to construct an embedding 
+$Y$ such that the pariwise distances (inner products) in $Y$ approximate the pairwise distances (inner products) in  $X$. There are many variants of MDS, such as 
+nonmetric scaling which uses ranks instead of distances. A related extension
+of MDS is Isomap which uses the $k$-nearest neighbor graphs to estimate the pairwise geodesic distance of points in $X$ then uses classical MDS to construct $Y$. Yet
+another approach are non-linear DR methods based on diffusion 
+processes. A recent example in the single cell genomics literature is PHATE.
+Here an affinity matrix is estimated via the pairwise distance matrix and k-nearest neighbors graph of $X$. The algorithm denoises estimated distances in 
+high-dimensional space via transforming the affinity matrix into a Markov transition probaility matrix and diffusing this matrix over a fixed number of time steps. Then the diffused probabilities are transformed once more to construct a distance matrix, and classical MDS is used to generate $Y$. A difficulty with using non-linear
+DR methods for exploratory data analysis are the choices required in selecting
+appropriate parameters. To see the magnitude of these choices 
+we now closely examine the precise details of t-SNE and UMAP.
+
+The t-SNE algorithm estimates
+the pairwise similarity of (Euclidean) distances of points in a high
 dimensional space using a Gaussian distribution and then estimates a
 configuration in the low dimensional embedding space by modelling similarities
 using a t-distribution with 1 degree of freedom. There are several subtleties
 to the to use of the algorithm that are revealed by stepping through its
 machinery.
 
-To begin, t-SNE transforms pair-wise distances between $\mathbf{x_i}$ and
+To begin, t-SNE transforms pairwise distances between $\mathbf{x_i}$ and
 $\mathbf{x_j}$ to similarities using a Gaussian kernel:
 
 $$ p_{i|j} = \frac{\exp(-\lVert \mathbf{x_i - x_j} \rVert ^ 2 /
@@ -159,7 +175,7 @@ nearest neighbours algorithm, $p_{i|j}$ will be close to zero for all
 observations that are not in the $\mathcal{O}(\text{perplexity}_i)$
 neighbourhood graph of the $i$th observation [@Van_Der_Maaten2014-zn].
 
-Next, the target low-dimensional space, $Y$, pair-wise distances between
+Next, the target low-dimensional space, $Y$, pairwise distances between
 $\mathbf{y_i}$ and $\mathbf{y_j}$ are modelled as a symmetric probability
 distribution using a Cauchy kernel:
 
@@ -167,7 +183,7 @@ $$ q_{ij} = \frac{w_{ij}}{Z} \\ \text{where } w_{ij} = \frac{1}{ 1 + \lVert
 \mathbf{y_i - y_j} \rVert ^ 2} \text{ and } Z = \sum_{k \ne l} w_{kl}. $$
 
 
-The resulting configuration $Y$ is the one that minimizes the Kullback-Leibler
+The resulting embedding $Y$ is the one that minimizes the Kullback-Leibler
 divergence between the probability distributions formed via similarities of
 observations in $X$, $\mathcal{P}$ and similarities of observations in $Y$,
 $\mathcal{Q}$:
@@ -182,10 +198,10 @@ $$ \mathcal{L(\mathcal{P}, \mathcal{Q})} = -\sum_{i \ne j} p_{ij}\log w_{ij} +
 \log\sum_{i \ne j} w_{ij} $$
 
 So when the the loss function is minimised this corresponds to large attractive
-forces, that is, the pair-wise distances in $Y$ are small when there are
+forces, that is, the pairwise distances in $Y$ are small when there are
 non-zero $p_{ij}$, i.e. $x_i$ and $x_j$ are close together. The repulsive force
 should also be small when the loss function is minimised, that is, when
-pair-wise distances in $Y$ are large regardless of the magnitude of the
+pairwise distances in $Y$ are large regardless of the magnitude of the
 corresponding distances in $X$.
 
 Taken together, these details reveal the sheer number of decisions that an
@@ -212,8 +228,6 @@ kernel for similarities in the low dimensional space. Due to it's computational
 speed it's possible to generate UMAP embeddings in more than three dimensions.
 It appears to suffer from the same perceptual issues as t-SNE, however it
 supposedly preservers global structure better than t-SNE [@Coenen2019-to].
-
-synthesis of some other techniques like LLE, Isomap and PHATE
 
 
 ## Visual Design
@@ -334,8 +348,8 @@ of the subspace generated by the set of low-dimensional projections. In fact, wh
 
 Like, when using DR techniques, the tour assumes we have a real data matrix
 $X$ consisting of $n$ observations in $p$ dimensions. First, the tour generates 
-a  sequence of $p \times d$ orthonormal projection matrices (bases) $A_{t \in \mathbb{N}}$, where $d$ is typically $1$ or $2$. For each pair of orthormal bases $A_{t}$ and $A_{t+1}$ that are generated, the geodesic
-path between them is interpolated to form intermediate frames, and giving the sense of continuous movement from one basis to another. The tour is then the continous visualisation of the  projections $Y_{t} = XA_{t}$, that is the projection of $X$ onto $A_{t}$ as the tour path is interpolated between successive bases. A *grand tour* corresponds to choosing new orthoromal bases at random; allowing a user to ascertain structure via exploring the subspace of $d$-dimensional projections. Instead of picking projections at random, a *guided tour* can be used to generate a sequence 'interesting' projections as quantified by an index function. While `liminal` is able to visualise guided tours, our focus in the case studies uses the grand tour to provide overviews of global
+a  sequence of $p \times d$ orthonormal projection matrices (bases) $A_{t \in \mathbb{N}}$, where $d$ is typically $1$ or $2$. For each pair of orthonormal bases $A_{t}$ and $A_{t+1}$ that are generated, the geodesic
+path between them is interpolated to form intermediate frames, and giving the sense of continuous movement from one basis to another. The tour is then the continuous visualisation of the  projections $Y_{t} = XA_{t}$, that is the projection of $X$ onto $A_{t}$ as the tour path is interpolated between successive bases. A *grand tour* corresponds to choosing new orthonormal bases at random; allowing a user to ascertain structure via exploring the subspace of $d$-dimensional projections. Instead of picking projections at random, a *guided tour* can be used to generate a sequence 'interesting' projections as quantified by an index function. While `liminal` is able to visualise guided tours, our focus in the case studies uses the grand tour to provide overviews of global
 structure in the data. 
 
 
@@ -444,7 +458,7 @@ In the final case study, we explore a subset of the Google QuickDraw dataset [@q
 like 'airplane' or 'shoe', and corresponding metadata about the humans who
 created the sketches, such as country, the word category, whether the sketch
 was recognised by Google's neural network, and the number of strokes taken.
-We downloaded the metadata and normalised 28 by 28 pixel bitmaps via the `quickdraw` package in R. We sampled 500 images from each of the following  animal categories: "dog", "cat", "octopus", "spider", and "whale" and unravelled the bitmaps into a 784 dimension image vector. 
+We downloaded the metadata and normalised 28 by 28 pixel bitmaps via the `quickdraw` package in R; unravelling the bitmaps unravelled the bitmaps into a 784 dimension image vector. We sampled 500 images from each of the following  categories: "broccoli", "flying saucer", "ice cream", "octopus", "pineapple", and "whale". 
 
 
 
