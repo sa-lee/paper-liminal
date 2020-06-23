@@ -456,8 +456,7 @@ in this area generally use non linear DR methods for verification and identifact
 of clusters and developmental trajectories (i.e., case study 1). For clustering,
 workflows the primary task is verify the existence of clusters and then begin to 
 identify the clusters as cell types using the expression of "known" 
-marker genes. The task becomes harder if the goal is discovery of new cell
-types 
+marker genes. Here a 'faithful' a embedding  
 
 
 Here we describe a liminal view of mouse single cell data from @Macosko2015-ot
@@ -473,11 +472,12 @@ was recognised by Google's neural network, and the number of strokes taken.
 We downloaded the metadata and normalised 28 by 28 pixel bitmaps via the `quickdraw` package in R; unravelling the bitmaps unravelled the bitmaps into a 784 dimension image vector. We sampled 500 images from each of the following  categories: "broccoli", "flying saucer", "ice cream", "octopus", "pineapple", and "whale". 
 
 
-
 ## Discussion
 
 
+
 ## Acknowledgements
+
 
 
 ## References
