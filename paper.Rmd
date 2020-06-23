@@ -397,7 +397,7 @@ In this case study we explore some simulated noisy tree structured data (figure
 topology of the data, and then seeing if we can resolve this by tweaking the
 default parameters with reference to the global view of the data set.
 
-(ref:fake-trees) Example high-dimensional tree shaped data, $n = 3000$ and $p = 100$. The data lies 2-d tree like structure consisting of ten branches. This data is available in the `phateR` package and is simulated via diffusion-limited aggregation (a random walk along the branches of the tree) with Gaussian noise added [@Moon2019-ce].
+(ref:fake-trees) Example high-dimensional tree shaped data, $n = 3000$ and $p = 100$. The data lies 2-d tree like structure consisting of ten branches. This data is available in the `phateR` package and is simulated via diffusion-limited aggregation (a random walk along the branches of the tree) with Gaussian noise added. [@Moon2019-ce].
 
 ```{r fake-trees, echo = FALSE, out.width = "50%", fig.align = "center", fig.cap="(ref:fake-trees)"}
 knitr::include_graphics(here::here("img", "tree.png"))
@@ -450,7 +450,19 @@ it via simple interactivity.
 
 ### Case Study 2: Clustering single cell RNA-seq data
 
-This will be Macosko data
+A common analysis task in single cell studies is performing clustering to
+identify groupings  of cells with similar expression profiles. Analysts
+in this area generally use non linear DR methods for verification and identifaction
+of clusters and developmental trajectories (i.e., case study 1). For clustering,
+workflows the primary task is verify the existence of clusters and then begin to 
+identify the clusters as cell types using the expression of "known" 
+marker genes. The task becomes harder if the goal is discovery of new cell
+types 
+
+
+Here we describe a liminal view of mouse single cell data from @Macosko2015-ot
+following the workflow described in @Amezquita2020-at. To begin we obtained
+the count matrix from the `scRNAseq
 
 ### Case Study 3: How do people draw animals?
 
