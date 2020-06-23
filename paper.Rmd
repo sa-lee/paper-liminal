@@ -75,8 +75,10 @@ algorithm.
 A complementary approach for visualizing structure in high dimensional data is 
 the tour. A tour is a sequence of projections of a high dimensional dataset
 onto a low-dimensional basis matrix, and is represented as a
-animated visualization.Given the dynamic nature of the tour, user interaction is important for controlling and exploring the visualisation: the tour has been
-used previously by @Wickham2015-cx as tool for exploring statistical model fits and by @Buja1996-fk for exploring factorial experimental designs.
+animated visualization.Given the dynamic nature of the tour, user interaction is 
+important for controlling and exploring the visualisation: the tour has been
+used previously by @Wickham2015-cx as tool for exploring statistical model fits 
+and by @Buja1996-fk for exploring factorial experimental designs.
 
 While there has been much work on the algorithmic details of the aforementioned
 embedding methods, there has been relatively few tools designed to assist users
@@ -85,7 +87,7 @@ embeddings and performing the aforementioned cluster orientation tasks. Several
 interactive interfaces have been proposed for evaluating or using embedding
 techniques: the Sleepwalk interface provides a click and highlight
 visualisation for colouring points in an embedding according to their distance
-in the original high-dimensional space [@Ovchinnikova2019-gf]. The work by
+in the original high-dimensional space [@Ovchinnikova2020-sy]. The work by
 @Pezzotti2017-cz provides a user guided and modified form of the t-SNE
 algorithm, that allows users to modified optimisation parameters in real-time.
 Similarly, the embedding projector is a web interface to running UMAP, t-SNE or
@@ -107,7 +109,8 @@ called `liminal` (Available: https://github.com/sa-lee/liminal).
 
 In the following section, we provide a brief overview of the goals of DR
 methods with respect to the data analyst, in addition to their high level the
-mathematical details. Here we restrict our attention to two recent methods that are commonly used in the literature: t-distributed stochastic neighbour embedding 
+mathematical details. Here we restrict our attention to two recent methods that
+are commonly used in the literature: t-distributed stochastic neighbour embedding 
 (t-SNE) and uniform manifold alignment and projection (UMAP); however we do 
 mention several other techniques. 
 
@@ -365,7 +368,8 @@ click events to highlight groups of points (like clusters).
 These interactions are enabled by treating the basis generation as a reactive
 stream. Instead of realising the entire sequence, which limits the animation
 to have a discrete number of frames, new bases and their intermediate frames
-are generated dynamically via pushing the current projection to the visualisation interface. The interface listens to events like pressing a button
+are generated dynamically via pushing the current projection to the 
+visualisation interface. The interface listens to events like pressing a button
 or mouse-dragging and reacts by pausing the stream. This process allows the
 user to manipulate the tour in real time rather than having to fix the number
 of bases ahead of time. 
@@ -456,20 +460,44 @@ in this area generally use non linear DR methods for verification and identifact
 of clusters and developmental trajectories (i.e., case study 1). For clustering,
 workflows the primary task is verify the existence of clusters and then begin to 
 identify the clusters as cell types using the expression of "known" 
-marker genes. Here a 'faithful' a embedding  
+marker genes. Here a 'faithful' a embedding should ideally preserve the topology
+of the data; cells that correspond to a cell type should lie in the same
+neighbourhood in high-dimensional space. In this case study we use our 
+spatial and linked brushing approaches to look at neighbourhood preservation
+(which can be seen via the tour) and to look at the affect of applying different
+feature selection techniques and distance metrics.
 
+First, we downloaded the raw mouse retinal single cell RNA-seq data from
+@Macosko2015-ot using the `scRNAseq` Bioconductor package [@scRNAseq-d]. We
+have followed a standard workflow for pre-processing and normalizing this data 
+(described by @Amezquita2020-at): we performed QC using the the `scater`
+by removing cells with high proportion of mitocondrial gene expression and low
+numbers of genes detected, we log-transformed and normalised the expression 
+values and  finally selected highly variable genes (HVGs) using `scran` 
+[@McCarthy2017; @Lun2016]. The top ten percent of HVGs were used to subset
+the normalised expression matrix and compute PCA using the first 25 components.
+Using the PCs we built a shared nearest neighours graph (with k = 10) and 
+used Louvain clustering to generate clusters. To check and verify the 
+clustering we construct a liminal view. Because most off the variablity in
+expression is explained by the first 5 PCs, we tour those. The t-SNE view
+is computed from all PCs 
 
-Here we describe a liminal view of mouse single cell data from @Macosko2015-ot
-following the workflow described in @Amezquita2020-at. To begin we obtained
-the count matrix from the `scRNAseq
+- compare to just using the HVGs them selves 
+- neighbourhood based brushing to check how diffuse or distorted clusters are
+- different distance metrics?
 
 ### Case Study 3: How do people draw animals?
 
-In the final case study, we explore a subset of the Google QuickDraw dataset [@quickdraw]. The data are sketches drawn by people of common concepts
+In the final case study, we explore a subset of the Google QuickDraw dataset 
+[@quickdraw]. The data are sketches drawn by people of common concepts
 like 'airplane' or 'shoe', and corresponding metadata about the humans who
 created the sketches, such as country, the word category, whether the sketch
 was recognised by Google's neural network, and the number of strokes taken.
-We downloaded the metadata and normalised 28 by 28 pixel bitmaps via the `quickdraw` package in R; unravelling the bitmaps unravelled the bitmaps into a 784 dimension image vector. We sampled 500 images from each of the following  categories: "broccoli", "flying saucer", "ice cream", "octopus", "pineapple", and "whale". 
+We downloaded the metadata and normalised 28 by 28 pixel bitmaps via the 
+`quickdraw` package in R; unravelling the bitmaps unravelled the bitmaps into 
+a 784 dimension image vector. We sampled 500 images from each of the following
+categories: "broccoli", "flying saucer", "ice cream", "octopus", "pineapple",
+and "whale". 
 
 
 ## Discussion
