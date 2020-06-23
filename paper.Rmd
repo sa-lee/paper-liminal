@@ -476,13 +476,13 @@ numbers of genes detected, we log-transformed and normalised the expression
 values and  finally selected highly variable genes (HVGs) using `scran` 
 [@McCarthy2017; @Lun2016]. The top ten percent of HVGs were used to subset
 the normalised expression matrix and compute PCA using the first 25 components.
-Using the PCs we built a shared nearest neighours graph (with k = 10) and 
+Using the PCs we built a shared nearest neighours graph (with $k = 10$) and 
 used Louvain clustering to generate clusters. To check and verify the 
 clustering we construct a liminal view. Because most off the variablity in
 expression is explained by the first 5 PCs, we tour those. The t-SNE view
 is computed from all PCs 
 
-- compare to just using the HVGs them selves 
+- compare to just using the HVGs themselves with the tour
 - neighbourhood based brushing to check how diffuse or distorted clusters are
 - different distance metrics?
 
@@ -502,6 +502,9 @@ and "whale".
 
 ## Discussion
 
+
+- limitations: large $n$, latency issues
+- future work: regularisation tour, slicing and sectioning
 
 
 ## Acknowledgements
