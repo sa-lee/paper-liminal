@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2020-06-24" />
+<meta name="date" content="2020-07-09" />
 
 <title>Casting multiple shadows: high-dimensional interactive data visualisation with tours and embeddings</title>
 
@@ -365,7 +365,7 @@ summary {
 <h1 class="title toc-ignore">Casting multiple shadows: high-dimensional interactive data visualisation with tours and embeddings</h1>
 <h4 class="author">Stuart Lee</h4>
 <h4 class="author">Di Cook</h4>
-<h4 class="date">2020-06-24</h4>
+<h4 class="date">2020-07-09</h4>
 
 </div>
 
@@ -485,18 +485,18 @@ cut-off.</p>
 <p>For non-linear methods <span class="math inline">\(Y\)</span> is generated via a pre-processed form of the input
 <span class="math inline">\(X\)</span> such as the <span class="math inline">\(k\)</span>-nearest neighbours graph or via a kernel transformation.
 Multidimensional scaling (MDS) is a class of DR methods that aims to construct
-an embedding <span class="math inline">\(Y\)</span> such that the pariwise distances (inner products) in <span class="math inline">\(Y\)</span>
+an embedding <span class="math inline">\(Y\)</span> such that the pairwise distances (inner products) in <span class="math inline">\(Y\)</span>
 approximate the pairwise distances (inner products) in <span class="math inline">\(X\)</span>
 <span class="citation">(Torgerson 1952; Kruskal 1964a)</span>. There are many
-variants of MDS, such as nonmetric scaling which amounts to replacing
+variants of MDS, such as non-metric scaling which amounts to replacing
 distances with ranks instead <span class="citation">(Kruskal 1964b)</span>.
-A related technique is Isomap which uses a <span class="math inline">\(k\)</span>-nearest neighbor graph
+A related technique is Isomap which uses a <span class="math inline">\(k\)</span>-nearest neighbour graph
 to estimate the pairwise geodesic distance of points in <span class="math inline">\(X\)</span> then uses classical
 MDS to construct <span class="math inline">\(Y\)</span> <span class="citation">(Silva and Tenenbaum 2003)</span>. Other approaches are based on diffusion
 processes such asdiffusion maps <span class="citation">(Coifman et al. 2005)</span>. A recent example of this
 approach is the PHATE algorithm <span class="citation">(Moon et al. 2019)</span>. Here an affinity matrix is
-estimated via the pairwise distance matrix and k-nearest neighbors graph of <span class="math inline">\(X\)</span>.
-The algorithm denoises estimated distances in high-dimensional space via
+estimated via the pairwise distance matrix and k-nearest neighbours graph of <span class="math inline">\(X\)</span>.
+The algorithm de-noises estimated distances in high-dimensional space via
 transforming the affinity matrix into a Markov transition probability matrix
 and diffusing this matrix over a fixed number of time steps. Then the diffused
 probabilities are transformed once more to construct a distance matrix,
@@ -579,10 +579,10 @@ supposedly preserves global structure better than t-SNE <span class="citation">(
 methods like t-SNE. We have made extensive use of ensemble graphics, that is
 aligning related plots alongside each other to provide context <span class="citation">(Unwin and Valero-Mora 2018)</span>.
 As we will see in the case studies, this allows analysts to quickly compare
-views fromembedding methods and allows them to see how the embedding method
-alters theglobal structure of their data. Using ensembles allows the use of
+views from embedding methods and allows them to see how the embedding method
+alters the global structure of their data. Using ensembles allows the use of
 interaction techniques, that allow analysts to perform cluster orientation
-tasks vialinking multiple views. This approach allows our interface, to achieve
+tasks via linking multiple views. This approach allows our interface, to achieve
 the three principles for interactive high-dimensional data visualisation outlined
 by <span class="citation">Buja, Cook, and Swayne (1996)</span>: finding gestalt, posing queries, and making comparisons.</p>
 <div id="finding-gestalt-focus-and-context" class="section level3">
@@ -798,7 +798,7 @@ it via simple interactivity.</p>
 <h3>Case Study 2: Clustering single cell RNA-seq data</h3>
 <p>A common analysis task in single cell studies is performing clustering to
 identify groupings of cells with similar expression profiles. Analysts
-in this area generally use non linear DR methods for verification and identifaction
+in this area generally use non linear DR methods for verification and identification
 of clusters and developmental trajectories (i.e., case study 1). For clustering,
 workflows the primary task is verify the existence of clusters and then begin to
 identify the clusters as cell types using the expression of “known”
@@ -812,14 +812,14 @@ feature selection techniques and distance metrics.</p>
 <span class="citation">Macosko et al. (2015)</span> using the <code>scRNAseq</code> Bioconductor package <span class="citation">(Risso and Cole 2019)</span>. We
 have followed a standard workflow for pre-processing and normalizing this data
 (described by <span class="citation">Amezquita et al. (2020)</span>): we performed QC using the the <code>scater</code>
-by removing cells with high proportion of mitocondrial gene expression and low
+by removing cells with high proportion of mitochondrial gene expression and low
 numbers of genes detected, we log-transformed and normalised the expression
 values and finally selected highly variable genes (HVGs) using <code>scran</code>
 <span class="citation">(McCarthy et al. 2017; Lun, McCarthy, and Marioni 2016)</span>. The top ten percent of HVGs were used to subset
 the normalised expression matrix and compute PCA using the first 25 components.
-Using the PCs we built a shared nearest neighours graph (with <span class="math inline">\(k = 10\)</span>) and
+Using the PCs we built a shared nearest neighbours graph (with <span class="math inline">\(k = 10\)</span>) and
 used Louvain clustering to generate clusters. To check and verify the
-clustering we construct a liminal view. Because most off the variablity in
+clustering we construct a liminal view. Because most off the variability in
 expression is explained by the first 5 PCs, we tour those. The t-SNE view
 is computed from all PCs</p>
 <ul>
