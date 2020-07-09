@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2020-06-23" />
+<meta name="date" content="2020-06-24" />
 
 <title>Casting multiple shadows: high-dimensional interactive data visualisation with tours and embeddings</title>
 
@@ -365,7 +365,7 @@ summary {
 <h1 class="title toc-ignore">Casting multiple shadows: high-dimensional interactive data visualisation with tours and embeddings</h1>
 <h4 class="author">Stuart Lee</h4>
 <h4 class="author">Di Cook</h4>
-<h4 class="date">2020-06-23</h4>
+<h4 class="date">2020-06-24</h4>
 
 </div>
 
@@ -405,17 +405,17 @@ cluster orientation. The first relates to dimension reduction achieved by using
 an embedding method, here an analyst wants to characterise and map meaning onto
 the embedded form, for example identifying batch effects from a high throughput
 sequencing experiment, or identifying a gradient or trajectory along the
-embedded form <span class="citation">Nguyen and Holmes (2019)</span>. The second relates to using embeddings as part of
+embedded form <span class="citation">(Nguyen and Holmes 2019)</span>. The second relates to using embeddings as part of
 a clustering workflow. Here analysts are interested in identifying and naming
 clusters and verifying them by either applying known labels or colouring by
 variables that are a-priori known to distinguish clusters. Both of these
-workflow steps rely on the embedding being ‘faithful’ or the original high
-dimensional dataset, and become much more difficult when there is no underlying
+workflow steps rely on the embedding being representative the original high
+dimensional dataset, and becomes much more difficult when there is no underlying
 ground truth.</p>
 <p>As part of a visualization workflow, it’s important to consider the perception
 and interpretation of embedding methods as well. <span class="citation">Sedlmair, Munzner, and Tory (2013)</span> showed that
 2D scatter plots were mostly sufficient for detecting class separation, however
-they noted that often multiple embeddings were required. For the task of
+they also noted that often multiple embeddings were required. For the task of
 cluster identification, <span class="citation">Lewis, Van der Maaten, and Sa (2012)</span> showed experimentally that novice users
 of non-linear embedding techniques were more likely to consider clusters of
 points on a 2d scatter plot to be the result of a spurious embedding compared
@@ -426,23 +426,28 @@ the tour. A tour is a sequence of projections of a high dimensional dataset
 onto a low-dimensional basis matrix, and is represented as a
 animated visualization.Given the dynamic nature of the tour, user interaction is
 important for controlling and exploring the visualisation: the tour has been
-used previously by <span class="citation">Wickham, Cook, and Hofmann (2015)</span> as tool for exploring statistical model fits
-and by <span class="citation">Buja, Cook, and Swayne (1996)</span> for exploring factorial experimental designs.</p>
+used previously by <span class="citation">Wickham, Cook, and Hofmann (2015)</span> and <span class="citation">Li, Zhao, and Scheidegger (2020)</span> as a tool for
+exploring statistical model fits and by <span class="citation">Buja, Cook, and Swayne (1996)</span> for exploring the space of
+factorial experimental designs.</p>
 <p>While there has been much work on the algorithmic details of the aforementioned
 embedding methods, there has been relatively few tools designed to assist users
 to interact with these techniques and assist them in making comparisons between
 embeddings and performing the aforementioned cluster orientation tasks. Several
 interactive interfaces have been proposed for evaluating or using embedding
 techniques: the Sleepwalk interface provides a click and highlight
-visualisation for colouring points in an embedding according to their distance
-in the original high-dimensional space <span class="citation">(Ovchinnikova and Anders 2020)</span>. The work by
-<span class="citation">Pezzotti et al. (2017)</span> provides a user guided and modified form of the t-SNE
-algorithm, that allows users to modified optimisation parameters in real-time.
-Similarly, the embedding projector is a web interface to running UMAP, t-SNE or
-PCA live in the browser and provides interactions to colour points, and
-highlights nearest neighbours <span class="citation">(Smilkov et al. 2016)</span>.</p>
+visualisation for colouring points in an embedding according to an estimated
+pairwise distance in the original high-dimensional space <span class="citation">(Ovchinnikova and Anders 2020)</span>.
+The idea behind this is that non-linear embedding methods should preserve
+locality and that points that are ‘close’ to each other on the embedded view
+should be close according to the estimated pairwise distance.
+Similarly, the TensorFlow embedding projector is a web interface to
+running some non-liner embedding methods live in the browser and
+provides interactions to colour points, and select nearest neighbours
+<span class="citation">(Smilkov et al. 2016)</span>. Finally, the work by <span class="citation">Pezzotti et al. (2017)</span> provides a user
+guided and modified form of the t-SNE algorithm, that allows users to modified
+optimisation parameters in real-time.</p>
 <p>There is no one-size fits all: finding an appropriate embedding for a given
-dataset is a difficult and somewhat poorly defined problem. For non-linear
+dataset is a difficult and a somewhat poorly defined problem. For non-linear
 methods, there are a lot of parameters to explore that can have an effect on
 the resulting visualisation and interpretation. Interfaces for evaluating
 embeddings require interaction but should also be able to be incorporated into
@@ -479,17 +484,26 @@ to plot the proportion of variance explained by each component and choose a
 cut-off.</p>
 <p>For non-linear methods <span class="math inline">\(Y\)</span> is generated via a pre-processed form of the input
 <span class="math inline">\(X\)</span> such as the <span class="math inline">\(k\)</span>-nearest neighbours graph or via a kernel transformation.
-Multidimensional scaling (MDS) is a class of DR methods that aims to construct an embedding
-<span class="math inline">\(Y\)</span> such that the pariwise distances (inner products) in <span class="math inline">\(Y\)</span> approximate the pairwise distances (inner products) in <span class="math inline">\(X\)</span>. There are many variants of MDS, such as
-nonmetric scaling which uses ranks instead of distances. A related extension
-of MDS is Isomap which uses the <span class="math inline">\(k\)</span>-nearest neighbor graphs to estimate the pairwise geodesic distance of points in <span class="math inline">\(X\)</span> then uses classical MDS to construct <span class="math inline">\(Y\)</span>. Yet
-another approach are non-linear DR methods based on diffusion
-processes. A recent example in the single cell genomics literature is PHATE.
-Here an affinity matrix is estimated via the pairwise distance matrix and k-nearest neighbors graph of <span class="math inline">\(X\)</span>. The algorithm denoises estimated distances in
-high-dimensional space via transforming the affinity matrix into a Markov transition probaility matrix and diffusing this matrix over a fixed number of time steps. Then the diffused probabilities are transformed once more to construct a distance matrix, and classical MDS is used to generate <span class="math inline">\(Y\)</span>. A difficulty with using non-linear
-DR methods for exploratory data analysis are the choices required in selecting
-appropriate parameters. To see the magnitude of these choices
-we now closely examine the precise details of t-SNE and UMAP.</p>
+Multidimensional scaling (MDS) is a class of DR methods that aims to construct
+an embedding <span class="math inline">\(Y\)</span> such that the pariwise distances (inner products) in <span class="math inline">\(Y\)</span>
+approximate the pairwise distances (inner products) in <span class="math inline">\(X\)</span>
+<span class="citation">(Torgerson 1952; Kruskal 1964a)</span>. There are many
+variants of MDS, such as nonmetric scaling which amounts to replacing
+distances with ranks instead <span class="citation">(Kruskal 1964b)</span>.
+A related technique is Isomap which uses a <span class="math inline">\(k\)</span>-nearest neighbor graph
+to estimate the pairwise geodesic distance of points in <span class="math inline">\(X\)</span> then uses classical
+MDS to construct <span class="math inline">\(Y\)</span> <span class="citation">(Silva and Tenenbaum 2003)</span>. Other approaches are based on diffusion
+processes such asdiffusion maps <span class="citation">(Coifman et al. 2005)</span>. A recent example of this
+approach is the PHATE algorithm <span class="citation">(Moon et al. 2019)</span>. Here an affinity matrix is
+estimated via the pairwise distance matrix and k-nearest neighbors graph of <span class="math inline">\(X\)</span>.
+The algorithm denoises estimated distances in high-dimensional space via
+transforming the affinity matrix into a Markov transition probability matrix
+and diffusing this matrix over a fixed number of time steps. Then the diffused
+probabilities are transformed once more to construct a distance matrix,
+and classical MDS is used to generate <span class="math inline">\(Y\)</span>. A general difficulty with using
+non-linear DR methods for exploratory data analysis is selecting and tuning
+appropriate parameters. To see the extent of these choices
+we now examine the underpinnings of t-SNE and UMAP.</p>
 <p>The t-SNE algorithm estimates
 the pairwise similarity of (Euclidean) distances of points in a high
 dimensional space using a Gaussian distribution and then estimates a
@@ -513,7 +527,7 @@ by the number of observations , <span class="math inline">\(n-1\)</span>, in the
 <span class="math inline">\(\sigma^2_{i} \rightarrow \infty\)</span>. This essentially turns <span class="math inline">\(t-SNE\)</span> into a
 nearest neighbours algorithm, <span class="math inline">\(p_{i|j}\)</span> will be close to zero for all
 observations that are not in the <span class="math inline">\(\mathcal{O}(\text{perplexity}_i)\)</span>
-neighbourhood graph of the <span class="math inline">\(i\)</span>th observation <span class="citation">(L. Van Der Maaten 2014)</span>.</p>
+neighbourhood graph of the <span class="math inline">\(i\)</span>th observation <span class="citation">(Van Der Maaten 2014)</span>.</p>
 <p>Next, the target low-dimensional space, <span class="math inline">\(Y\)</span>, pairwise distances between
 <span class="math inline">\(\mathbf{y_i}\)</span> and <span class="math inline">\(\mathbf{y_j}\)</span> are modelled as a symmetric probability
 distribution using a Cauchy kernel:</p>
@@ -550,26 +564,26 @@ approaches for tuning the optimisation parameters. However, the cluster sizes
 and their relative orientation from a <span class="math inline">\(t-SNE\)</span> view can be misleading
 perceptually, due to the algorithms emphasis on locality.</p>
 <p>Another recent method UMAP has seen a large rise in popularity (at least in
-single cell transcriptomics) <span class="citation">(McInnes, Healy, and Melville 2018)</span>. is a method that is related to
+single cell transcriptomics) <span class="citation">(McInnes, Healy, and Melville 2018)</span>. It is a method that is related to
 LargeVis <span class="citation">(Tang et al. 2016)</span>, and like t-SNE acts on the k-nearest neighbour graph.
 Its main differences are that it uses a different cost function (cross entropy)
 which is optimized using stochastic gradient descent and defines a different
 kernel for similarities in the low dimensional space. Due to it’s computational
 speed it’s possible to generate UMAP embeddings in more than three dimensions.
 It appears to suffer from the same perceptual issues as t-SNE, however it
-supposedly preservers global structure better than t-SNE <span class="citation">(Coenen and Pearce 2019)</span>.</p>
+supposedly preserves global structure better than t-SNE <span class="citation">(Coenen and Pearce 2019)</span>.</p>
 </div>
 <div id="visual-design" class="section level2">
 <h2>Visual Design</h2>
 <p>We propose using tours as part of an analyst’s workflow when using embedding
 methods like t-SNE. We have made extensive use of ensemble graphics, that is
-aligning related plots alongside each other to provide context. As we will see
-in the case studies, this allows analysts to quickly compare views from
-embedding methods and allows them to see how the embedding method alters the
-global structure of their data. Using ensembles allows the use of interaction
-techniques, that allow analysts to perform cluster orientation tasks via
-linking multiple views. This approach allows our interface, to achieve the
-three principles for interactive high-dimensional data visualisation outlined
+aligning related plots alongside each other to provide context <span class="citation">(Unwin and Valero-Mora 2018)</span>.
+As we will see in the case studies, this allows analysts to quickly compare
+views fromembedding methods and allows them to see how the embedding method
+alters theglobal structure of their data. Using ensembles allows the use of
+interaction techniques, that allow analysts to perform cluster orientation
+tasks vialinking multiple views. This approach allows our interface, to achieve
+the three principles for interactive high-dimensional data visualisation outlined
 by <span class="citation">Buja, Cook, and Swayne (1996)</span>: finding gestalt, posing queries, and making comparisons.</p>
 <div id="finding-gestalt-focus-and-context" class="section level3">
 <h3>Finding Gestalt: focus and context</h3>
@@ -665,19 +679,39 @@ our approach to generating tour paths and user interactions.</p>
 <div id="tours-explore-the-subspace-d-dimension-projections" class="section level3">
 <h3>Tours explore the subspace <span class="math inline">\(d\)</span>-dimension projections</h3>
 <p>Here we provide an overview of the mathematical aspects of the tour for
-readers who are unfamiliar with the technique before discussing the computational aspects of how <code>liminal</code> interfaces with them. The tour
-is emphatically not a dimension reduction technique but rather a visualisation technique that is grounded in mathematical theory, that is able to ascertain the shape and global structure of a dataset via inspection
-of the subspace generated by the set of low-dimensional projections. In fact, when we use the tour in the case studies, we will first sphere our data via principal components to reduce dimensionality of our input.</p>
+readers who are unfamiliar with the technique before discussing the
+computational aspects of how <code>liminal</code> interfaces with them. The tour
+is emphatically not a dimension reduction technique but rather a visualisation
+technique that is grounded in mathematical theory, that is able to ascertain
+the shape and global structure of a dataset via inspection of the subspace
+generated by the set of low-dimensional projections. In fact, in some
+of the case studies below, we first sphere our data via principal
+components to reduce dimensionality of our input.</p>
 <p>Like, when using DR techniques, the tour assumes we have a real data matrix
 <span class="math inline">\(X\)</span> consisting of <span class="math inline">\(n\)</span> observations in <span class="math inline">\(p\)</span> dimensions. First, the tour generates
-a sequence of <span class="math inline">\(p \times d\)</span> orthonormal projection matrices (bases) <span class="math inline">\(A_{t \in \mathbb{N}}\)</span>, where <span class="math inline">\(d\)</span> is typically <span class="math inline">\(1\)</span> or <span class="math inline">\(2\)</span>. For each pair of orthonormal bases <span class="math inline">\(A_{t}\)</span> and <span class="math inline">\(A_{t+1}\)</span> that are generated, the geodesic
-path between them is interpolated to form intermediate frames, and giving the sense of continuous movement from one basis to another. The tour is then the continuous visualisation of the projections <span class="math inline">\(Y_{t} = XA_{t}\)</span>, that is the projection of <span class="math inline">\(X\)</span> onto <span class="math inline">\(A_{t}\)</span> as the tour path is interpolated between successive bases. A <em>grand tour</em> corresponds to choosing new orthonormal bases at random; allowing a user to ascertain structure via exploring the subspace of <span class="math inline">\(d\)</span>-dimensional projections. Instead of picking projections at random, a <em>guided tour</em> can be used to generate a sequence ‘interesting’ projections as quantified by an index function. While <code>liminal</code> is able to visualise guided tours, our focus in the case studies uses the grand tour to provide overviews of global
-structure in the data.</p>
+a sequence of <span class="math inline">\(p \times d\)</span> orthonormal projection matrices (bases)
+<span class="math inline">\(A_{t \in \mathbb{N}}\)</span>, where <span class="math inline">\(d\)</span> is typically <span class="math inline">\(1\)</span> or <span class="math inline">\(2\)</span>. For each pair of
+orthonormal bases <span class="math inline">\(A_{t}\)</span> and <span class="math inline">\(A_{t+1}\)</span> that are generated, the geodesic
+path between them is interpolated to form intermediate frames, and giving the
+sense of continuous movement from one basis to another. The tour is then the
+continuous visualisation of the projections <span class="math inline">\(Y_{t} = XA_{t}\)</span>, that is the
+projection of <span class="math inline">\(X\)</span> onto <span class="math inline">\(A_{t}\)</span> as the tour path is interpolated between
+successive bases. A <em>grand tour</em> corresponds to choosing new orthonormal
+bases at random; allowing a user to ascertain structure via exploring the
+subspace of <span class="math inline">\(d\)</span>-dimensional projections. Instead of picking projections at
+random, a <em>guided tour</em> can be used to generate a sequence ‘interesting’
+projections as quantified by an index function. While <code>liminal</code> is able to
+visualise guided tours, our focus in the case studies uses the grand tour to
+see global structure in the data.</p>
 </div>
 <div id="tours-as-a-streaming-data-problem" class="section level3">
 <h3>Tours as a streaming data problem</h3>
-<p>The process of generating successive bases and interpolating between them to construct intermediary frames, means the tour is a dynamic visualisation technique. Generally, the user would set <span class="math inline">\(d=2\)</span> the tour is visualised as
-a animated scatterplot. This process of constructing bases and intermediate frames and visualising the resulting projection is akin to making a “flipbook” animation. Like with a flipbook, an interface to the tour requires the ability
+<p>The process of generating successive bases and interpolating between them to<br />
+construct intermediary frames, means the tour is a dynamic visualisation
+technique. Generally, the user would set <span class="math inline">\(d=2\)</span> the tour is visualised as
+a animated scatterplot. This process of constructing bases and intermediate
+frames and visualising the resulting projection is akin to making a “flipbook”
+animation. Like with a flipbook, an interface to the tour requires the ability
 to interact and modify it in real time. The user interface generated in <code>liminal</code>
 allows a user to play and pause the tour animation (via brushing),
 panning and zooming to modify the scales of the plot to provide context and
@@ -783,13 +817,13 @@ numbers of genes detected, we log-transformed and normalised the expression
 values and finally selected highly variable genes (HVGs) using <code>scran</code>
 <span class="citation">(McCarthy et al. 2017; Lun, McCarthy, and Marioni 2016)</span>. The top ten percent of HVGs were used to subset
 the normalised expression matrix and compute PCA using the first 25 components.
-Using the PCs we built a shared nearest neighours graph (with k = 10) and
+Using the PCs we built a shared nearest neighours graph (with <span class="math inline">\(k = 10\)</span>) and
 used Louvain clustering to generate clusters. To check and verify the
 clustering we construct a liminal view. Because most off the variablity in
 expression is explained by the first 5 PCs, we tour those. The t-SNE view
 is computed from all PCs</p>
 <ul>
-<li>compare to just using the HVGs them selves</li>
+<li>compare to just using the HVGs themselves with the tour</li>
 <li>neighbourhood based brushing to check how diffuse or distorted clusters are</li>
 <li>different distance metrics?</li>
 </ul>
@@ -810,6 +844,10 @@ and “whale”.</p>
 </div>
 <div id="discussion" class="section level2">
 <h2>Discussion</h2>
+<ul>
+<li>limitations: large <span class="math inline">\(n\)</span>, latency issues</li>
+<li>future work: regularisation tour, slicing and sectioning</li>
+</ul>
 </div>
 <div id="acknowledgements" class="section level2">
 <h2>Acknowledgements</h2>
@@ -829,14 +867,26 @@ and “whale”.</p>
 <div id="ref-Coenen2019-to">
 <p>Coenen, Andy, and Adam Pearce. 2019. “Understanding UMAP.” <a href="https://pair-code.github.io/understanding-umap/">https://pair-code.github.io/understanding-umap/</a>. <a href="https://pair-code.github.io/understanding-umap/">https://pair-code.github.io/understanding-umap/</a>.</p>
 </div>
+<div id="ref-Coifman2005-ak">
+<p>Coifman, R R, S Lafon, A B Lee, M Maggioni, B Nadler, F Warner, and S W Zucker. 2005. “Geometric Diffusions as a Tool for Harmonic Analysis and Structure Definition of Data: Diffusion Maps.” <em>Proc. Natl. Acad. Sci. U. S. A.</em> 102 (21):7426–31. <a href="https://doi.org/10.1073/pnas.0500334102">https://doi.org/10.1073/pnas.0500334102</a>.</p>
+</div>
 <div id="ref-Kobak2019-lm">
 <p>Kobak, Dmitry, and Philipp Berens. 2019. “The Art of Using t-SNE for Single-Cell Transcriptomics.” <em>Nat. Commun.</em> 10 (1):5416. <a href="https://doi.org/10.1038/s41467-019-13056-x">https://doi.org/10.1038/s41467-019-13056-x</a>.</p>
 </div>
 <div id="ref-Rtsne">
 <p>Krijthe, Jesse H. 2015. <em>Rtsne: T-Distributed Stochastic Neighbor Embedding Using Barnes-Hut Implementation</em>. <a href="https://github.com/jkrijthe/Rtsne">https://github.com/jkrijthe/Rtsne</a>.</p>
 </div>
+<div id="ref-Kruskal1964-cz">
+<p>Kruskal, J B. 1964a. “Multidimensional Scaling by Optimizing Goodness of Fit to a Nonmetric Hypothesis.” <em>Psychometrika</em> 29 (1). Springer-Verlag:1–27. <a href="https://doi.org/10.1007/BF02289565">https://doi.org/10.1007/BF02289565</a>.</p>
+</div>
+<div id="ref-Kruskal1964-cw">
+<p>———. 1964b. “Nonmetric Multidimensional Scaling: A Numerical Method.” <em>Psychometrika</em> 29 (2):115–29. <a href="https://doi.org/10.1007/BF02289694">https://doi.org/10.1007/BF02289694</a>.</p>
+</div>
 <div id="ref-Lewis2012-ai">
 <p>Lewis, Joshua, Laurens Van der Maaten, and Virginia de Sa. 2012. “A Behavioral Investigation of Dimensionality Reduction.” In <em>Proceedings of the Annual Meeting of the Cognitive Science Society</em>. Vol. 34. escholarship.org. <a href="https://escholarship.org/content/qt0ss3m55c/qt0ss3m55c.pdf">https://escholarship.org/content/qt0ss3m55c/qt0ss3m55c.pdf</a>.</p>
+</div>
+<div id="ref-Li2020-rh">
+<p>Li, Mingwei, Zhenge Zhao, and Carlos Scheidegger. 2020. “Visualizing Neural Networks with the Grand Tour.” <em>Distill</em> 5 (3). <a href="https://doi.org/10.23915/distill.00025">https://doi.org/10.23915/distill.00025</a>.</p>
 </div>
 <div id="ref-Linderman2019-dq">
 <p>Linderman, George C, and Stefan Steinerberger. 2019. “Clustering with t-SNE, Provably.” <em>SIAM Journal on Mathematics of Data Science</em> 1 (2). Society for Industrial; Applied Mathematics:313–32. <a href="https://doi.org/10.1137/18M1216134">https://doi.org/10.1137/18M1216134</a>.</p>
@@ -877,11 +927,20 @@ and “whale”.</p>
 <div id="ref-Sedlmair2013-pn">
 <p>Sedlmair, Michael, Tamara Munzner, and Melanie Tory. 2013. “Empirical Guidance on Scatterplot and Dimension Reduction Technique Choices.” <em>IEEE Trans. Vis. Comput. Graph.</em> 19 (12):2634–43. <a href="https://doi.org/10.1109/TVCG.2013.153">https://doi.org/10.1109/TVCG.2013.153</a>.</p>
 </div>
+<div id="ref-Silva2003-xw">
+<p>Silva, V D, and J B Tenenbaum. 2003. “Global Versus Local Methods in Nonlinear Dimensionality Reduction.” <em>Adv. Neural Inf. Process. Syst.</em> papers.nips.cc. <a href="http://papers.nips.cc/paper/2141-global-versus-local-methods-in-nonlinear-dimensionality-reduction.pdf">http://papers.nips.cc/paper/2141-global-versus-local-methods-in-nonlinear-dimensionality-reduction.pdf</a>.</p>
+</div>
 <div id="ref-Smilkov2016-hp">
 <p>Smilkov, Daniel, Nikhil Thorat, Charles Nicholson, Emily Reif, Fernanda B Viégas, and Martin Wattenberg. 2016. “Embedding Projector: Interactive Visualization and Interpretation of Embeddings,” November. <a href="http://arxiv.org/abs/1611.05469">http://arxiv.org/abs/1611.05469</a>.</p>
 </div>
 <div id="ref-Tang2016-oz">
 <p>Tang, Jian, Jingzhou Liu, Ming Zhang, and Qiaozhu Mei. 2016. “Visualizing Large-Scale and High-Dimensional Data,” February. <a href="http://arxiv.org/abs/1602.00370">http://arxiv.org/abs/1602.00370</a>.</p>
+</div>
+<div id="ref-Torgerson1952-am">
+<p>Torgerson, Warren S. 1952. “Multidimensional Scaling: I. Theory and Method.” <em>Psychometrika</em> 17 (4). Springer-Verlag:401–19. <a href="https://doi.org/10.1007/BF02288916">https://doi.org/10.1007/BF02288916</a>.</p>
+</div>
+<div id="ref-Unwin2018-zb">
+<p>Unwin, Antony, and Pedro Valero-Mora. 2018. “Ensemble Graphics.” <em>J. Comput. Graph. Stat.</em> 27 (1). Taylor &amp; Francis:157–65. <a href="https://doi.org/10.1080/10618600.2017.1383264">https://doi.org/10.1080/10618600.2017.1383264</a>.</p>
 </div>
 <div id="ref-Van_Der_Maaten2014-zn">
 <p>Van Der Maaten, L. 2014. “Accelerating t-SNE Using Tree-Based Algorithms.” <em>J. Mach. Learn. Res.</em> jmlr.org. <a href="http://www.jmlr.org/papers/volume15/vandermaaten14a/vandermaaten14a.pdf">http://www.jmlr.org/papers/volume15/vandermaaten14a/vandermaaten14a.pdf</a>.</p>
