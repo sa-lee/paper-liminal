@@ -356,7 +356,7 @@ provides a stand-alone interface to the tour, in addition to the linked
 scatterplot interfaces discussed above. Below we display the `liminal` API, and
 our approach to generating tour paths and user interactions.
 
-### Tours explore the subspace $d$-dimension projections 
+### Tours explore the subspace of $d$-dimensional projections 
 
 Here we provide an overview of the mathematical aspects of the tour for
 readers who are unfamiliar with the technique before discussing the 
@@ -395,9 +395,10 @@ a animated scatterplot. This process of constructing bases and intermediate
 frames and visualising the resulting projection is akin to making a "flipbook" 
 animation. Like with a flipbook, an interface to the tour requires the ability
 to interact and modify it in real time. The user interface generated in `liminal`
-allows a user to play and pause the tour animation (via brushing),
+allows a user to play, pause, and reset the tour animation,
 panning and zooming to modify the scales of the plot to provide context and
-click events to highlight groups of points (like clusters).
+click events to highlight groups of points if a labelling variable has
+been placed on the legend. 
 
 These interactions are enabled by treating the basis generation as a reactive
 stream. Instead of realising the entire sequence, which limits the animation
@@ -406,25 +407,51 @@ are generated dynamically via pushing the current projection to the
 visualisation interface. The interface listens to events like pressing a button
 or mouse-dragging and reacts by pausing the stream. This process allows the
 user to manipulate the tour in real time rather than having to fix the number
-of bases ahead of time. 
+of bases ahead of time. Additionally, once the user has identified an 
+interesting projection or is done with the tour, the interface will return the 
+current basis for use downstream.
 
 
-### Linking views via brushes
+### Linking and highlighting views via interactions
 
-- linking multiple views
-
+The embedding and tour views are linked together via rectangular brushes;
+when a brush is active, points will be highlighted in the adjacent view. 
+Because the tour is dynamic, brush events that become active will pause the
+animation, so that a user can interrogate the current view. By default,
+brushing on the embedding view will produce a one-to-one linking with the tour
+view (the special case of $k=1$ nearest neighbors brush). It is possible
+to shift to one-to-many linking by increasing $k$ via the 'controls'
+panel of the interface.  If desired, the distance
+metric used to estimate nearest neighbours can by chosen by the user. 
+The user may provide a reference data set for computing
+nearest neighbours (for example a distance matrix, or the complete data matrix)
+independently of the tour or embedding views. The estimation of neighbours
+is done with the `FNN` package for datasets with less than 4096 observations
+and `RcppAnnoy` for larger datasets or if a user selects a non-euclidean
+distance metric [@fnn-pkg; @rcpp-annoy-pkg]. Once the user is finished 
+with the interface, the brush regions are returned for downstream analysis.
 
 
 ## Case Studies
 
 The next section steps through three use cases of our approach using simulated
-and real data. In the first case study, we step through data that lies on tree
-structure (similar to trajectories in single cell transcriptomics) to that
+and real data. In the first case study, we step through three simulated datasets
+to show the `liminal` interface. The first simulation contains 3 clusters
+sampled from a 5-d gaussian distribution that are well embedded by t-SNE.
+The second is another example of spherical clusters but this time, they are
+tightly clustered and are distorted by t-SNE, which is immediately apparent in 
+the tour view. In the final simulation we
+look at a tree structure (similar to trajectories in single cell 
+transcriptomics) that
 highlights an iterative approach to modifying t-SNE views based on what we
 learn in the high-dimensional space. We show how through simple linked
 brushing, we can see when the assumptions of continuity of the embedding map
-are broken. In the second case study, we explore a well-clustered single cell
-transcriptomics data of mice retina... Finally, in the last case study we
+are broken. 
+
+In the second case study, we explore a well-clustered single cell
+transcriptomics data of mice retina... 
+
+Finally, in the last case study we
 explore a subset of the QuickDraw dataset, we use `liminal` to identify
 instances of images from different labels that appear similar.
 
@@ -523,7 +550,7 @@ is computed from all PCs
 ### Case Study 3: How do people draw animals?
 
 In the final case study, we explore a subset of the Google QuickDraw dataset 
-[@quickdraw]. The data are sketches drawn by people of common concepts
+[@quickdraw-paper]. The data are sketches drawn by people of common concepts
 like 'airplane' or 'shoe', and corresponding metadata about the humans who
 created the sketches, such as country, the word category, whether the sketch
 was recognised by Google's neural network, and the number of strokes taken.
