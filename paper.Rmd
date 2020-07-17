@@ -435,18 +435,12 @@ with the interface, the brush regions are returned for downstream analysis.
 ## Case Studies
 
 The next section steps through three use cases of our approach using simulated
-and real data. In the first case study, we step through three simulated datasets
-to show the `liminal` interface. The first simulation contains 3 clusters
-sampled from a 5-d gaussian distribution that are well embedded by t-SNE.
-The second is another example of spherical clusters but this time, they are
-tightly clustered and are distorted by t-SNE, which is immediately apparent in 
-the tour view. In the final simulation we
-look at a tree structure (similar to trajectories in single cell 
-transcriptomics) that
-highlights an iterative approach to modifying t-SNE views based on what we
-learn in the high-dimensional space. We show how through simple linked
-brushing, we can see when the assumptions of continuity of the embedding map
-are broken. 
+and real data.  The videos presented show the visual 
+appearance of the `liminal` interface, and how we can interact with the tour
+via the controls previously described.
+In the first case study, we look at three different examples
+where t-SNE is applied to three simulations where cluster structure and geometry
+is known with varying success.  
 
 In the second case study, we explore a well-clustered single cell
 transcriptomics data of mice retina... 
@@ -455,9 +449,40 @@ Finally, in the last case study we
 explore a subset of the QuickDraw dataset, we use `liminal` to identify
 instances of images from different labels that appear similar.
 
-### Case Study 1: Exploring tree structured data with tours and t-SNE
+### Case Study 1: Exploring simulation data with tours and t-SNE
 
-In this case study we explore some simulated noisy tree structured data (figure
+To begin we look at simulated datasets that reproduce known facts
+aboutthe  t-SNE algorithm. Our first data set consists of five spherical 5-$d$
+Gaussian clusters embedded in 10-$d$ space, each cluster has the same 
+covariance matrix. We then computed a t-SNE layout using default settings,
+and set up the `liminal` linked interface with grand tour on the 10-$d$
+observations (video - ). 
+
+
+<embedded video liminal gaussian>
+
+We see in the video that t-SNE has correctly split out each cluster and
+laid them out in a star like formation. This is agrees with the tour view,
+where once we start the animation, the five clusters begin to appear but
+generally points are more concentrated in the projection view compared to 
+the tSNE layout. This can be seen from our brushing action on the tSNE side. 
+
+<embedded video liminal hierachcial >
+
+We repeat the process of simulating Gaussian clusters in video <>, but this time
+we have a cluster that has more granular structure. This time we have two
+Gaussian clusters with equal covariance embedded in $10-d$, and a third cluster
+with hierachcial structure. This cluster has two 3-$d$ clusters embedded in 
+10-$d$, where the second cluster is subdivided into three smaller clusters, that are each equidistant from each other and have the same covariance structure.
+Again tSNE has correctly identified the sub-clusters but their relative 
+locations to each other is distorted, with the orange and blue groups being
+far from each other in the tour view. We see in this case that is difficult
+to see the sub-clusters in the tour view, however, once we zoom and highlight
+they become more apparent. When we brush the sub-clusters in the tSNE, their
+relative placement is again exaggerated, with the tour showing that they
+are indeed much closer than the impression the tSNE view gives.
+
+Next explore some simulated noisy tree structured data (figure
 \@ref(fig:fake-trees)), our interest here is how t-SNE visualisations break
 topology of the data, and then seeing if we can resolve this by tweaking the
 default parameters with reference to the global view of the data set.
@@ -471,8 +496,6 @@ knitr::include_graphics(here::here("img", "tree.png"))
 First, we apply principal components and restrict the results down to the first
 twelve principal components (which makes up approximately 70% of the variance
 explained in the data) to use with the grand tour.
-
-<!-- can we show R code? -->
 
 Moreover, we run t-SNE using the default arguments on the complete data (this
 keeps the first 50 PCs, sets the perplexity to equal 30 and performs random
@@ -541,7 +564,7 @@ Using the PCs we built a shared nearest neighbours graph (with $k = 10$) and
 used Louvain clustering to generate clusters. To check and verify the 
 clustering we construct a liminal view. Because most off the variability in
 expression is explained by the first 5 PCs, we tour those. The t-SNE view
-is computed from all PCs 
+is computed from all PCs. 
 
 - compare to just using the HVGs themselves with the tour
 - neighbourhood based brushing to check how diffuse or distorted clusters are
