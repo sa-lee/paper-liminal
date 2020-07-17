@@ -17,7 +17,7 @@ slice_bitmap <- function(a, row_number) {
 
 tidy_tsne <- function(model, data) {
   enframe <- as.data.frame(model[["Y"]])
-  colnames(enframe) <- c("x", "y", "z")[seq_len(ncol(enframe))]
+  colnames(enframe) <- c("tsneX", "tsneY", "tsneZ")[seq_len(ncol(enframe))]
   dplyr::bind_cols(enframe, data)
 }
 
