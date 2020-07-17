@@ -454,7 +454,8 @@ instances of images from different labels that appear similar.
 To begin we look at simulated datasets that reproduce known facts
 aboutthe  t-SNE algorithm. Our first data set consists of five spherical 5-$d$
 Gaussian clusters embedded in 10-$d$ space, each cluster has the same 
-covariance matrix. We then computed a t-SNE layout using default settings,
+covariance matrix. We then computed a t-SNE layout with default settings 
+using the `Rtsne` package [@Rtsne],
 and set up the `liminal` linked interface with grand tour on the 10-$d$
 observations (video - ). 
 
@@ -499,7 +500,7 @@ explained in the data) to use with the grand tour.
 
 Moreover, we run t-SNE using the default arguments on the complete data (this
 keeps the first 50 PCs, sets the perplexity to equal 30 and performs random
-initialisation) using the `Rtsne` package [@Rtsne]. We then create a linked
+initialisation). We then create a linked
 tour with t-SNE layout with `liminal` as shown in the following video :
 
 <embedded video 1>
