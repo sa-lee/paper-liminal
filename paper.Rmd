@@ -425,9 +425,9 @@ appearance of the `liminal` interface, and how we can interact with the tour
 via the controls previously described.
 In the first case study, we look at three different examples
 where t-SNE is applied to three simulations where cluster structure and geometry
-is known with varying success.  
+of the underlying data is known.  
 
-In the second case study, we explore a well-clustered single cell
+In the second case study, we look at well-clustered single cell
 transcriptomics data of mice retina... 
 
 Finally, in the last case study we
@@ -547,9 +547,12 @@ values and  finally selected highly variable genes (HVGs) using `scran`
 the normalised expression matrix and compute PCA using the first 25 components.
 Using the PCs we built a shared nearest neighbours graph (with $k = 10$) and 
 used Louvain clustering to generate clusters [@Blondel2008-bx]. 
-To check and verify the clustering we construct a liminal view. Because most off the variability in
-expression is explained by the first 5 PCs, we tour those. The t-SNE view
-is computed from all PCs. 
+To check and verify the clustering we construct a liminal view. 
+We tour the first five PCs (approximately 20% of the variance in expression),
+along side the tSNE view which was computed from all 25 PCs. Due to latency
+of the interface we do a ten percent weighted sample of rows based on
+cluster membership. 
+
 
 - compare to just using the HVGs themselves with the tour
 - neighbourhood based brushing to check how diffuse or distorted clusters are

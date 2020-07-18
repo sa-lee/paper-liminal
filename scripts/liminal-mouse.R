@@ -2,6 +2,7 @@
 suppressPackageStartupMessages(library(scater))
 suppressPackageStartupMessages(library(scran))
 library(liminal)
+library(ggplot2)
 source(here::here("scripts", "helpers.R"))
 
 sce <- scRNAseq::MacoskoRetinaData(ensembl = TRUE)
@@ -26,34 +27,29 @@ sce <- logNormCounts(sce)
 dec <- modelGeneVar(sce) # fits mean-variance trend using `nls`.
 hvg <- getTopHVGs(dec, prop=0.1) # selects ~10% of nrow(sce) that are HVGs
 
-# looking at top ten most variable genes as a tour
-hvg_df <- tibble::as_tibble(as.matrix(t(logcounts(sce[hvg[1:10],]))))
-colnames(hvg_df) <- rowData(sce)[hvg[1:10],]$SYMBOL
 
-limn_tour(hvg_df[sample.int(nrow(hvg_df), 3000),], cols = 1:10)
 
 ## ----pca------------------------------------------------------------
 sce <- runPCA(sce, ncomponents = 25, subset_row = hvg)
-# looking at elbow-plot looks like we get the first ten PCs explain most of the 
-# variation, with the elbow at five
+# looking at elbow-plot looks like we get the first five PCs explain most of the 
+# variation
 var_explained <- tidy_var_explained(sce)
-limn_xy(var_explained, x = component, y = var_explained)
+ggplot(var_explained, aes(x = component, y = var_explained)) +
+  geom_point()
 
 ## ----cluster--------------------------------------------------------
 # the recommended workflow is to use graph based clustering on the principal 
 # components
 g <- buildSNNGraph(sce, use.dimred = 'PCA')
-sce$cluster_membership <- factor(igraph::cluster_louvain(g)$membership)
+colData(sce)$cluster_membership <- factor(igraph::cluster_louvain(g)$membership)
 
 # extract PCs to tour and perform tSNE on, keep cluster labels too
 pc_df <- reducedDim(sce, "PCA")
 pc_df <- dplyr::as_tibble(pc_df)
-pc_df$cluster_membership <- sce$cluster_membership
+pc_df$cluster_membership <- colData(sce)$cluster_membership
+pc_df$inx <- seq_len(nrow(pc_df))
 
-dplyr::count(pc_df, cluster_membership)
-
-# tour the first 5 PCs, this forms a tetarahedron...
-limn_tour(pc_df, PC1:PC5, color = cluster_membership)
+table(colData(sce)$cluster_membership)
 
 ## ---- tsne
 tsne <- Rtsne::Rtsne(dplyr::select(pc_df, -cluster_membership),
@@ -64,19 +60,20 @@ tsne <- Rtsne::Rtsne(dplyr::select(pc_df, -cluster_membership),
 tsne_df <- tidy_tsne(tsne, list(cluster_membership = pc_df$cluster_membership))
 
 
-## ---- down-sample-linked-plot
 library(dplyr)
-# down sample so each group is down 10%, speeds up vis
-set.seed(2099)
-pc_df_sub <- pc_df %>% 
-  mutate(row_number = row_number()) %>% 
+set.seed(119460)
+tour_data <- pc_df %>% 
   group_by(cluster_membership) %>% 
-  sample_frac(size = 0.1) %>%
-  ungroup() 
+  sample_frac(size = 0.1) %>% 
+  ungroup()
 
-tsne_df %>% 
-  slice(pc_df_sub$row_number) %>% 
-  limn_xy(x = x, y = y ,color = cluster_membership)
+embed_data <-  tsne_df %>% 
+  slice(tour_data$inx)
 
-limn_tour(pc_df_sub, PC1:PC5, color = cluster_membership)
+limn_tour_link(embed_data, 
+               dplyr::select(tour_data, PC1:PC5, cluster_membership),
+               embed_color = cluster_membership,
+               tour_color = cluster_membership
+)
+
 
