@@ -547,16 +547,47 @@ values and  finally selected highly variable genes (HVGs) using `scran`
 the normalised expression matrix and compute PCA using the first 25 components.
 Using the PCs we built a shared nearest neighbours graph (with $k = 10$) and 
 used Louvain clustering to generate clusters [@Blondel2008-bx]. 
-To check and verify the clustering we construct a liminal view. 
+
+
+To check and verify the clustering we construct a `liminal` view. 
 We tour the first five PCs (approximately 20% of the variance in expression),
-along side the tSNE view which was computed from all 25 PCs. Due to latency
-of the interface we do a ten percent weighted sample of rows based on
-cluster membership. 
+along side the tSNE view which was computed from all 25 PCs. 
+ Due to latency of the interface we do weighted sample of rows based on
+cluster membership, leaving us with approximately 10 per cent of the original
+data size - 4,590 cells. Although this is not ideal, it still allows us to
+get a sense of the shape of the clusters as seen in the video below:
 
 
-- compare to just using the HVGs themselves with the tour
-- neighbourhood based brushing to check how diffuse or distorted clusters are
-- different distance metrics?
+< embedded video mouse 1 >
+
+In the following video we can observe that the embedding has mostly captured the
+clusters relative location to each other to their location in high dimensional space, with a notable exception of points in cluster 3 and 10 as shown with
+linked brushing. As expected avoids tSNE mitigates the crowding problem that is
+an issue for tour in this case, where points in clusters 2,4,6, and 11 are
+clumped together in tour view, but are blown up in the embedding view. 
+The tour appears to form a tetrahedron like shape, with points lying on
+surface and along the vertices of the the tetrahedron in 5-$d$ PCA space -
+a phenomena that has also been observed in @Korem2015-af. Brushing on
+the tour view, reveals points in cluster 9 that are diffuse in the embedding 
+view, points in cluster 9 are relatively far away and spread apart from other clusters in the tour view, but has points placed in cluster 3 and 9 in the embedding. 
+
+Next, we identify marker genes for clusters using one sided Welch t-tests with
+a minimum log fold change of one as recommended by @Amezquita2020-at, which
+uses the testing framework from @McCarthy2009-qx. We select the top 10 marker genes that are upregulated in cluster 2, which was one of the clumped clusters
+when we toured on principal components. Here the tour becomes an alternative
+to a standard heatmap view for assessing shared markers; the basis
+generation (shown as the biplot on the left view) reflects the relative 
+weighting of each gene. We run the tour directly on the 
+log normalised expression values using the same subset as before:
+
+< embedded video mouse 2 >
+
+We see that the expression of the marker genes using t, appear to separate
+the previously clumped clusters 2,4,6, and 11 from the other clusters, 
+indicating that these genes are expressed in all four clusters, and the 
+magnitude of expression in these genes is similar accross these groups, 
+consistent with the results of marker gene analysis.
+
 
 ### Case Study 3: How do people draw animals?
 

@@ -52,9 +52,8 @@ pc_df$inx <- seq_len(nrow(pc_df))
 table(colData(sce)$cluster_membership)
 
 ## ---- tsne
-tsne <- Rtsne::Rtsne(dplyr::select(pc_df, -cluster_membership),
+tsne <- Rtsne::Rtsne(reducedDim(sce, "PCA"),
                      pca = FALSE,
-                     Y_init = clamp_sd(reducedDim(sce)[ , 1:2], sd = 1e-4),
                      perplexity = 30)
 
 tsne_df <- tidy_tsne(tsne, list(cluster_membership = pc_df$cluster_membership))
@@ -76,4 +75,26 @@ limn_tour_link(embed_data,
                tour_color = cluster_membership
 )
 
+# ---
 
+markers <- findMarkers(sce, 
+                       groups = colData(sce)$cluster_membership,
+                       direction = "up",
+                       lfc = 1,
+                       pval.type = "some")
+
+marker_genes <- markers[[2]]
+
+sub_sce <- sce[rownames(sce) %in% rownames(marker_genes)[1:10]]
+
+exprs <- t(logcounts(sub_sce))
+colnames(exprs) <- rowData(sub_sce)$SYMBOL
+
+tour_marker <- dplyr::bind_cols(
+  dplyr::as_tibble(as.matrix(exprs)),
+  cluster_membership = colData(sub_sce)$cluster_membership
+) %>% 
+  janitor::clean_names() %>% 
+  slice(tour_data$inx)
+
+limn_tour(tour_marker, 1:10, color = cluster_membership)
