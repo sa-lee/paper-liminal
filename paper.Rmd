@@ -315,34 +315,21 @@ near in the original data.  Whether, points are near or far is reliant on the
 distance metric used; distortions and diffusions can be thought of as the
 preservation of distances or the nearest neighbours graphs between the
 high-dimensional space and the embedding space. As distances can be noisy in
-high-dimensions, ranks can be used instead as has been proposed by ...
+high-dimensions, ranks can be used instead as has been proposed by @Lee2009-zb.
 Identifying distortions and diffusions allows an analyst to investigate the
-quality of their embedding and revise them iteratively. We propose this can be
-done visually using our side-by-side tour and embedding views. Some quality
-checks, such as finding distortions can be identified using simple linked
-brushing, however we can also interrogate them via spatial brushes and brush
-composition.
+quality of their embedding and revise them iteratively. 
 
- Look up nearest neighbours graph from points that lie in a brushing region.
-
-Highlight the corresponding neighbours using colour or transparency in the
-linked view.
-
-
-- The $k$ nearest neighbours graph can be pre-computed quickly, for either $X$, $Y$ or both.
-- Instead of using the neighbour indices, we could use the neighbour distances instead.
-- Composition of multiple brushes could be used to show where there are matches/mismatches between nearest neighbour graphs.
-
-Using a linked neighbourhood brush, we can visually investigate the nearest
-neighbour relationships in the high-dimensional space via brushing in the
-embedding view. The user can select the number of nearest neighbours directly,
-and modify the distance metric used for determining the neighbours. This allows
-users to interrogate the stability of clusters generated in the embedding view.
-Multiple brushes can be used to pose queries in either the tour view or the
-embedding view; interface controls allow these brushes to combine using logical
-operators such as 'and', 'or', or 'not'. The use of linked brushing goes beyond
-simple colour highlights, allowing analysts to get a more holistic view of the
-effect of an embedding algorithm.
+We propose this can be
+done visually using our side-by-side tour and embedding views.
+In the simplest case, a local continuity check can be assessed via one to
+one linked brushing from the embedding to the tour view. This can be generalised further with one to many brushing, via spatial brushing. This form
+of brushing acts directly on $k$-nearest neighbors ($l$-nn) graph computed from a
+reference dataset, when a user brushes over a region in the embedding,
+all the points that match the graphs edges are selected on the 
+corresponding tour view. In place of highlighting, one could use opacity
+or binned colour scales to encode distances or ranks instead of the 
+neighboring points, or by highlighting. Brush compostion, such as 'and', 'or', or 'not' brushes,  could also be used to interrogate mismatches between the $k$-nn graphs estimated from both the embedding and tour views. This is left for 
+future implementations of `liminal`.
 
 
 ## Software Infrastructure
@@ -419,10 +406,8 @@ when a brush is active, points will be highlighted in the adjacent view.
 Because the tour is dynamic, brush events that become active will pause the
 animation, so that a user can interrogate the current view. By default,
 brushing on the embedding view will produce a one-to-one linking with the tour
-view (the special case of $k=1$ nearest neighbors brush). It is possible
-to shift to one-to-many linking by increasing $k$ via the 'controls'
-panel of the interface.  If desired, the distance
-metric used to estimate nearest neighbours can by chosen by the user. 
+view (the special case of $k=1$ nearest neighbors brush). In future
+implementations it will be possible to shift from one-to-many linking by increasing $k$ via the 'controls' panel of the interface.  If desired, the distance metric used to estimate nearest neighbours can by chosen by the user. 
 The user may provide a reference data set for computing
 nearest neighbours (for example a distance matrix, or the complete data matrix)
 independently of the tour or embedding views. The estimation of neighbours
@@ -488,9 +473,9 @@ Next explore some simulated noisy tree structured data (figure
 topology of the data, and then seeing if we can resolve this by tweaking the
 default parameters with reference to the global view of the data set.
 
-(ref:fake-trees) Example high-dimensional tree shaped data, $n = 3000$ and $p = 100$. The data lies 2-d tree like structure consisting of ten branches. This data is available in the `phateR` package and is simulated via diffusion-limited aggregation (a random walk along the branches of the tree) with Gaussian noise added. [@Moon2019-ce].
+(ref:fake-trees) Example high-dimensional tree shaped data, $n = 3000$ and $p = 100$. **(a)** The true data lies 2-d tree like structure consisting of ten branches. This data is available in the `phateR` package and is simulated via diffusion-limited aggregation (a random walk along the branches of the tree) with Gaussian noise added [@Moon2019-ce]. **(b)** The first two principal components, which form the initial projection for the tour, note that the backbone of the three is obscured by this view. **(c)** The default tSNE view breaks the global structure of the tree. **(d)** Altering the initialision of tSNE using the first two principal components, clusters the tree at its branching points.
 
-```{r fake-trees, echo = FALSE, out.width = "50%", fig.align = "center", fig.cap="(ref:fake-trees)"}
+```{r fake-trees, echo = FALSE, fig.align = "center", fig.cap="(ref:fake-trees)"}
 knitr::include_graphics(here::here("img", "tree-view.png"))
 ```
 
@@ -549,8 +534,7 @@ marker genes. Here a 'faithful' a embedding should ideally preserve the topology
 of the data; cells that correspond to a cell type should lie in the same
 neighbourhood in high-dimensional space. In this case study we use our 
 linked brushing approaches to look at neighbourhood preservation
-(which can be seen via the tour) and to look at marker genes through
-the lens of the tour.
+and look at marker genes through the lens of the tour.
 
 First, we downloaded the raw mouse retinal single cell RNA-seq data from
 @Macosko2015-ot using the `scRNAseq` Bioconductor package [@scRNAseq-d]. We
@@ -562,8 +546,8 @@ values and  finally selected highly variable genes (HVGs) using `scran`
 [@McCarthy2017; @Lun2016]. The top ten percent of HVGs were used to subset
 the normalised expression matrix and compute PCA using the first 25 components.
 Using the PCs we built a shared nearest neighbours graph (with $k = 10$) and 
-used Louvain clustering to generate clusters. To check and verify the 
-clustering we construct a liminal view. Because most off the variability in
+used Louvain clustering to generate clusters [@Blondel2008-bx]. 
+To check and verify the clustering we construct a liminal view. Because most off the variability in
 expression is explained by the first 5 PCs, we tour those. The t-SNE view
 is computed from all PCs. 
 
