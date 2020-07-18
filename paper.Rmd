@@ -491,7 +491,7 @@ default parameters with reference to the global view of the data set.
 (ref:fake-trees) Example high-dimensional tree shaped data, $n = 3000$ and $p = 100$. The data lies 2-d tree like structure consisting of ten branches. This data is available in the `phateR` package and is simulated via diffusion-limited aggregation (a random walk along the branches of the tree) with Gaussian noise added. [@Moon2019-ce].
 
 ```{r fake-trees, echo = FALSE, out.width = "50%", fig.align = "center", fig.cap="(ref:fake-trees)"}
-knitr::include_graphics(here::here("img", "tree.png"))
+knitr::include_graphics(here::here("img", "tree-view.png"))
 ```
 
 First, we apply principal components and restrict the results down to the first
@@ -526,15 +526,15 @@ these results with our tour view as displayed in the video:
 <embedded video 2>
 
 The video shows that this selection of parameters results in the the tips of
-the branches (the three black dots in figure \@ref(fig:fake-trees)) being split
-into three clusters representing the final branches of the tree. However, there
+the branches (the three black dots in figure \@ref(fig:fake-trees) a) being split
+into three clusters representing the terminal branches of the tree. However, there
 are perceptual issues following the placement of the three groupings on the
 t-SNE view that become apparent via simple linked brushing. If we brush the
 tips of the yellow and brown branches (which appear to be close to each other
 on the t-SNE view), we immediately see the placement is distorted in the t-SNE
 view, and in the tour view these tips are at opposite ends of the tree.
 Although, this is a known issue of the t-SNE algorithm, we can easily identify
-it via simple interactivity.
+it via simple interactivity without knowing the inner workings of the method.
 
 
 ### Case Study 2: Clustering single cell RNA-seq data
@@ -548,9 +548,9 @@ identify the clusters as cell types using the expression of "known"
 marker genes. Here a 'faithful' a embedding should ideally preserve the topology
 of the data; cells that correspond to a cell type should lie in the same
 neighbourhood in high-dimensional space. In this case study we use our 
-spatial and linked brushing approaches to look at neighbourhood preservation
-(which can be seen via the tour) and to look at the affect of applying different
-feature selection techniques and distance metrics.
+linked brushing approaches to look at neighbourhood preservation
+(which can be seen via the tour) and to look at marker genes through
+the lens of the tour.
 
 First, we downloaded the raw mouse retinal single cell RNA-seq data from
 @Macosko2015-ot using the `scRNAseq` Bioconductor package [@scRNAseq-d]. We
