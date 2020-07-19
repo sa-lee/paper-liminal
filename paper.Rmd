@@ -625,14 +625,19 @@ preserves the shape of the data which can be obscured by the embedding method.
 Our holistic framework is also useful in real data situations, as displayed
 in our second case study. The tour when combined with t-SNE allowed us
 to identify clusters, while giving us an idea of their orientation to 
-each other. Moreover, we could visually inspect the separation clusters
-using a tour on marker gene sets. This case study revealed some limitations
+each other. Moreover, we could visually inspect the separation of clusters
+using a tour on marker gene sets. We see our approach as being valuable
+to the single cell analyst who wants to make their embeddings more 
+interpretable.
+
+There are some limitations
 in using the **liminal** interface for larger datasets. First,
 t-SNE avoids the crowding problem, points are seperated into distinct regions
-on the graph canvas, while for the tour points are concentrated in the
+on the display canvas, while for the tour, points are concentrated in the
 center of the projection and become difficult to see. 
-Second, as $n$ increases the animation becomes slower as there is more data passing from the server to the client. 
-
-
+Second, as $n$ increases the animation becomes slower as there is more data passing from the server to the client. Both of these issues could be mitigated
+through alternate tour paths and displays. The recent work
+by @Laa2020-wr is a promising area for further investigation, as well as
+work from topological statistics [@Rieck2017-kk; @Genovese2017-iq]. 
 
 ## References
