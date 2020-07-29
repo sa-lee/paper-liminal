@@ -15,6 +15,32 @@ bibliography: liminal.bib
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
+```{r setup-videos, cache = FALSE}
+vid_lookup <- tibble::tribble(
+  ~key, ~url, ~path,
+  "gaussian",  "https://player.vimeo.com/video/439635921", here::here("img", "liminal-screenshot-gaussian.png"),
+  "hierarchical", "https://player.vimeo.com/video/439635905", here::here("img", "liminal-screenshot-hierarchical.png"),
+  "trees-01", "https://player.vimeo.com/video/439635892", here::here("img", "liminal-screenshot-trees-01.png"),
+  "trees-02", "https://player.vimeo.com/video/439635863", here::here("img", "liminal-screenshot-trees-02.png"),
+  "mouse-01", "https://player.vimeo.com/video/439635812", here::here("img", "liminal-screenshot-mouse-01.png"),
+  "mouse-02", "https://player.vimeo.com/video/439635843", here::here("img", "liminal-screenshot-mouse-02.png")
+)
+
+
+display_vid_html <- function(key, lookup) {
+  video <- lookup[lookup$key == key, ]
+  knitr::include_url(video[["url"]])
+}
+
+display_screenshot <- function(key, lookup) {
+  img <- lookup[lookup$key == key, ]
+  knitr::include_graphics(img[["path"]])
+}
+
+```
+
+# Casting multiple shadows: high-dimensional interactive data visualisation with tours and embeddings {#ch:tsne}
+
 
 There has been a rapid uptake in the use of non-linear dimensionality reduction
 (NLDR) methods such as t-distributed stochastic neighbour embedding (t-SNE) in
@@ -22,33 +48,33 @@ the natural sciences as part of cluster orientation and dimension reduction
 workflows. The appropriate use of these methods is made difficult by their
 complex parameterisations and the multitude of decisions required to balance
 the preservation of local and global structure in the resulting visualisation.
-We present a visual analytics framework for the pragmatic usage of NLDR methods
+We present visual diagnostics for the pragmatic usage of NLDR methods
 by combining them with a technique called the tour. A tour is a sequence of
 interpolated linear projections of multivariate data onto a lower dimensional
 space. The sequence is displayed as a dynamic visualisation, allowing a user to
 see the shadows the high-dimensional data casts in a lower dimensional view. By
 linking the tour to a view obtained from an NLDR method, we can preserve global
-structure and through user interactions like spatial linked brushing observe
+structure and through user interactions like linked brushing observe
 where the NLDR view may be misleading. We display several case studies from
-single cell transciptomics and image processing, that shows our approach is
-useful for cluster orientation tasks.  The implementation of our framework is
-available as an R package called **liminal** available at
+both simulated and real data from single cell transcriptomics, that shows our
+approach is useful for cluster orientation tasks.  The implementation of our 
+framework is available as an R package called **liminal** available at
 https://github.com/sa-lee/liminal.
 
 
 ## Introduction
 
 High dimensional data is increasingly prevalent in the natural sciences and
-beyond but presents a challenge to the analyst in terms of both data cleaning /
+beyond but presents a challenge to the analyst in terms of data cleaning,
 pre-processing and visualisation. Methods to embed data from a high-dimensional
 space into a low-dimensional one now form a core step of the data analysis
 workflow where they are used to ascertain hidden structure and de-noise data
-for downstream analysis (thereby nullifying the 'curse of dimensionality').
+for downstream analysis .
 
 Choosing an appropriate embedding presents a challenge to the analyst. How does
 an analyst know whether the embedding has captured the underlying topology and
 geometry of the high dimensional space? The answer depends on the analyst's
-workflow.  @Brehmer2014-hk characterised two main workflow steps that an
+workflow. @Brehmer2014-hk characterised two main workflow steps that an
 analyst performs when using embedding techniques: dimension reduction and
 cluster orientation. The first relates to dimension reduction achieved by using
 an embedding method, here an analyst wants to characterise and map meaning onto
@@ -58,7 +84,7 @@ embedded form [@Nguyen2019-yh]. The second relates to using embeddings as part o
 a clustering workflow. Here analysts are interested in identifying and naming
 clusters and verifying them by either applying known labels or colouring by
 variables that are a-priori known to distinguish clusters. Both of these
-workflow steps rely on the embedding being representative the original high
+workflow steps rely on the embedding being representative of the original high
 dimensional dataset, and becomes much more difficult when there is no underlying
 ground truth.
 
@@ -68,57 +94,68 @@ and interpretation of embedding methods as well. @Sedlmair2013-pn showed that
 they also noted that often multiple embeddings were required. For the task of
 cluster identification, @Lewis2012-ai showed experimentally that novice users
 of non-linear embedding techniques were more likely to consider clusters of
-points on a 2d scatter plot to be the result of a spurious embedding compared
+points on a 2D scatter plot to be the result of a spurious embedding compared
 to advanced users who were aware of the inner workings of the embedding
 algorithm.
 
 A complementary approach for visualizing structure in high dimensional data is 
 the tour. A tour is a sequence of projections of a high dimensional dataset
 onto a low-dimensional basis matrix, and is represented as a
-animated visualization.Given the dynamic nature of the tour, user interaction is 
-important for controlling and exploring the visualisation: the tour has been
-used previously by @Wickham2015-cx and @Li2020-rh as a tool for 
+animated visualization [@Asimov1985-vp; @Buja1986-zr]. Given the dynamic nature
+of the tour, user interaction is  important for controlling and exploring the 
+visualisation: the tour has been used previously by @Wickham2015-cx and  
 exploring statistical model fits and by @Buja1996-fk for exploring the space of 
 factorial experimental designs.
 
-While there has been much work on the algorithmic details of the aforementioned
-embedding methods, there has been relatively few tools designed to assist users
-to interact with these techniques and assist them in making comparisons between
-embeddings and performing the aforementioned cluster orientation tasks. Several
+While there has been much work on the algorithmic details of
+embedding methods, there are relatively few tools designed to assist users
+to interact with these techniques: when is an embedding sufficient for the
+task at hand? Several
 interactive interfaces have been proposed for evaluating or using embedding
-techniques: the Sleepwalk interface provides a click and highlight
-visualisation for colouring points in an embedding according to an estimated
-pairwise distance in the original high-dimensional space [@Ovchinnikova2020-sy].
-The idea behind this is that non-linear embedding methods should preserve 
-locality and that points that are 'close' to each other on the embedded view
-should be close according to the estimated pairwise distance. 
-Similarly, the TensorFlow embedding projector is a web interface to 
+techniques. @Buja2008-fn used tours to guide analysts during the optimisation
+of multidimensional scaling methods by extending their interactive visualisation
+software called **XGobi** and **GGobi** into a new tool called **GGvis** 
+[@Swayne1998-uq; @Swayne2003-qd; @Swayne2004-ua].
+Their interface allows the analyst to dynamically modify and check whether
+an MDS configuration has preserved the locality and closeness
+of points between the configuration and the original data.
+@Ovchinnikova2020-sy created the **Sleepwalk**  interface for checking
+non-linear embeddings in single cell RNA-seq data. It provides a click and 
+highlight visualisation for colouring points in an embedding according to an 
+estimated pairwise distance in the original high-dimensional space.
+Similarly, the **TensorFlow**  embedding projector is a web interface to 
 running some non-liner embedding methods live in the browser and 
-provides interactions  to colour points, and select nearest neighbours
+provides interactions to colour points, and select nearest neighbours
 [@Smilkov2016-hp]. Finally, the work by @Pezzotti2017-cz provides a user 
-guided and modified form of the  t-SNE algorithm, that allows users to modified 
-optimisation parameters in real-time.
+guided and modified form of the  t-SNE algorithm, that allows users to modify 
+optimisation parameters in real-time. 
 
 There is no one-size fits all: finding an appropriate embedding for a given
 dataset is a difficult and a somewhat poorly defined problem. For non-linear
 methods, there are a lot of parameters to explore that can have an effect on
 the resulting visualisation and interpretation. Interfaces for evaluating
 embeddings require interaction but should also be able to be incorporated into
-an analysts workflow. We propose a more pragmatic workflow inspired by
+an analysts workflow. Instead, we implement a more pragmatic workflow by
 incorporating interactive graphics and tours with embeddings that allows users
 to see a global overview of their high dimensional data and assists them with
-cluster orientation tasks. This workflow is incorporated into an R package
-called **liminal** (Available: https://github.com/sa-lee/liminal).
+cluster orientation tasks.
+
+The rest of the paper is organised as follows. The next section provides
+background on dimension reduction methods, including an overview of the tour.
+Then we describe the visual design of **liminal**, followed by implementation
+details. Next we provide case studies that show how our interface assists
+in using embedding methods. Finally, we describe the insights gained by using
+**liminal** and plans for extensions to the software.
 
 
-## Dimensionality Reduction Background
+## Overview of Dimension Reduction
 
 In the following section, we provide a brief overview of the goals of DR
 methods with respect to the data analyst, in addition to their high level the
 mathematical details. Here we restrict our attention to two recent methods that
 are commonly used in the literature: t-distributed stochastic neighbour embedding 
 (t-SNE) and uniform manifold alignment and projection (UMAP); however we do 
-mention several other techniques. 
+mention several other techniques [@Maaten2008-sk; @McInnes2018-co]. 
 
 To begin we suppose the data is in the form rectangular
 matrix of real numbers, $X = [\mathbf{x_1}, \dots, \mathbf{x_n}]$, where $n$ is
@@ -142,17 +179,17 @@ cut-off.
 For non-linear methods $Y$ is generated via a pre-processed form of the input
 $X$ such as the $k$-nearest neighbours graph or via a kernel transformation.
 Multidimensional scaling (MDS) is a class of DR methods that aims to construct
-an embedding  $Y$ such that the pairwise distances (inner products) in $Y$ 
-approximate the pairwise distances (inner products) in $X$ 
+an embedding  $Y$ such that the pair-wise distances (inner products) in $Y$ 
+approximate the pair-wise distances (inner products) in $X$ 
 [@Torgerson1952-am; @Kruskal1964-cz]. There are many 
 variants of MDS, such as non-metric scaling which amounts to replacing
 distances with ranks instead [@Kruskal1964-cw]. 
 A related technique is Isomap which uses a $k$-nearest neighbour graph
-to estimate the pairwise geodesic distance of points in $X$ then uses classical 
+to estimate the pair-wise geodesic distance of points in $X$ then uses classical 
 MDS to construct $Y$ [@Silva2003-xw]. Other approaches are based on diffusion
-processes such asdiffusion maps [@Coifman2005-ak]. A recent example of this 
+processes such as diffusion maps [@Coifman2005-ak]. A recent example of this 
 approach is the PHATE algorithm [@Moon2019-ce]. Here an affinity matrix is 
-estimated via the pairwise distance matrix and k-nearest neighbours graph of $X$. 
+estimated via the pair-wise distance matrix and k-nearest neighbours graph of $X$. 
 The algorithm de-noises estimated distances in high-dimensional space via 
 transforming the affinity matrix into a Markov transition probability matrix 
 and diffusing this matrix over a fixed number of time steps. Then the diffused 
@@ -163,14 +200,14 @@ appropriate parameters. To see the extent of these choices
 we now examine the underpinnings of t-SNE and UMAP.
 
 The t-SNE algorithm estimates
-the pairwise similarity of (Euclidean) distances of points in a high
+the pair-wise similarity of (Euclidean) distances of points in a high
 dimensional space using a Gaussian distribution and then estimates a
 configuration in the low dimensional embedding space by modelling similarities
-using a t-distribution with 1 degree of freedom. There are several subtleties
+using a t-distribution with 1 degree of freedom [@Maaten2008-sk]. There are several subtleties
 to the to use of the algorithm that are revealed by stepping through its
 machinery.
 
-To begin, t-SNE transforms pairwise distances between $\mathbf{x_i}$ and
+To begin, t-SNE transforms pair-wise distances between $\mathbf{x_i}$ and
 $\mathbf{x_j}$ to similarities using a Gaussian kernel:
 
 $$ p_{i|j} = \frac{\exp(-\lVert \mathbf{x_i - x_j} \rVert ^ 2 /
@@ -193,7 +230,7 @@ nearest neighbours algorithm, $p_{i|j}$ will be close to zero for all
 observations that are not in the $\mathcal{O}(\text{perplexity}_i)$
 neighbourhood graph of the $i$th observation [@Van_Der_Maaten2014-zn].
 
-Next, the target low-dimensional space, $Y$, pairwise distances between
+Next, the target low-dimensional space, $Y$, pair-wise distances between
 $\mathbf{y_i}$ and $\mathbf{y_j}$ are modelled as a symmetric probability
 distribution using a Cauchy kernel:
 
@@ -216,10 +253,10 @@ $$ \mathcal{L(\mathcal{P}, \mathcal{Q})} = -\sum_{i \ne j} p_{ij}\log w_{ij} +
 \log\sum_{i \ne j} w_{ij} $$
 
 So when the the loss function is minimised this corresponds to large attractive
-forces, that is, the pairwise distances in $Y$ are small when there are
+forces, that is, the pair-wise distances in $Y$ are small when there are
 non-zero $p_{ij}$, i.e. $x_i$ and $x_j$ are close together. The repulsive force
 should also be small when the loss function is minimised, that is, when
-pairwise distances in $Y$ are large regardless of the magnitude of the
+pair-wise distances in $Y$ are large regardless of the magnitude of the
 corresponding distances in $X$.
 
 Taken together, these details reveal the sheer number of decisions that an
@@ -237,26 +274,51 @@ approaches for tuning the optimisation parameters. However, the cluster sizes
 and their relative orientation from a $t-SNE$ view can be misleading
 perceptually, due to the algorithms emphasis on locality.
 
-Another recent method UMAP has seen a large rise in popularity (at least in
+Another recent method, UMAP, has seen a large rise in popularity (at least in
 single cell transcriptomics) [@McInnes2018-co]. It is a method that is related to
 LargeVis [@Tang2016-oz], and like t-SNE acts on the k-nearest neighbour graph.
 Its main differences are that it uses a different cost function (cross entropy)
 which is optimized using stochastic gradient descent and defines a different
-kernel for similarities in the low dimensional space. Due to it's computational
-speed it's possible to generate UMAP embeddings in more than three dimensions.
-It appears to suffer from the same perceptual issues as t-SNE, however it
-supposedly preserves global structure better than t-SNE [@Coenen2019-to].
+kernel for similarities in the low dimensional space. Due to its computational
+speed it is possible to generate UMAP embeddings in more than three dimensions.
+It appears to suffer from the same perceptual issues as t-SNE, however it supposedly preserves global structure better than t-SNE [@Coenen2019-to].
+
+### Tours explore the subspace of $d$-dimensional projections 
+
+The tour is a visualisation technique that is grounded in 
+mathematical theory, and is able to ascertain 
+the shape and global structure of a dataset via inspection of the subspace generated by the set of low-dimensional projections [@Asimov1985-vp; @Buja1986-zr]. 
+
+Like, when using other DR techniques, the tour assumes we have a real data matrix
+$X$ consisting of $n$ observations in $p$ dimensions. First, the tour generates 
+a  sequence of $p \times d$ orthonormal projection matrices (bases) 
+$A_{t \in \mathbb{N}}$, where $d$ is typically $1$ or $2$. For each pair of 
+orthonormal bases $A_{t}$ and $A_{t+1}$ that are generated, the geodesic
+path between them is interpolated to form intermediate frames, and giving the 
+sense of continuous movement from one basis to another. The tour is then the 
+continuous visualisation of the projections $Y_{t} = XA_{t}$, that is the 
+projection of $X$ onto $A_{t}$ as the tour path is interpolated between 
+successive bases. A *grand tour* corresponds to choosing new orthonormal
+bases at random; allowing a user to ascertain structure via exploring the
+subspace of $d$-dimensional projections.  In practice, we first sphere 
+our data via principal components to reduce dimensionality of $X$ prior to 
+running the tour. Instead of picking projections at 
+random, a *guided tour* can be used to generate a sequence of 'interesting' 
+projections as quantified by an index function [@Cook1995-bi]. While our software, 
+**liminal** is able to  visualise guided tours, our focus in the case studies 
+uses the grand tour to see global structure in the data. 
 
 ## Visual Design
 
-We propose using tours as part of an analyst's workflow when using embedding
-methods like t-SNE. We have made extensive use of ensemble graphics, that is
-aligning related plots alongside each other to provide context [@Unwin2018-zb]. 
-As we will see in the case studies, this allows analysts to quickly compare 
-views from embedding methods and allows them to see how the embedding method 
-alters the global structure of their data. Using ensembles allows the use of 
-interaction techniques, that allow analysts to perform cluster orientation 
-tasks via linking multiple views. This approach allows our interface, to achieve 
+Tours provide a supportive visualisation to NLDR graphics, and 
+can be easily incorporated into an analysts workflow with our software package, 
+**liminal**.  Our interface allows analysts to quickly compare 
+views from embedding methods and see how an embedding method 
+preserves or alters the geometry of their data. Using multiple concatenated and
+linked views with the tour enhances interaction techniques, and allows 
+analysts to perform  cluster orientation tasks via linked highlighting and 
+brushing [@McDonald1982-ew; @Becker1987-gd]. 
+This approach allows our interface to achieve 
 the three principles for interactive high-dimensional data visualisation outlined
 by @Buja1996-fk: finding gestalt, posing queries, and making comparisons.
 
@@ -269,17 +331,19 @@ step, and then tour a subset of those components instead, i.e. by selecting
 them from a scree plot. The default tour layout is a scatter plot with an axis
 layout displaying the magnitude and direction of each basis vector. Since the
 tour is dynamic, it is often useful to be able to pause and highlight a
-particular view. In our interface, brushing will pause the tour path, allowing
-users to identify 'interesting' projections. The domain of the axis scales from
-running a tour is called the half range, and is computed by rescaling the input
-data onto hyper-dimensional unit cube. We bind the half range to a mouse wheel
-event, allowing a user to pan and zoom on the tour view dynamically. This is
-useful for peeling back dense clumps of points to reveal structure.
+particular view. In addition to pause, play and reset buttons, brushing will 
+pause the tour path, allowing users to identify 'interesting' projections. The
+domain of  the axis scales from running a tour is called the half range, and is 
+computed by rescaling the input data onto hyper-dimensional unit cube. We bind 
+the half range to a mouse wheel event, allowing a user to pan and zoom on the 
+tour view dynamically. This is useful for peeling back dense clumps of points 
+to reveal structure.
 
 ### Posing Queries: multiple views, many contexts
 
 We have combined the tour view in a side by side layout with a scatter plot
-view that represents the output of an embedding algorithm.  These views are
+view as has been done in previous tour interfaces **XGobi** and **DataViewer** 
+[@Buja1986-ku; @Swayne1998-uq]. These views are
 linked; analysts can brush regions or highlight collections of points in either
 view. Linked highlighting can be performed when points have been previously
 labelled according to some discrete structure, i.e. cluster labels are
@@ -319,58 +383,21 @@ high-dimensions, ranks can be used instead as has been proposed by @Lee2009-zb.
 Identifying distortions and diffusions allows an analyst to investigate the
 quality of their embedding and revise them iteratively. 
 
-We propose this can be
-done visually using our side-by-side tour and embedding views.
+These checks are done visually using our side-by-side tour and embedding views.
 In the simplest case, a local continuity check can be assessed via one to
-one linked brushing from the embedding to the tour view. This can be generalised further with one to many brushing, via spatial brushing. This form
-of brushing acts directly on $k$-nearest neighbours ($l$-nn) graph computed from a
-reference dataset, when a user brushes over a region in the embedding,
-all the points that match the graphs edges are selected on the 
-corresponding tour view. In place of highlighting, one could use opacity
-or binned colour scales to encode distances or ranks instead of the 
-neighbouring points, or by highlighting. Brush composition, such as 'and', 'or', or 'not' brushes,  could also be used to interrogate mismatches between the $k$-nn graphs estimated from both the embedding and tour views. This is left for 
-future implementations of **liminal**.
-
+one linked brushing from the embedding to the tour view. Similarly, diffusions
+are identified from linked brushing on the tour view, highlighting points
+in the embedding view.
 
 ## Software Infrastructure
 
 We have implemented the above design as an open source R package called
-**liminal** [@baseR]. The package allows analysts to construct concatenated
-visualisations, via the Vega-Lite grammar of interactive graphics (using
-`vegawidget` package) and provides an interface for constructing brushes and
-manipulating tour paths using the `shiny` and `tourr` packages. **liminal** also
-provides a stand-alone interface to the tour, in addition to the linked
-scatterplot interfaces discussed above. Below we display the **liminal** API, and
-our approach to generating tour paths and user interactions.
-
-### Tours explore the subspace of $d$-dimensional projections 
-
-Here we provide an overview of the mathematical aspects of the tour for
-readers who are unfamiliar with the technique before discussing the 
-computational aspects of how **liminal** interfaces with them. The tour
-is emphatically not a dimension reduction technique but rather a visualisation 
-technique that is grounded in mathematical theory, that is able to ascertain 
-the shape and global structure of a dataset via inspection of the subspace 
-generated by the set of low-dimensional projections. In fact, in some
-of the case studies below, we  first sphere our data via principal 
-components to reduce dimensionality of our input. 
-
-Like, when using DR techniques, the tour assumes we have a real data matrix
-$X$ consisting of $n$ observations in $p$ dimensions. First, the tour generates 
-a  sequence of $p \times d$ orthonormal projection matrices (bases) 
-$A_{t \in \mathbb{N}}$, where $d$ is typically $1$ or $2$. For each pair of 
-orthonormal bases $A_{t}$ and $A_{t+1}$ that are generated, the geodesic
-path between them is interpolated to form intermediate frames, and giving the 
-sense of continuous movement from one basis to another. The tour is then the 
-continuous visualisation of the  projections $Y_{t} = XA_{t}$, that is the 
-projection of $X$ onto $A_{t}$ as the tour path is interpolated between 
-successive bases. A *grand tour* corresponds to choosing new orthonormal
-bases at random; allowing a user to ascertain structure via exploring the
-subspace of $d$-dimensional projections. Instead of picking projections at 
-random, a *guided tour* can be used to generate a sequence 'interesting' 
-projections as quantified by an index function. While **liminal** is able to 
-visualise guided tours, our focus in the case studies uses the grand tour to
-see global structure in the data. 
+**liminal** [@r-liminal]. The package allows analysts to construct concatenated
+visualisations, drawn with the **Vega-Lite** grammar of interactive graphics via
+the **vegawidget** package [@Satyanarayan2017-gs; @Lyttle2020-hp]. It provides 
+an interface for constructing linked and stand alone interfaces for 
+manipulating tour paths via  the **shiny** and **tourr** packages 
+[@Chang2020-bq; @Wickham2011-st].
 
 
 ### Tours as a streaming data problem
@@ -378,9 +405,9 @@ see global structure in the data.
 The process of generating successive bases and interpolating between them to  
 construct intermediary frames, means the tour is a dynamic visualisation 
 technique. Generally, the user would set $d=2$ the tour is visualised as
-a animated scatterplot. This process of constructing bases and intermediate 
-frames and visualising the resulting projection is akin to making a "flipbook" 
-animation. Like with a flipbook, an interface to the tour requires the ability
+a animated scatter plot. This process of constructing bases and intermediate 
+frames and visualising the resulting projection is akin to making a "flip book" 
+animation. Like with a flip book, an interface to the tour requires the ability
 to interact and modify it in real time. The user interface generated in **liminal**
 allows a user to play, pause, and reset the tour animation,
 panning and zooming to modify the scales of the plot to provide context and
@@ -406,38 +433,37 @@ when a brush is active, points will be highlighted in the adjacent view.
 Because the tour is dynamic, brush events that become active will pause the
 animation, so that a user can interrogate the current view. By default,
 brushing on the embedding view will produce a one-to-one linking with the tour
-view (the special case of $k=1$ nearest neighbours brush). In future
-implementations it will be possible to shift from one-to-many linking by increasing $k$ via the 'controls' panel of the interface.  If desired, the distance metric used to estimate nearest neighbours can by chosen by the user. 
-The user may provide a reference data set for computing
-nearest neighbours (for example a distance matrix, or the complete data matrix)
-independently of the tour or embedding views. The estimation of neighbours
-is done with the `FNN` package for datasets with less than 4096 observations
-and `RcppAnnoy` for larger datasets or if a user selects a non-Euclidean
-distance metric [@fnn-pkg; @rcpp-annoy-pkg]. Once the user is finished 
-with the interface, the brush regions are returned for downstream analysis.
-
+view. For interpreting specific combinations of clusters, the multiple
+guides on the legend can be selected in order to see their relative orientations.
+The interface is constructed as a **shiny** gadget specifically designed for
+interactive data analysis. Selections such as brushing regions and the current
+tour path are returned after the user clicks done on the interface and become
+available for further investigation.
 
 ## Case Studies
 
 The next section steps through case studies cases of our approach using simulated
-and real data.  The videos presented show the visual 
+and real data.
+
+The first three case studies use simulations where the cluster structure and
+geometry of the underlying data is known. We start with a simple example
+where we generated spherical clusters that are embedded well by t-SNE. Then
+we move onto more complex examples where the tour provides insight, such
+as clusters that have substructure and where there is more complex geometry
+in the data.
+
+In the final case study, we apply our approach to clustering 
+the mouse retina data from @Macosko2015-ot, and apply the tour
+to the process of verifying marker genes that separate clusters. 
+
+The videos presented show the visual 
 appearance of the **liminal** interface, and how we can interact with the tour
-via the controls previously described.
-In the first case study, we look at three different examples
-where t-SNE is applied to three simulations where cluster structure and geometry
-of the underlying data is known.  
+via the controls previously described. Both code and videos available for 
+reproducing this paper are available at https://github.com/sa-lee/paper-liminal.
 
-In the second case study, we apply our approach to clustering 
-the mouse retina data from @Macosko2015-ot, and use apply the tour
-to the process of verifying marker genes. 
 
-<!--
-Finally, in the last case study we
-explore a subset of the QuickDraw dataset, we use **liminal** to identify
-instances of images from different labels that appear similar.
--->
+### Case Study 1: Exploring spherical Gaussian clusters
 
-### Case Study 1: Exploring simulation data with tours and t-SNE
 
 To begin we look at simulated datasets that reproduce known facts
 about the  t-SNE algorithm. Our first data set consists of five spherical 5-$d$
@@ -445,38 +471,64 @@ Gaussian clusters embedded in 10-$d$ space, each cluster has the same
 covariance matrix. We then computed a t-SNE layout with default settings 
 using the **Rtsne** package [@Rtsne],
 and set up the **liminal** linked interface with grand tour on the 10-$d$
-observations (video - ). 
+observations. 
 
+(ref:liminal-gaussian) Screenshots of the **liminal** interface applied to well clustered data, a video of the tour animation is available at https://player.vimeo.com/video/439635921. *(a)*: t-SNE (left) and tour (right) in side by side layout coloured by cluster. *(b)*: brushing the red cluster on the t-SNE view, shows the corresponding points on the tour.
 
-<embedded video liminal gaussian>
+```{r gaussian, fig.cap = "(ref:liminal-gaussian)"}
+display_screenshot("gaussian", vid_lookup)
+```
 
-We see in the video that t-SNE has correctly split out each cluster and
-laid them out in a star like formation. This is agrees with the tour view,
+```{r gaussian-h, eval = knitr::is_html_output()}
+display_vid_html("gaussian", vid_lookup)
+```
+
+We see in figure \@ref(fig:gaussian) and linked video that t-SNE has 
+correctly split out each cluster and laid them out in a star like formation. 
+This is agrees with the tour view,
 where once we start the animation, the five clusters begin to appear but
 generally points are more concentrated in the projection view compared to 
-the t-SNE layout. This can be seen from our brushing action on the t-SNE side. 
+the t-SNE layout (figure \@ref(fig:gaussian)a). 
+This can be confirmed via brushing the t-SNE view (figure \@ref(fig:gaussian)b). 
 
-<embedded video liminal hierachcial >
 
-We repeat the process of simulating Gaussian clusters in video <>, but this time
-we have a cluster that has more granular structure. This time we have two
-Gaussian clusters with equal covariance embedded in $10-d$, and a third cluster
-with hierachcial structure. This cluster has two 3-$d$ clusters embedded in 
-10-$d$, where the second cluster is subdivided into three smaller clusters, that are each equidistant from each other and have the same covariance structure.
+### Case Study 2: Exploring spherical Gaussian clusters with hierarchical structure
+
+We repeat the process of viewing Gaussian clusters from the 
+_Multi Challenge Dataset_, a benchmark simulation data set for clustering tasks
+[@Rauber2009-vh]. This dataset has two Gaussian clusters with equal covariance 
+embedded in $10-d$, and a third cluster
+with hierarchical structure. This cluster has two 3-$d$ clusters embedded in 
+10-$d$, where the second cluster is subdivided into three smaller clusters, 
+that are each equidistant from each other and have the same covariance structure.
 Again t-SNE has correctly identified the sub-clusters but their relative 
 locations to each other is distorted, with the orange and blue groups being
-far from each other in the tour view. We see in this case that is difficult
+far from each other in the tour view (figure \@ref(fig:hierarchical)a). We see 
+in this case that is difficult
 to see the sub-clusters in the tour view, however, once we zoom and highlight
-they become more apparent. When we brush the sub-clusters in the t-SNE, their
+they become more apparent (figure \@ref(fig:hierarchical)b). When we brush 
+the sub-clusters in the t-SNE, their
 relative placement is again exaggerated, with the tour showing that they
 are indeed much closer than the impression the t-SNE view gives.
+
+(ref:liminal-hierarchical) Screenshots of the **liminal** interface applied to sub-clustered data, a video of the tour animation is available at https://player.vimeo.com/video/43963590. *(a)* t-SNE has identified and spread out the clusters with substructure. *(b)* Using linked highlighting and brushing, the tour view shows that sub-clusters are much closer together in high dimensional space than the t-SNE view implies.  
+
+```{r hierarchical, fig.cap="(ref:liminal-hierarchical)"}
+display_screenshot("hierarchical", vid_lookup)
+```
+
+```{r hierarchicall-h, eval = knitr::is_html_output()}
+display_vid_html("hierarchical", vid_lookup)
+```
+
+### Case Study 3: Exploring data with piecewise linear structure
 
 Next explore some simulated noisy tree structured data (figure
 \@ref(fig:fake-trees)), our interest here is how t-SNE visualisations break
 topology of the data, and then seeing if we can resolve this by tweaking the
 default parameters with reference to the global view of the data set.
 
-(ref:fake-trees) Example high-dimensional tree shaped data, $n = 3000$ and $p = 100$. *(a)* The true data lies 2-d tree like structure consisting of ten branches. This data is available in the **phateR** package and is simulated via diffusion-limited aggregation (a random walk along the branches of the tree) with Gaussian noise added [@Moon2019-ce]. *(b)* The first two principal components, which form the initial projection for the tour, note that the backbone of the three is obscured by this view. *(c)* The default t-SNE view breaks the global structure of the tree. *(d)* Altering the initialision of t-SNE using the first two principal components, clusters the tree at its branching points.
+(ref:fake-trees) Example high-dimensional tree shaped data, $n = 3000$ and $p = 100$. *(a)* The true data lies 2-d tree like structure consisting of ten branches. This data is available in the **phateR** package and is simulated via diffusion-limited aggregation (a random walk along the branches of the tree) with Gaussian noise added [@Moon2019-ce]. *(b)* The first two principal components, which form the initial projection for the tour, note that the backbone of the tree is obscured by this view. *(c)* The default t-SNE view breaks the global structure of the tree. *(d)* Altering t-SNE using the first two principal components as the starting coordinates for the embedding, results in clustering the tree at its branching points.
 
 ```{r fake-trees, echo = FALSE, fig.align = "center", fig.cap="(ref:fake-trees)"}
 knitr::include_graphics(here::here("img", "tree-view.png"))
@@ -489,43 +541,62 @@ explained in the data) to use with the grand tour.
 Moreover, we run t-SNE using the default arguments on the complete data (this
 keeps the first 50 PCs, sets the perplexity to equal 30 and performs random
 initialisation). We then create a linked
-tour with t-SNE layout with **liminal** as shown in the following video :
+tour with t-SNE layout with **liminal** as shown in figure \@ref(fig:trees-01).
 
-<embedded video 1>
+(ref:trees-01) Screenshots of the **liminal** interface applied to tree structured data, a video of the tour animation is available at https://player.vimeo.com/video/439635892. *(a)*: Default t-SNE has difficulties embedding the tree. *(b)* linked highlighting shows that the backbone of the tree has been broken by the embedding.    
 
-From the video, we see that the t-SNE view has been unable to recapitulate the
+```{r trees-01, fig.cap = "(ref:trees-01)"}
+display_screenshot("trees-01", vid_lookup)
+```
+
+```{r trees01-h, eval = knitr::is_html_output()}
+display_vid_html("trees-01", vid_lookup)
+```
+
+We see that the t-SNE view has been unable to recapitulate the
 topology of the tree - the backbone (blue) branch has been split into three
-fragments. We can see this immediately via the linked highlighting over both
+fragments (figure \@ref(fig:trees-01)a). We can see this immediately via the linked highlighting over both
 plots. If we click on the legend for the zero branch, the blue coloured points
 on each view are highlighted and the remaining points are made transparent.
 From, here it becomes apparent from the tour view that the blue branch forms
 the backbone of the tree and is connected to all other branches. We can also
 again see that cluster sizes formed via t-SNE can be misleading; from the tour
 view there is a lot of noise along the branches, while this does not appear to
-be the case for the t-SNE result.
+be the case for the t-SNE result (figure \@ref(fig:trees-01)b).
 
 From the first view, we modify the inputs to the t-SNE view, to try and produce
 a better trade-off between local structure and retain the topology of the data.
 We keep every parameter the same except that we initialise $Y$ with the first
 two PCs (scaled to have standard deviation 1e-4) instead of the default random
 initialisation and increase the perplexity from 30 to 100. We then combine
-these results with our tour view as displayed in the video:
+these results with our tour view as displayed in figure \@ref(fig:trees-02).
 
-<embedded video 2>
 
-The video shows that this selection of parameters results in the the tips of
-the branches (the three black dots in figure \@ref(fig:fake-trees) a) being split
-into three clusters representing the terminal branches of the tree. However, there
-are perceptual issues following the placement of the three groupings on the
-t-SNE view that become apparent via simple linked brushing. If we brush the
+(ref:trees-02) Screenshots of the **liminal** interface applied to tree structured data, a video of the tour animation is available at https://player.vimeo.com/video/439635863.  
+
+```{r trees-02, fig.cap = "(ref:trees-02)"}
+display_screenshot("trees-02", vid_lookup)
+```
+
+```{r trees-02-h, eval = knitr::is_html_output()}
+display_vid_html("trees-02", vid_lookup)
+```
+
+Figure \@(ref:trees-02) shows that this selection of parameters results in the 
+tips of the branches (the three black dots in figure \@ref(fig:fake-trees)a) 
+being split into three clusters representing the terminal branches of the tree. 
+However, there are perceptual issues following the placement of the three 
+groupings on the t-SNE view that become apparent via simple linked brushing. 
+If we brush the
 tips of the yellow and brown branches (which appear to be close to each other
 on the t-SNE view), we immediately see the placement is distorted in the t-SNE
-view, and in the tour view these tips are at opposite ends of the tree.
+view, and in the tour view these tips are at opposite ends of the tree 
+(figure \@ref(fig:trees-02)b).
 Although, this is a known issue of the t-SNE algorithm, we can easily identify
 it via simple interactivity without knowing the inner workings of the method.
 
 
-### Case Study 2: Clustering single cell RNA-seq data
+### Case Study 4: Clustering single cell RNA-seq data
 
 A common analysis task in single cell studies is performing clustering to
 identify groupings  of cells with similar expression profiles. Analysts
@@ -555,69 +626,74 @@ used Louvain clustering to generate clusters [@Blondel2008-bx].
 To check and verify the clustering we construct a **liminal** view. 
 We tour the first five PCs (approximately 20% of the variance in expression),
 along side the t-SNE view which was computed from all 25 PCs. 
- Due to latency of the interface we do weighted sample of rows based on
+Due to latency of the interface we do weighted sample of rows based on
 cluster membership, leaving us with approximately 10 per cent of the original
 data size - 4,590 cells. Although this is not ideal, it still allows us to
-get a sense of the shape of the clusters as seen in the video below:
+get a sense of the shape of the clusters as seen in figure \@ref(fig:mouse-01).
 
 
-< embedded video mouse 1 >
+(ref:mouse-01) Screenshots of the **liminal** interface applied to single cell data. A video of the tour animation is available at https://player.vimeo.com/video/439635812. *(a)*: linked brushing identifies distortions in cluster placement by the embedding. *(b)*: t-SNE spreads out larger clusters like cluster 2, 4, 6, and 11 which are concentrated in the tour view. *(c)*: the tour view gives a sense of the geometry of the data; the PCs appear to form a tetrahedron like shape. *(d)*: brushing on the tour view highlights diffusions, points in cluster 9 are close together in the tour view are far away in the t-SNE view. 
 
-In the following video we can observe that the embedding has mostly captured the
+```{r mouse-01, fig.cap = "(ref:mouse-01)" }
+display_screenshot("mouse-01", vid_lookup)
+```
+
+```{r mouse-01-h, eval = knitr::is_html_output()}
+display_vid_html("mouse-01", vid_lookup)
+```
+
+We observe that the embedding has mostly captured the
 clusters relative location to each other to their location in high dimensional space, with a notable exception of points in cluster 3 and 10 as shown with
-linked brushing. As expected avoids t-SNE mitigates the crowding problem that is
+linked brushing (figure \@ref(fig:mouse-01)a). As expected, t-SNE mitigates the crowding problem that is
 an issue for tour in this case, where points in clusters 2,4,6, and 11 are
-clumped together in tour view, but are blown up in the embedding view. 
+clumped together in tour view, but are blown up in the embedding view (figure \@ref(fig:mouse-01)b). 
 The tour appears to form a tetrahedron like shape, with points lying on
 surface and along the vertices of the the tetrahedron in 5-$d$ PCA space -
-a phenomena that has also been observed in @Korem2015-af. Brushing on
+a phenomena that has also been observed in @Korem2015-af 
+(figure \@ref(fig:mouse-01)c). Brushing on
 the tour view, reveals points in cluster 9 that are diffuse in the embedding 
-view, points in cluster 9 are relatively far away and spread apart from other clusters in the tour view, but has points placed in cluster 3 and 9 in the embedding. 
+view, points in cluster 9 are relatively far away and spread apart from other 
+clusters in the tour view, but has points placed in cluster 3 and 9 in the embedding
+(figure \@ref(fig:mouse-01)d). 
 
 Next, we identify marker genes for clusters using one sided Welch t-tests with
 a minimum log fold change of one as recommended by @Amezquita2020-at, which
-uses the testing framework from @McCarthy2009-qx. We select the top 10 marker genes that are upregulated in cluster 2, which was one of the clumped clusters
+uses the testing framework from @McCarthy2009-qx. We select the top 10 marker 
+genes that are upregulated in cluster 2, which was one of the clumped clusters
 when we toured on principal components. Here the tour becomes an alternative
 to a standard heatmap view for assessing shared markers; the basis
 generation (shown as the biplot on the left view) reflects the relative 
 weighting of each gene. We run the tour directly on the 
-log normalised expression values using the same subset as before:
+log normalised expression values using the same subset as before figure \@ref(fig:mouse-02).
 
-< embedded video mouse 2 >
+(ref:mouse-02) Screenshots of the **liminal** tour applied to a marker gene set. A video of the tour animation is available at https://player.vimeo.com/video/439635843. *(a)*: the axis (left) and tour (right) view of 10 marker genes, using linked highlighting we see that the marker genes separate clusters 2, 4, 6, and 11 from the other groups. *(b)*: after zooming, it appears that the marker genes give rise to a gradient along the clusters.  
 
-We see that the expression of the marker genes using t, appear to separate
+
+```{r mouse-02, fig.cap = "(ref:mouse-02)"}
+display_screenshot("mouse-02", vid_lookup)
+```
+
+```{r mouse-02-h, eval = knitr::is_html_output()}
+display_vid_html("mouse-02", vid_lookup)
+```
+
+We see that the expression of the marker genes, appear to separate
 the previously clumped clusters 2,4,6, and 11 from the other clusters, 
-indicating that these genes are expressed in all four clusters, and the 
-magnitude of expression in these genes is similar accross these groups, 
-consistent with the results of marker gene analysis.
-
-
-<!--
-### Case Study 3: How do people draw animals?
-
-In the final case study, we explore a subset of the Google QuickDraw dataset 
-[@quickdraw-paper]. The data are sketches drawn by people of common concepts
-like 'airplane' or 'shoe', and corresponding metadata about the humans who
-created the sketches, such as country, the word category, whether the sketch
-was recognised by Google's neural network, and the number of strokes taken.
-We downloaded the metadata and normalised 28 by 28 pixel bitmaps via the 
-`quickdraw` package in R; unravelling the bitmaps unravelled the bitmaps into 
-a 784 dimension image vector. We sampled 500 images from each of the following
-categories: "broccoli", "flying saucer", "ice cream", "octopus", "pineapple",
-and "whale". We are interested in discovering images that are similiar but
-belong to different classifications 
--->
+indicating that these genes are expressed in all four clusters (figure \@ref(fig:mouse-02)a). Using zooming, we can see a trajectory forming along
+the clusters, while the axis view shows that magnitude of expression in 
+the marker genes is similar across these separated clusters which is 
+consistent with the results of marker gene analysis (figure \@ref(fig:mouse-02)b).
 
 
 ## Discussion
 
 We have shown that the use of tours as a tool for interacting with
-high dimensional data provides an addiontal insight for interrogating views
+high dimensional data provides an additional insight for interrogating views
 generated from embeddings. The interface we have designed in the **liminal**
 package, allows a user to gain a deeper understanding of an embedding 
 algorithm, and rectifies perceptual issues associated with NLDR methods via 
 linked interactions with the tour. As we have shown in the simulation case
-studies, the t-SNE method can produce misleading embeddings but can be
+studies, the t-SNE method can produce misleading embeddings which can be
 detected through the use linked brushing and highlighting. In the case when
 the data has a piecewise linear geometry, like the tree simulation, the tour
 preserves the shape of the data which can be obscured by the embedding method.
@@ -630,14 +706,36 @@ using a tour on marker gene sets. We see our approach as being valuable
 to the single cell analyst who wants to make their embeddings more 
 interpretable.
 
+In future implementations it will be possible to shift from one to one linked
+brushing to one to many linked brushing. This form of brushing acts directly on
+a $k$-nearest neighbours ($k$-nn) graph computed from a
+reference dataset: when a user brushes over a region in the embedding,
+all the points that match the graphs edges are selected on the 
+corresponding tour view.  The reference data set for computing
+nearest neighbours (for example a distance matrix, or the complete data matrix)
+can be independent of the tour or embedding views. The estimation of neighbours
+can be computed efficiently with the `FNN` or `RcppAnnoy` packages
+on the server side [@fnn-pkg; @rcpp-annoy-pkg]. In place of highlighting, one 
+could use opacity or binned colour scales to encode distances or ranks instead 
+of the neighbouring points. Brush composition, such as 'and', 'or',
+or 'not' brushes, could be used to interrogate mismatches between the 
+$k$-nn graphs estimated from both the embedding and tour views.
+
 There are some limitations
 in using the **liminal** interface for larger datasets. First,
-t-SNE avoids the crowding problem, points are seperated into distinct regions
+t-SNE avoids the crowding problem, points are separated into distinct regions
 on the display canvas, while for the tour, points are concentrated in the
-center of the projection and become difficult to see. 
-Second, as $n$ increases the animation becomes slower as there is more data passing from the server to the client. Both of these issues could be mitigated
+centre of the projection and become difficult to see. 
+Second, as $n$ increases the animation becomes slower as there is more data
+passing from the server to the client. Both of these issues could be mitigated
 through alternate tour paths and displays. The recent work
 by @Laa2020-wr is a promising area for further investigation, as well as
 work from topological statistics [@Rieck2017-kk; @Genovese2017-iq]. 
+
+## Acknowledgements {-}
+
+We would like to thank Dr David Frazier, Dr Ursula Laa and Dr Paul Harrison for 
+their feedback on this work. The screenshots and images were compiled using the 
+**cowplot** and **ggplot2** packages [@r-cowplot; @Wickham2016-gz].
 
 ## References
