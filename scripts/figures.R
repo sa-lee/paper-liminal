@@ -48,7 +48,9 @@ mpout <- function() {
   lapply(files, draw_screenshot, scale = 1)
 }
 
-pout <- plot_grid(plotlist = mpout(),
+frames <- mpout()
+
+pout <- plot_grid(plotlist = ,
           nrow = 4, align = "hv", axis = "tblr", 
           labels = "auto")
 
