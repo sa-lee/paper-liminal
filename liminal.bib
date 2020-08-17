@@ -1,11 +1,232 @@
+
+@ARTICLE{Asimov1985-vp,
+  title     = "The Grand Tour: A Tool for Viewing Multidimensional Data",
+  author    = "Asimov, Daniel",
+  abstract  = "The grand tour is a method for viewing multivariate statistical
+               data via orthogonal projections onto a sequence of
+               two-dimensional subspaces. The sequence of subspaces is chosen
+               so that it is dense in the set of all two-dimensional subspaces.
+               Desirable properties of such sequences of subspaces are
+               considered, and several specific types of sequences are tested
+               for rapidity of becoming dense. Tabulations are provided of the
+               minimum length of a grand tour sequence necessary to achieve
+               various degrees of denseness in dimensions up to 20.",
+  journal   = "SIAM J. Sci. and Stat. Comput.",
+  publisher = "Society for Industrial and Applied Mathematics",
+  volume    =  6,
+  number    =  1,
+  pages     = "128--143",
+  month     =  jan,
+  year      =  1985,
+  url       = "https://doi.org/10.1137/0906011",
+  issn      = "0196-5204",
+  doi       = "10.1137/0906011"
+}
+
+
+@INPROCEEDINGS{Buja1986-zr,
+  title     = "Grand tour methods: an outline",
+  booktitle = "Proceedings of the Seventeenth Symposium on the interface of
+               computer sciences and statistics on Computer science and
+               statistics",
+  author    = "Buja, Andreas and Asimov, Daniel",
+  publisher = "Elsevier North-Holland, Inc.",
+  pages     = "63--67",
+  month     =  jun,
+  year      =  1986,
+  url       = "https://dl.acm.org/doi/10.5555/26036.26046",
+  address   = "USA",
+  location  = "Lexington, Kentucky, USA",
+  isbn      = "9780444700186"
+}
+
+
+
+@ARTICLE{Buja2008-fn,
+  title     = "Data Visualization With Multidimensional Scaling",
+  author    = "Buja, Andreas and Swayne, Deborah F and Littman, Michael L and
+               Dean, Nathaniel and Hofmann, Heike and Chen, Lisha",
+  abstract  = "We discuss methodology for multidimensional scaling (MDS) and
+               its implementation in two software systems, GGvis and XGvis. MDS
+               is a visualization technique for proximity data, that is, data
+               in the form of N ? N dissimilarity matrices. MDS constructs maps
+               (?configurations,? ?embeddings?) in IRk by interpreting the
+               dissimilarities as distances. Two frequent sources of
+               dissimilarities are high-dimensional data and graphs. When the
+               dissimilarities are distances between high-dimensional objects,
+               MDS acts as a (often nonlinear) dimension-reduction technique.
+               When the dissimilarities are shortest-path distances in a graph,
+               MDS acts as a graph layout technique. MDS has found recent
+               attention in machine learning motivated by image databases
+               (?Isomap?). MDS is also of interest in view of the popularity of
+               ?kernelizing? approaches inspired by Support Vector Machines
+               (SVMs; ?kernel PCA?).This article discusses the following
+               general topics: (1) the stability and multiplicity of MDS
+               solutions; (2) the analysis of structure within and between
+               subsets of objects with missing value schemes in dissimilarity
+               matrices; (3) gradient descent for optimizing general MDS loss
+               functions (?Strain? and ?Stress?); (4) a unification of
+               classical (Strain-based) and distance (Stress-based)
+               MDS.Particular topics include the following: (1) blending of
+               automatic optimization with interactive displacement of
+               configuration points to assist in the search for global optima;
+               (2) forming groups of objects with interactive brushing to
+               create patterned missing values in MDS loss functions; (3)
+               optimizing MDS loss functions for large numbers of objects
+               relative to a small set of anchor points (?external unfolding?);
+               and (4) a non-metric version of classical MDS.We show
+               applications to the mapping of computer usage data, to the
+               dimension reduction of marketing segmentation data, to the
+               layout of mathematical graphs and social networks, and finally
+               to the spatial reconstruction of molecules.",
+  journal   = "J. Comput. Graph. Stat.",
+  publisher = "Taylor \& Francis",
+  volume    =  17,
+  number    =  2,
+  pages     = "444--472",
+  month     =  jun,
+  year      =  2008,
+  url       = "https://doi.org/10.1198/106186008X318440",
+  eprint    = "http://dx.doi.org/10.1198/106186008X318440",
+  issn      = "1061-8600",
+  doi       = "10.1198/106186008X318440"
+}
+
+
+
+@INPROCEEDINGS{Swayne2004-ua,
+  title     = "Exploratory Visual Analysis of Graphs in {GGOBI}",
+  booktitle = "{COMPSTAT} 2004 --- Proceedings in Computational Statistics",
+  author    = "Swayne, Deborah F and Buja, Andreas",
+  abstract  = "Graphs have long been of interest in telecommunications and
+               social network analysis, and they are now receiving increasing
+               attention from statisticians working in other areas,
+               particularly in biostatistics. Most of the visualization
+               software available for working with graphs has come from outside
+               statistics and has not included the kind of interaction that
+               statisticians have come to expect. At the same time, most of the
+               exploratory visualization software available to statisticians
+               has made no provision for the special structure of graphs.",
+  publisher = "Physica-Verlag HD",
+  pages     = "477--488",
+  year      =  2004,
+  url       = "http://dx.doi.org/10.1007/978-3-7908-2656-2_39",
+  doi       = "10.1007/978-3-7908-2656-2\_39"
+}
+
+@Manual{r-liminal,
+    title = "liminal: Multivariate Data Visualization With Tours and Embeddings",
+    author = "Lee, Stuart and Cook, Dianne",
+    note = "R package version 0.0.5.9999",
+    year = "2020",
+    url = "https://github.com/sa-lee/liminal"
+}
+
+@ARTICLE{Swayne2003-qd,
+  title     = "{GGobi}: Evolving from {XGobi} into an extensible framework for
+               interactive data visualization",
+  author    = "Swayne, Deborah F and Lang, Duncan Temple and Buja, Andreas and
+               Cook, Dianne",
+  journal   = "Comput. Stat. Data Anal.",
+  publisher = "Elsevier",
+  volume    =  43,
+  number    =  4,
+  pages     = "423--444",
+  month     =  aug,
+  year      =  2003,
+  url       = "https://research.monash.edu/en/publications/ggobi-evolving-from-xgobi-into-an-extensible-framework-for-intera",
+  keywords  = "API; Interoperability; Plugins; R; Statistical graphics; XML",
+  issn      = "0167-9473",
+  doi       = "10.1016/S0167-9473(02)00286-4"
+}
+
+
+@INPROCEEDINGS{Buja1986-ku,
+  title     = "A data viewer for multivariate data",
+  booktitle = "Computing Science and Statistics: Proceedings of the 18th
+               Symposium on the Interface",
+  author    = "Buja, Andreas and Hurley, Catherine and McDonald, John",
+  publisher = "American Statistical Association",
+  pages     = "171--174",
+  year      =  1986,
+  location  = "Washington"
+}
+
+
+@ARTICLE{Swayne1998-uq,
+  title     = "{XGobi}: Interactive Dynamic Data Visualization in the {X}
+               Window System",
+  author    = "Swayne, Deborah F and Cook, Dianne and Buja, Andreas",
+  abstract  = "Abstract XGobi is a data visualization system with
+               state-of-the-art interactive and dynamic methods for the
+               manipulation of views of data. It implements 2-D displays of
+               projections of points and lines in high-dimensional spaces, as
+               well as parallel coordinate displays and textual views thereof.
+               Projection tools include dotplots of single variables, plots of
+               pairs of variables, 3-D data rotations, various grand tours, and
+               interactive projection pursuit. Views of the data can be
+               reshaped. Points can be labeled and brushed with glyphs and
+               colors. Lines can be edited and colored. Several XGobi processes
+               can be run simultaneously and linked for labeling, brushing, and
+               sharing of projections. Missing data are accommodated and their
+               patterns can be examined; multiple imputations can be given to
+               XGobi for rapid visual diagnostics. XGobi includes an extensive
+               online help facility. XGobi can be integrated in other software
+               systems, as has been done for the data analysis language S, the
+               geographic information system (GIS) Arc View?, and the
+               interactive multidimensional scaling program XGvis. XGobi is
+               implemented in the X Window System? for portability as well as
+               the ability to run across a network.",
+  journal   = "J. Comput. Graph. Stat.",
+  publisher = "Taylor \& Francis",
+  volume    =  7,
+  number    =  1,
+  pages     = "113--130",
+  month     =  mar,
+  year      =  1998,
+  url       = "https://www.tandfonline.com/doi/abs/10.1080/10618600.1998.10474764",
+  issn      = "1061-8600",
+  doi       = "10.1080/10618600.1998.10474764"
+}
+
+
 @MISC{Melville2020,
   title        = "{t-SNE} Initialization Options",
   author       = "Melville, James",
   url          = "https://jlmelville.github.io/smallvis/init.html",
   howpublished = "\url{https://jlmelville.github.io/smallvis/init.html}",
-  note         = "Accessed: 2020-3-23"
+  note         = "Accessed: 2020-3-23",
+  year = 2020
 }
 
+
+@ARTICLE{Cook1995-bi,
+  title     = "Grand Tour and Projection Pursuit",
+  author    = "Cook, Dianne and Buja, Andreas and Cabrera, Javier and Hurley,
+               Catherine",
+  abstract  = "Abstract The grand tour and projection pursuit are two methods
+               for exploring multivariate data. We show how to combine them
+               into a dynamic graphical tool for exploratory data analysis,
+               called a projection pursuit guided tour. This tool assists in
+               clustering data when clusters are oddly shaped and in finding
+               general low-dimensional structure in high-dimensional, and in
+               particular, sparse data. An example shows that the method, which
+               is projection-based, can be quite powerful in situations that
+               may cause grief for methods based on kernel smoothing. The
+               projection pursuit guided tour is also useful for comparing and
+               developing projection pursuit indexes and illustrating some
+               types of asymptotic results.",
+  journal   = "J. Comput. Graph. Stat.",
+  publisher = "Taylor \& Francis",
+  volume    =  4,
+  number    =  3,
+  pages     = "155--172",
+  month     =  sep,
+  year      =  1995,
+  url       = "https://www.tandfonline.com/doi/abs/10.1080/10618600.1995.10474674",
+  issn      = "1061-8600",
+  doi       = "10.1080/10618600.1995.10474674"
+}
 
 
 @MISC{Lyttle2020-nq,
@@ -14,6 +235,54 @@
   year   =  2020,
   url    = "https://CRAN.R-project.org/package=vegawidget"
 }
+
+
+@ARTICLE{Becker1987-gd,
+  title     = "Brushing Scatterplots",
+  author    = "Becker, Richard A and Cleveland, William S",
+  abstract  = "[A dynamic graphical method is one in which a data analyst
+               interacts in real time with a data display on a computer
+               graphics terminal. Using a screen input device such as a mouse,
+               the analyst can specify, in a visual way, points or regions on
+               the display and cause aspects of the display to change nearly
+               instantaneously. Brushing is a collection of dynamic methods for
+               viewing multidimensional data. It is very effective when used on
+               a scatterplot matrix, a rectangular array of all pairwise
+               scatterplots of the variables. Four brushing
+               operations-highlight, shadow highlight, delete, and label-are
+               carried out by moving a mouse-controlled rectangle, called the
+               brush, over one of the scatterplots. The effect of an operation
+               appears simultaneously on all scatterplots. Three paint
+               modes-transient, lasting, and undo-and the ability to change the
+               shape of the brush allow the analyst to specify collections of
+               points on which the operations are carried out. Brushing can be
+               used in various ways or on certain types of data; these usages
+               are called brush techniques and include the following:
+               single-point and cluster linking, conditioning on a single
+               variable, conditioning on two variables, subsetting with
+               categorical variables, and stationarity probing of a time
+               series.]",
+  journal   = "Technometrics",
+  publisher = "[Taylor \& Francis, Ltd., American Statistical Association,
+               American Society for Quality]",
+  volume    =  29,
+  number    =  2,
+  pages     = "127--142",
+  year      =  1987,
+  url       = "http://www.jstor.org/stable/1269768",
+  issn      = "0040-1706",
+  doi       = "10.2307/1269768"
+}
+
+
+@PHDTHESIS{McDonald1982-ew,
+  title  = "Interactive graphics for data analysis",
+  author = "McDonald, J A",
+  year   =  1982,
+  url    = "http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.331.6673&rep=rep1&type=pdf",
+  school = "Stanford University"
+}
+
 
 @UNPUBLISHED{Moon2019-ce,
   title    = "Visualizing Structure and Transitions for Biological Data
@@ -49,7 +318,6 @@
   month    =  apr,
   year     =  2019,
   url      = "https://www.biorxiv.org/content/10.1101/120378v4",
-  language = "en",
   doi      = "10.1101/120378"
 }
 
@@ -124,7 +392,6 @@
   month    =  dec,
   year     =  2011,
   url      = "http://dx.doi.org/10.1109/TVCG.2011.185",
-  language = "en",
   issn     = "1077-2626, 1941-0506",
   pmid     = "22034350",
   doi      = "10.1109/TVCG.2011.185"
@@ -199,7 +466,6 @@
   month    =  nov,
   year     =  2019,
   url      = "http://dx.doi.org/10.1038/s41467-019-13056-x",
-  language = "en",
   issn     = "2041-1723",
   pmid     = "31780648",
   doi      = "10.1038/s41467-019-13056-x",
@@ -276,33 +542,21 @@
   month    =  jun,
   year     =  2019,
   url      = "http://dx.doi.org/10.1371/journal.pcbi.1006907",
-  language = "en",
   issn     = "1553-734X, 1553-7358",
   pmid     = "31220072",
   doi      = "10.1371/journal.pcbi.1006907",
   pmc      = "PMC6586259"
 }
 
-% The entry below contains non-ASCII chars that could not be converted
-% to a LaTeX equivalent.
+
+
 @INPROCEEDINGS{Lewis2012-ai,
   title     = "A behavioral investigation of dimensionality reduction",
   booktitle = "Proceedings of the Annual Meeting of the Cognitive Science
                Society",
   author    = "Lewis, Joshua and Van der Maaten, Laurens and de Sa, Virginia",
-  abstract  = "A cornucopia of dimensionality reduction techniques have emerged
-               over the past decade, leaving data analysts with a wide variety
-               of choices for reducing their data. Means of evaluating and
-               comparing low-dimensional embeddings useful for visualization,
-               however, are very limited. When proposing a new technique it is
-               common to simply show rival embeddings side-by-side and let
-               human judgment determine which embedding is superior. This study
-               investigates whether such human embedding evaluations are
-               reliable, ie …",
-  publisher = "escholarship.org",
   volume    =  34,
-  year      =  2012,
-  url       = "https://escholarship.org/content/qt0ss3m55c/qt0ss3m55c.pdf"
+  year      =  2012
 }
 
 @ARTICLE{Sedlmair2013-pn,
@@ -338,7 +592,6 @@
   month    =  dec,
   year     =  2013,
   url      = "http://dx.doi.org/10.1109/TVCG.2013.153",
-  language = "en",
   issn     = "1077-2626, 1941-0506",
   pmid     = "24051830",
   doi      = "10.1109/TVCG.2013.153"
@@ -366,7 +619,6 @@
   year      =  2014,
   url       = "https://projecteuclid.org/euclid.aos/1407420007",
   keywords  = "Ridges; density estimation; manifold learning",
-  language  = "en",
   issn      = "0090-5364, 2168-8966",
   doi       = "10.1214/14-AOS1218"
 }
@@ -499,7 +751,6 @@
   month    =  may,
   year     =  2020,
   url      = "http://dx.doi.org/10.1101/gr.251447.119",
-  language = "en",
   issn     = "1088-9051, 1549-5469",
   pmid     = "32430339",
   doi      = "10.1101/gr.251447.119",
@@ -540,7 +791,6 @@
   month    =  jul,
   year     =  2017,
   url      = "http://dx.doi.org/10.1109/TVCG.2016.2570755",
-  language = "en",
   issn     = "1077-2626, 1941-0506",
   pmid     = "28113434",
   doi      = "10.1109/TVCG.2016.2570755"
@@ -568,7 +818,6 @@
   month    =  mar,
   year     =  2019,
   url      = "http://dx.doi.org/10.1038/s41592-018-0308-4",
-  language = "en",
   issn     = "1548-7091, 1548-7105",
   pmid     = "30742040",
   doi      = "10.1038/s41592-018-0308-4",
@@ -612,7 +861,7 @@
 % to a LaTeX equivalent.
 @ARTICLE{Van_Der_Maaten2014-zn,
   title     = "Accelerating {t-SNE} using tree-based algorithms",
-  author    = "Van Der Maaten, L",
+  author    = "van der Maaten, Laurens",
   abstract  = "The paper investigates the acceleration of t-SNE---an embedding
                technique that is commonly used for the visualization of
                high-dimensional data in scatter plots---using two treebased
@@ -730,7 +979,6 @@
   month         =  aug,
   year          =  2018,
   url           = "http://dx.doi.org/10.1109/TVCG.2018.2865194",
-  language      = "en",
   archivePrefix = "arXiv",
   eprint        = "1710.00992",
   primaryClass  = "cs.HC",
@@ -1006,7 +1254,6 @@
   month    =  dec,
   year     =  2013,
   url      = "http://dx.doi.org/10.1109/TVCG.2013.153",
-  language = "en",
   issn     = "1077-2626, 1941-0506",
   pmid     = "24051830",
   doi      = "10.1109/TVCG.2013.153"
@@ -1122,7 +1369,6 @@
   month    =  jan,
   year     =  2017,
   url      = "http://dx.doi.org/10.1109/TVCG.2016.2599030",
-  language = "en",
   issn     = "1077-2626, 1941-0506",
   pmid     = "27875150",
   doi      = "10.1109/TVCG.2016.2599030"
@@ -1169,14 +1415,13 @@
   year      =  2008,
   url       = "https://doi.org/10.1007/978-3-540-33037-0_13",
   address   = "Berlin, Heidelberg",
-  language  = "en",
   isbn      = "9783540330370, 9783540330370",
   doi       = "10.1007/978-3-540-33037-0\_13"
 }
 
 @ARTICLE{Maaten2008-sk,
   title    = "Visualizing Data using {t-SNE}",
-  author   = "Maaten, Laurens van der and Hinton, Geoffrey",
+  author   = "van der Maaten, Laurens and Hinton, Geoffrey",
   journal  = "J. Mach. Learn. Res.",
   volume   =  9,
   number   = "Nov",
@@ -1258,7 +1503,6 @@
   month     =  jun,
   year      =  2015,
   url       = "https://doi.org/10.1007/s00180-014-0534-x",
-  language  = "en",
   issn      = "0943-4062",
   doi       = "10.1007/s00180-014-0534-x"
 }
@@ -1296,7 +1540,6 @@
   month     =  jun,
   year      =  2016,
   url       = "https://play.google.com/store/books/details?id=RTMFswEACAAJ",
-  language  = "en",
   isbn      = "9783319242750, 9783319242774",
   doi       = "10.1007/978-3-319-24277-4"
 }
@@ -1310,7 +1553,6 @@
   month     =  dec,
   year      =  2007,
   url       = "https://play.google.com/store/books/details?id=34DL7lR_4CoC",
-  language  = "en",
   isbn      = "9780387717616, 9780387717623",
   doi       = "10.1007/978-0-387-71762-3"
 }
@@ -1350,7 +1592,6 @@
   month    =  dec,
   year     =  2013,
   url      = "http://dx.doi.org/10.1109/TVCG.2013.153",
-  language = "en",
   issn     = "1077-2626, 1941-0506",
   pmid     = "24051830",
   doi      = "10.1109/TVCG.2013.153"
@@ -1469,15 +1710,6 @@
   primaryClass  = "stat.ML",
   arxivid       = "1611.05469"
 }
-
-  @Manual{baseR,
-    title = {R: A Language and Environment for Statistical Computing},
-    author = {{R Core Team}},
-    organization = {R Foundation for Statistical Computing},
-    address = {Vienna, Austria},
-    year = {2019},
-    url = {https://www.R-project.org/},
-  }
 
 
 % The entry below contains non-ASCII chars that could not be converted
@@ -1632,7 +1864,6 @@ Implementation},
   month    =  may,
   year     =  2015,
   url      = "http://dx.doi.org/10.1016/j.cell.2015.05.002",
-  language = "en",
   issn     = "0092-8674, 1097-4172",
   pmid     = "26000488",
   doi      = "10.1016/j.cell.2015.05.002",
@@ -1688,7 +1919,6 @@ Implementation},
   month    =  feb,
   year     =  2020,
   url      = "http://dx.doi.org/10.1038/s41592-019-0654-x",
-  language = "en",
   issn     = "1548-7091, 1548-7105",
   pmid     = "31792435",
   doi      = "10.1038/s41592-019-0654-x"
@@ -1700,7 +1930,7 @@ Implementation},
     year = {2019},
     note = {R package version 2.0.2},
   }
-  
+
 @Manual{quickdrawR,
     title = {quickdraw: An API for pulling QuickDraw data from Google},
     author = {Sherry Zhang and Stuart Lee},
@@ -1749,7 +1979,6 @@ Implementation},
   month    =  may,
   year     =  2005,
   url      = "http://dx.doi.org/10.1073/pnas.0500334102",
-  language = "en",
   issn     = "0027-8424",
   pmid     = "15899970",
   doi      = "10.1073/pnas.0500334102",
@@ -1810,7 +2039,6 @@ Implementation},
   month     =  dec,
   year      =  1952,
   url       = "https://link.springer.com/article/10.1007/BF02288916",
-  language  = "en",
   issn      = "0033-3123, 1860-0980",
   doi       = "10.1007/BF02288916"
 }
@@ -1841,7 +2069,6 @@ Implementation},
   month     =  mar,
   year      =  1964,
   url       = "https://link.springer.com/article/10.1007/BF02289565",
-  language  = "en",
   issn      = "0033-3123, 1860-0980",
   doi       = "10.1007/BF02289565"
 }
@@ -1918,7 +2145,6 @@ Neighbors},
   month     =  oct,
   year      =  2008,
   url       = "https://iopscience.iop.org/article/10.1088/1742-5468/2008/10/P10008/meta",
-  language  = "en",
   issn      = "1742-5468",
   doi       = "10.1088/1742-5468/2008/10/P10008"
 }
@@ -1969,7 +2195,6 @@ Neighbors},
   month    =  jul,
   year     =  2015,
   url      = "http://dx.doi.org/10.1371/journal.pcbi.1004224",
-  language = "en",
   issn     = "1553-734X, 1553-7358",
   pmid     = "26161936",
   doi      = "10.1371/journal.pcbi.1004224",
@@ -2007,11 +2232,39 @@ Neighbors},
   month    =  mar,
   year     =  2009,
   url      = "http://dx.doi.org/10.1093/bioinformatics/btp053",
-  language = "en",
   issn     = "1367-4803, 1367-4811",
   pmid     = "19176553",
   doi      = "10.1093/bioinformatics/btp053",
   pmc      = "PMC2654802"
+}
+
+
+@ARTICLE{Wickham2011-st,
+  title    = "tourr: An {R} Package for Exploring Multivariate Data with
+              Projections",
+  author   = "Wickham, Hadley and Cook, Dianne and Hofmann, Heike and Buja,
+              Andreas",
+  abstract = "This paper describes an R package which produces tours of
+              multivariate data. The package includes functions for creating
+              different types of tours, including grand, guided, and little
+              tours, which project multivariate data (p-D) down to 1, 2, 3, or,
+              more generally, d ($\leq$ p) dimensions. The projected data can
+              be rendered as densities or histograms, scatterplots, anaglyphs,
+              glyphs, scatterplot matrices, parallel coordinate plots, time
+              series or images, and viewed using an R graphics device, passed
+              to GGobi, or saved to disk. A tour path can be stored for
+              visualisation or replay. With this package it is possible to
+              quickly experiment with different, and new, approaches to tours
+              of data. This paper contains animations that can be viewed using
+              the Adobe Acrobat PDF viewer.",
+  journal  = "Journal of Statistical Software, Articles",
+  volume   =  40,
+  number   =  2,
+  pages    = "1--18",
+  year     =  2011,
+  url      = "https://www.jstatsoft.org/v040/i02",
+  issn     = "1548-7660",
+  doi      = "10.18637/jss.v040.i02"
 }
 
 
@@ -2053,4 +2306,60 @@ Neighbors},
 }
 
 
+@MISC{Chang2020-bq,
+  title  = "shiny: Web Application Framework for {R}",
+  author = "Chang, Winston and Cheng, Joe and Allaire, J J and Xie, Yihui and
+            McPherson, Jonathan",
+  year   =  2020,
+  url    = "https://CRAN.R-project.org/package=shiny"
+}
 
+
+@ARTICLE{Satyanarayan2017-gs,
+  title    = "{Vega-Lite}: A Grammar of Interactive Graphics",
+  author   = "Satyanarayan, Arvind and Moritz, Dominik and Wongsuphasawat,
+              Kanit and Heer, Jeffrey",
+  abstract = "We present Vega-Lite, a high-level grammar that enables rapid
+              specification of interactive data visualizations. Vega-Lite
+              combines a traditional grammar of graphics, providing visual
+              encoding rules and a composition algebra for layered and
+              multi-view displays, with a novel grammar of interaction. Users
+              specify interactive semantics by composing selections. In
+              Vega-Lite, a selection is an abstraction that defines input event
+              processing, points of interest, and a predicate function for
+              inclusion testing. Selections parameterize visual encodings by
+              serving as input data, defining scale extents, or by driving
+              conditional logic. The Vega-Lite compiler automatically
+              synthesizes requisite data flow and event handling logic, which
+              users can override for further customization. In contrast to
+              existing reactive specifications, Vega-Lite selections decompose
+              an interaction design into concise, enumerable semantic units. We
+              evaluate Vega-Lite through a range of examples, demonstrating
+              succinct specification of both customized interaction methods and
+              common techniques such as panning, zooming, and linked selection.",
+  journal  = "IEEE Trans. Vis. Comput. Graph.",
+  volume   =  23,
+  number   =  1,
+  pages    = "341--350",
+  month    =  jan,
+  year     =  2017,
+  url      = "http://dx.doi.org/10.1109/TVCG.2016.2599030",
+  issn     = "1077-2626, 1941-0506",
+  pmid     = "27875150",
+  doi      = "10.1109/TVCG.2016.2599030"
+}
+
+@MISC{Lyttle2020-hp,
+  title  = "vegawidget: 'Htmlwidget' for 'Vega' and {'Vega-Lite'}",
+  author = "Lyttle, Ian and {Vega/Vega-Lite Developers}",
+  year   =  2020,
+  url    = "https://CRAN.R-project.org/package=vegawidget"
+}
+
+@Manual{r-cowplot,
+    title = "cowplot: Streamlined Plot Theme and Plot Annotations for 'ggplot2'",
+    author = "Wilke, Clause O.",
+    year =  "2019",
+    note = "R package version 1.0.0",
+    url = "https://CRAN.R-project.org/package=cowplot",
+}
