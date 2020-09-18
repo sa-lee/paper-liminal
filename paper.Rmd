@@ -10,7 +10,15 @@ output:
     number_sections: no
 bibliography: liminal.bib
 ---
-```{r setup-videos, cache = FALSE}
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+```{r setup-videos, cache = FALSE, echo = FALSE}
 vid_lookup <- tibble::tribble(
   ~key, ~url, ~path,
   "gaussian",  "https://player.vimeo.com/video/439635921", here::here("img", "liminal-screenshot-gaussian.png"),
