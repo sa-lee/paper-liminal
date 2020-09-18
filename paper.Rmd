@@ -10,7 +10,6 @@ output:
     number_sections: no
 bibliography: liminal.bib
 ---
-
 ```{r setup-videos, cache = FALSE}
 vid_lookup <- tibble::tribble(
   ~key, ~url, ~path,
