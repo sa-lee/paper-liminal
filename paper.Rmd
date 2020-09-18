@@ -247,7 +247,7 @@ Re-writing the loss function in terms of attractive (right) and repulsive
 $$ \mathcal{L(\mathcal{P}, \mathcal{Q})} = -\sum_{i \ne j} p_{ij}\log w_{ij} +
 \log\sum_{i \ne j} w_{ij} $$
 
-So when the the loss function is minimised this corresponds to large attractive
+So when the loss function is minimised this corresponds to large attractive
 forces, that is, the pair-wise distances in $Y$ are small when there are
 non-zero $p_{ij}$, i.e. $x_i$ and $x_j$ are close together. The repulsive force
 should also be small when the loss function is minimised, that is, when
@@ -620,7 +620,7 @@ selected for this case study has features similar to those found in case studies
 First, we downloaded the raw mouse retinal single cell RNA-seq data from
 @Macosko2015-ot using the **scRNAseq** Bioconductor package [@scRNAseq-d]. We
 have followed a standard workflow for pre-processing and normalizing this data 
-(described by @Amezquita2020-at): we performed QC using the the **scater**
+(described by @Amezquita2020-at): we performed QC using the **scater** package
 by removing cells with high proportion of mitochondrial gene expression and low
 numbers of genes detected, we log-transformed and normalised the expression 
 values and  finally selected highly variable genes (HVGs) using **scran** 
@@ -654,7 +654,7 @@ linked brushing (figure \@ref(fig:mouse-01)a). As expected, t-SNE mitigates the 
 an issue for tour in this case, where points in clusters 2,4,6, and 11 are
 clumped together in tour view, but are blown up in the embedding view (figure \@ref(fig:mouse-01)b). 
 The tour appears to form a tetrahedron like shape, with points lying on
-surface and along the vertices of the the tetrahedron in 5-$d$ PCA space -
+surface and along the vertices of the tetrahedron in 5-$d$ PCA space -
 a phenomena that has also been observed in @Korem2015-af 
 (figure \@ref(fig:mouse-01)c). Brushing on
 the tour view, reveals points in cluster 9 that are diffuse in the embedding 
