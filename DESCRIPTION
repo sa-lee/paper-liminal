@@ -1,11 +1,11 @@
 Package: liminalPaper
 Type: Package
-Title: Evaluating embeddings and tours
+Title: Evaluating Embeddings And Tours
 Version: 0.0.1
 Authors@R: c(
-             person(role = c("aut", "cre"), "Stuart", "Lee", email = "lee.s@wehi.edu.au"),
+             person(role = c("aut", "cre"), "Stuart", "Lee", email = "stuart.lee1@monash.edu"),
              )
-Description: Packages and data required for reproducing paper.
+Description: Packages and data required for reproducing the liminal paper.
 License: MIT 
 Encoding: UTF-8
 LazyData: true
@@ -15,20 +15,21 @@ VignetteBuilder:
     rmarkdown
 Depends: R (>= 4.0)
 Imports:
-    liminal
-Suggests:
+    liminal,
     knitr,
     rmarkdown,
+    bookdown,
     ggplot2,
     dplyr,
-    TENxPBMCData,
     scater,
     scran
     Rtsne,
     uwot,
-    quickdraw
+    ensembldb,
+    igraph,
+    AnnotationHub,
+    AnnotationDbi,
+    scRNAseq
 Remotes:
-    sa-lee/liminal,
-    huizezhang-sherry/quickdraw
-    
+    sa-lee/liminal
 

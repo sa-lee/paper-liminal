@@ -7,35 +7,33 @@ output: github_document
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "R>"
 )
 ```
 
 # Casting multiple shadows: interactive data visualisation with tours and embeddings
 
-
-`liminal` aims to increase the effective use of embeddings by combining
-them with interactive and dynamic graphics (via the vegawidget and shiny
-packages) and with a technique from multivariate stastics called the tour (via
-the tourr package).  Briefly, a tour is a sequence of interploated projections
-of multivariate data onto lower dimensional space. The sequence is displayed as
-a dynamic visualisation, and enables us to see the shadows the high dimensional
-data makes in a lower dimensional view. By combining the tour with embedding
-algorithms, we can see the following:
-
-1. whether distances in the embedding view are meaningful 
-2. the local and global structure of the data 
-3. identify 'interesting' shapes or points in the data
+> There has been a rapid uptake in the use of non-linear dimensionality reduction (NLDR) methods such as t-distributed stochastic neighbour embedding (t-SNE) in the natural sciences as part of cluster orientation and dimension reduction workflows. The appropriate use of these methods is made difficult by their complex parameterisations and the multitude of decisions required to balance the preservation of local and global structure in the resulting visualisation. We present visual diagnostics for the pragmatic usage of NLDR methods by combining them with a technique called the tour. A tour is a sequence of interpolated linear projections of multivariate data onto a lower dimensional space. The sequence is displayed as a dynamic visualisation, allowing a user to see the shadows the high-dimensional data casts in a lower dimensional view. By linking the tour to a view obtained from an NLDR method, we can preserve global structure and through user interactions like linked brushing observe where the NLDR view may be misleading. We display several case studies from both simulated and real data from single cell transcriptomics, that shows our approach is useful for cluster orientation tasks.  The implementation of our framework is available as an R package called **liminal** available at https://github.com/sa-lee/liminal.
 
 
-## Outline 
+## Reproducibility
 
-- review of embedding algorithms, interactive graphics, tours
-- technology
-- design
-- examples/benchmarks
-  - Kevin moon
-  - pdfsense
-  - single cell
-  - quick draw
+Package dependencies for the case studies can be installed with the **BiocManager** package
 
+```{r, eval = FALSE}
+# install.packages("BiocManager")
+BiocManager::install("sa-lee/paper-liminal")
+```
+
+## Repo Structure
+
+The case studies that produce the videos and still images found in the paper
+can be reproduced in R via running the files found in the `scripts` directory. 
+ 
+
+```{r, echo = FALSE}
+fs::dir_tree(recurse = TRUE,  
+             type = c("file", "directory"),
+             glob = c("*.png|*.pdf|*.cls|*.bib|*.html"),
+             invert = TRUE)
+```
