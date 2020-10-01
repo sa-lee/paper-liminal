@@ -96,6 +96,11 @@ variables that are a-priori known to distinguish clusters. Both of these
 workflow steps rely on the embedding being representative of the original high
 dimensional dataset, and becomes much more difficult when there is no underlying
 ground truth.
+\textcolor{red}{Ursula: maybe work out the "dimension reduction" examples in a
+bit more detail? They are difficult to understand for someone who does not know
+about them already (or at least for me), and it wasn't very clear why clustering
+is not part of that (I guess because we want to actually tag clusters for further
+analysis down the line?).}
 
 As part of a visualization workflow, it's important to consider the perception
 and interpretation of embedding methods as well. @Sedlmair2013-pn showed that
@@ -106,6 +111,11 @@ of non-linear embedding techniques were more likely to consider clusters of
 points on a scatter plot to be the result of a spurious embedding compared
 to advanced users who were aware of the inner workings of the embedding
 algorithm.
+
+\textcolor{red}{Ursula: suggestion for the structure of the following paragraphs:
+start with "no one-size fits all", then talk about interactive interfaces to assess
+embeddings, and introduce tours when talking about existing interfaces, and finish by
+talking about liminal approach.}
 
 A complementary approach for visualizing structure in high dimensional data is 
 the tour. A tour is a sequence of projections of a high dimensional dataset
