@@ -371,24 +371,50 @@ This approach allows our interface to achieve
 the three principles for interactive high-dimensional data visualisation outlined
 by @Buja1996-fk: finding gestalt, posing queries, and making comparisons.
 
+\textcolor{red}{Ursula: here you are following the ordering from the cited
+paper, but maybe it makes sense to discuss making comparisons before
+talking about posing queries?}
+
+<!--
+Ursula: I think for these subsections we need to have a first paragraph
+that specifies what the concept means and why it is important here,
+before describing how it is incorporated in liminal
+-->
+
 ## Finding Gestalt: focus and context
 
-To investigate latent structure and the shape of a high dimensional dataset, a
-tour can be run without the use of an external embedding. It is often useful to
+To understand the data structure, we look for Gestalt features such as
+(non-)linearities, clusters or outliers. A tour display is
+preferred for this task, since it accurately captures the geometry, while NLDR
+methods typically introduce distortions.
+
+To investigate latent structure and the shape of a high dimensional dataset in
+\pkg{liminal}, a tour can be run without the use of an external embedding.
+It is often useful to
 first run principal components on the input as an initial dimension reduction
 step, and then tour a subset of those components instead, i.e. by selecting
 them from a scree plot. The default tour layout is a scatter plot with an axis
 layout displaying the magnitude and direction of each basis vector. Since the
-tour is dynamic, it is often useful to be able to pause and highlight a
+tour is dynamic, it is useful to be able to pause and highlight a
 particular view. In addition to pause, play and reset buttons, brushing will 
-pause the tour path, allowing users to identify 'interesting' projections. The
-domain of  the axis scales from running a tour is called the half range, and is 
-computed by rescaling the input data onto hyper-dimensional unit cube. We bind 
+pause the tour path, allowing users to identify 'interesting' projections. 
+\textcolor{red}{Interesting projections or interesting points?}
+The
+domain of the axis scales from running a tour is called the half range, and is 
+computed by rescaling the input data onto hyper-dimensional
+\textcolor{red}{d-dimensional?}
+unit cube. We bind 
 the half range to a mouse wheel event, allowing a user to pan and zoom on the 
 tour view dynamically. This is useful for peeling back dense clumps of points 
 to reveal structure.
 
 ## Posing Queries: multiple views, many contexts
+
+The initial visualisation gives an overview of the data structure,
+and naturally leads to queries that investigate observed features with
+the aim to further characterise them. This is an essential aspect of
+our framework, where we use a tour to better characterise
+features observed in a NLDR display.
 
 We have combined the tour view in a side by side layout with a scatter plot
 view as has been done in previous tour interfaces \pkg{XGobi} and \pkg{DataViewer} 
@@ -415,9 +441,13 @@ proximity of cluster in high-dimensional space.
 
 ## Making comparisons: revising embeddings
 
+Combining multiple views of a single data set allows the analyst
+to make meaniningful comparisons. In \pkg{liminal} the embedding
+and tour views are arranged side-by-side for direct cross-checks.
+
 As mentioned previously, when using any DR method, we are assuming the
 embedding is representative of the high-dimensional dataset it was computed
-from. Defining what it means for embedding to be 'representative` or 'faithful'
+from. Defining what it means for embeddings to be 'representative` or 'faithful'
 to high-dimensional data is ill-posed and depends on the underlying task an
 analyst is trying to achieve. At the very minimum, we are interested in
 distortions and diffusions of the high-dimensional data. Distortions occur when
