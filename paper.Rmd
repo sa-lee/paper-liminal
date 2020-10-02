@@ -169,14 +169,18 @@ in using embedding methods. Finally, we describe the insights gained by using
 
 # Overview of Dimension Reduction
 
+<!--
+Ursula: I don't think this paragraph is needed.
+
 In the following section, we provide a brief overview of the goals of DR
 methods with respect to the data analyst, in addition to their high level the
 mathematical details. Here we restrict our attention to two recent methods that
 are commonly used in the literature: t-distributed stochastic neighbour embedding 
 (t-SNE) and uniform manifold alignment and projection (UMAP); however we do 
 mention several other techniques [@Maaten2008-sk; @McInnes2018-co]. 
+--> 
 
-To begin we suppose the data is in the form rectangular
+To begin we suppose the data is in the form of a rectangular
 matrix of real numbers, $X = [\mathbf{x_1}, \dots, \mathbf{x_n}]$, where $n$ is
 the number of observations in $p$ dimensions.  The purpose of any DR algorithm
 is to find a low-dimensional representation of the data, 
@@ -187,13 +191,18 @@ latent structure.
 
 DR methods can be classified into two broad classes: linear and non-linear
 methods. Linear methods perform a linear transformation of the data, that is,
-$Y$ is a linear transformation of $X$; one example is principal components
+$Y$ is a linear transformation of $X$. One example is principal components
 analysis (PCA) which performs an eigendecomposition of the estimated sample
 covariance matrix. The eigenvalues are sorted in decreasing order and represent
 the variance explained by each component (eigenvector). 
 A common approach to deciding on the number of principal components to retain is
 to plot the proportion of variance explained by each component and choose a 
 cut-off.
+When working with linear transformations we often need more than two dimensions
+to capture the latent structure. In this case we can use tour methods
+[@Asimov1985-vp; @Buja1986-zr] to show interpolated sequences of projections,
+providing the viewer with intuition about structure in more than two
+dimensions, as described below.
 
 For non-linear methods $Y$ is generated via a pre-processed form of the input
 $X$ such as the $k$-nearest neighbours graph or via a kernel transformation.
@@ -209,20 +218,32 @@ MDS to construct $Y$ [@Silva2003-xw]. Other approaches are based on diffusion
 processes such as diffusion maps [@Coifman2005-ak]. A recent example of this 
 approach is the PHATE algorithm [@Moon2019-ce]. Here an affinity matrix is 
 estimated via the pair-wise distance matrix and k-nearest neighbours graph of $X$. 
+
+<!--
+Ursula: too much detail?
+
 The algorithm de-noises estimated distances in high-dimensional space via 
 transforming the affinity matrix into a Markov transition probability matrix 
 and diffusing this matrix over a fixed number of time steps. Then the diffused 
 probabilities are  transformed once more to construct a distance matrix, 
-and classical MDS is  used to generate $Y$. A general difficulty with using 
-non-linear DR methods for exploratory data analysis is selecting and tuning 
-appropriate parameters. To see the extent of these choices 
-we now examine the underpinnings of t-SNE and UMAP.
+and classical MDS is  used to generate $Y$.
+-->
 
-The t-SNE algorithm estimates
-the pair-wise similarity of (Euclidean) distances of points in a high
-dimensional space using a Gaussian distribution and then estimates a
-configuration in the low dimensional embedding space by modelling similarities
-using a t-distribution with 1 degree of freedom [@Maaten2008-sk]. There are several subtleties
+
+A general difficulty with using 
+non-linear DR methods for exploratory data analysis is selecting and tuning 
+appropriate parameters. For concretenes here we focus on t-distributed
+stochastic neighbour embedding (t-SNE), and we will examine
+its underpinning in some detail below [@Maaten2008-sk]. Similar considerations hold for related
+methods, for example UMAP [@McInnes2018-co].
+
+## Introduction to t-SNE
+
+The t-SNE algorithm estimates the pair-wise similarity of points in a high
+dimensional space based on their (Euclidean) distances using a Gaussian
+distribution. A configuration in the low dimensional embedding space is then
+estimated by modelling similarities using a t-distribution with 1 degree of
+freedom [@Maaten2008-sk]. There are several subtleties
 to the to use of the algorithm that are revealed by stepping through its
 machinery.
 
@@ -244,14 +265,16 @@ The variance parameter of the Gaussian kernel is controlled by the analyst
 using a fixed value of perplexity for all observations:
 
 $$ \text{perplexity}_i = \exp(-\log(2) \sum_{i \ne j}p_{j|i}\log_2(p_{j|i})) $$
+\textcolor{red}{Ursula: is there an intuitive explanation why we want to tune
+perplexity rather than working with sigma directly?}
 As the perplexity increases, $\sigma^2_{i}$ increases, until its bounded above
 by the number of observations , $n-1$, in the data, corresponding to
-$\sigma^2_{i} \rightarrow \infty$. This essentially turns $t-SNE$ into a
+$\sigma^2_{i} \rightarrow \infty$. This essentially turns t-SNE into a
 nearest neighbours algorithm, $p_{i|j}$ will be close to zero for all
 observations that are not in the $\mathcal{O}(\text{perplexity}_i)$
 neighbourhood graph of the $i$th observation [@Van_Der_Maaten2014-zn].
 
-Next, the target low-dimensional space, $Y$, pair-wise distances between
+Next, in the target low-dimensional space, $Y$, pair-wise distances between
 $\mathbf{y_i}$ and $\mathbf{y_j}$ are modelled as a symmetric probability
 distribution using a t-distribution with one degree of freedom (Cauchy kernel):
 
@@ -273,26 +296,29 @@ Re-writing the loss function in terms of attractive (right) and repulsive
 $$ \mathcal{L(\mathcal{P}, \mathcal{Q})} = -\sum_{i \ne j} p_{ij}\log w_{ij} +
 \log\sum_{i \ne j} w_{ij} $$
 
-So when the loss function is minimised this corresponds to large attractive
+Minimising  the loss function corresponds to large attractive
 forces, that is, the pair-wise distances in $Y$ are small when there are
 non-zero $p_{ij}$, i.e. $x_i$ and $x_j$ are close together. The repulsive force
-should also be small when the loss function is minimised, that is, when
-pair-wise distances in $Y$ are large regardless of the magnitude of the
-corresponding distances in $X$.
+should also be small, that is, overall the
+pair-wise distances in $Y$ should be large regardless of the magnitude of the
+corresponding distances in $X$. As a result, clusters that are separate in $X$
+will be placed far from each other in $Y$.
+This minimisation is done via stochastic gradient decent,
+and introduces a number of hyperparameters, for example the number of iterations,
+the learning rate, and early exaggeration, a multiplier of the attractive force
+used at the beginning of the optimisation.
 
 Taken together, these details reveal the sheer number of decisions that an
-analyst must make. How does one choose the perplexity? How should the
-parameters that control the optimisation of the loss function (done with
-stochastic gradient descent), like the number of iterations, or early
-exaggeration ( a multiplier of the attractive force at the beginning of the
-optimisation), or the learning rate be selected?  It is a known problem that
+analyst must make. How does one choose the perplexity? And the
+parameters that control the optimisation of the loss function?
+It is a known problem that
 t-SNE can have trouble recovering topology and that configurations can be
 highly dependent on how the algorithm is initialised and parameterized
 [@Wattenberg2016-ji; @Kobak2019-lm; @Melville2020]. If the goal is cluster
 orientation a recent theoretical contribution by @Linderman2019-dq proved that
 t-SNE can recover spherical and well separated cluster shapes, and proposed new
 approaches for tuning the optimisation parameters. However, the cluster sizes
-and their relative orientation from a $t-SNE$ view can be misleading
+and their relative orientation from a t-SNE view can be misleading
 perceptually, due to the algorithms emphasis on locality.
 
 Another recent method, UMAP, has seen a large rise in popularity (at least in
@@ -307,19 +333,21 @@ It appears to suffer from the same perceptual issues as t-SNE, however it suppos
 ## Tours explore the subspace of low dimensional projections 
 
 The tour is a visualisation technique that is grounded in 
-mathematical theory, and is able to ascertain 
+mathematical theory, and allows the viewer to ascertain 
 the shape and global structure of a dataset via inspection of the subspace generated by the set of low-dimensional projections [@Asimov1985-vp; @Buja1986-zr].
 
-Like, when, using other DR techniques, the tour assumes we have a real data matrix
+As with other DR techniques, the tour assumes we have a real data matrix
 $X$ consisting of $n$ observations in $p$ dimensions. First, the tour generates 
 a  sequence of $p \times d$ orthonormal projection matrices (bases) 
 $A_t$, where $d$ is typically 1 or 2. For each pair of 
 orthonormal bases $A_{t}$ and $A_{t+1}$ that are generated, the geodesic
-path between them is interpolated to form intermediate frames, and giving the 
+path between them is interpolated to form intermediate frames, giving the 
 sense of continuous movement from one basis to another. The tour is then the 
-continuous visualisation of the projections $Y_{t} = XA_{t}$, that is the 
+continuous visualisation of the projected data $Y_{t} = XA_{t}$, that is the 
 projection of $X$ onto $A_{t}$ as the tour path is interpolated between 
-successive bases. A *grand tour* corresponds to choosing new orthonormal
+successive bases.
+
+A *grand tour* corresponds to choosing new orthonormal
 bases at random; allowing a user to ascertain structure via exploring the
 subspace of $d$-dimensional projections.  In practice, we first sphere 
 our data via principal components to reduce dimensionality of $X$ prior to 
