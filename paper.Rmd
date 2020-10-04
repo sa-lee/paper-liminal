@@ -504,6 +504,8 @@ of bases ahead of time. Additionally, once the user has identified an
 interesting projection or is done with the tour, the interface will return the 
 current basis for use downstream.
 
+\textcolor{red}{Ursula: can I use restart to replay the same tour path (i.e. find a
+previously seen projection), or will it start a new random selection of bases?}
 
 ## Linking and highlighting views via interactions
 
