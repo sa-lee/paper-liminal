@@ -232,7 +232,7 @@ and classical MDS is  used to generate $Y$.
 
 A general difficulty with using 
 non-linear DR methods for exploratory data analysis is selecting and tuning 
-appropriate parameters. For concretenes here we focus on t-distributed
+appropriate parameters. For concreteness here we focus on t-distributed
 stochastic neighbour embedding (t-SNE), and we will examine
 its underpinning in some detail below [@Maaten2008-sk]. Similar considerations hold for related
 methods, for example UMAP [@McInnes2018-co].
@@ -369,7 +369,7 @@ analysts to perform  cluster orientation tasks via linked highlighting and
 brushing [@McDonald1982-ew; @Becker1987-gd]. 
 This approach allows our interface to achieve 
 the three principles for interactive high-dimensional data visualisation outlined
-by @Buja1996-fk: finding gestalt, posing queries, and making comparisons.
+by @Buja1996-fk:  finding gestalt (identifying patterns in visual forms), posing queries, and making comparisons.
 
 \textcolor{red}{Ursula: here you are following the ordering from the cited
 paper, but maybe it makes sense to discuss making comparisons before
@@ -442,7 +442,7 @@ proximity of cluster in high-dimensional space.
 ## Making comparisons: revising embeddings
 
 Combining multiple views of a single data set allows the analyst
-to make meaniningful comparisons. In \pkg{liminal} the embedding
+to make meaningful comparisons. In \pkg{liminal} the embedding
 and tour views are arranged side-by-side for direct cross-checks.
 
 As mentioned previously, when using any DR method, we are assuming the
@@ -566,13 +566,13 @@ display_screenshot("gaussian", vid_lookup)
 display_vid_html("gaussian", vid_lookup)
 ```
 
-From the video linked inn figure \@ref(fig:gaussian), we learn that t-SNE has 
+From the video linked in Figure \@ref(fig:gaussian), we learn that t-SNE has 
 correctly split out each cluster and laid them out in a star like formation. 
 This is agrees with the tour view,
 where once we start the animation, the five clusters begin to appear but
 generally points are more concentrated in the projection view compared to 
-the t-SNE layout (figure \@ref(fig:gaussian)a). 
-This can be seen via brushing the t-SNE view (figure \@ref(fig:gaussian)b). 
+the t-SNE layout (Figure \@ref(fig:gaussian)a). 
+This can be seen via brushing the t-SNE view (Figure \@ref(fig:gaussian)b). 
 
 
 ## Case Study 2: Exploring spherical Gaussian clusters with hierarchical structure
@@ -584,18 +584,18 @@ embedded in 10-$d$, and a third cluster
 with hierarchical structure. This cluster has two 3-$d$ clusters embedded in 
 10-$d$, where the second cluster is subdivided into three smaller clusters, 
 that are each equidistant from each other and have the same covariance structure.
-From the video linked in figure \@ref(fig:hierarchical), we see 
+From the video linked in Figure \@ref(fig:hierarchical), we see 
 that t-SNE has correctly identified the sub-clusters. However, their relative 
 locations to each other is distorted, with the orange and blue groups being
-far from each other in the tour view (figure \@ref(fig:hierarchical)a). We see 
+far from each other in the tour view (Figure \@ref(fig:hierarchical)a). We see 
 in this case that is difficult
 to see the sub-clusters in the tour view, however, once we zoom and highlight
-they become more apparent (figure \@ref(fig:hierarchical)b). When we brush 
+they become more apparent (Figure \@ref(fig:hierarchical)b). When we brush 
 the sub-clusters in the t-SNE, their
 relative placement is again exaggerated, with the tour showing that they
 are indeed much closer than the impression the t-SNE view gives.
 
-(ref:liminal-hierarchical) Screenshots of the \pkg{liminal} interface applied to sub-clustered data, a video of the tour animation is available at https://player.vimeo.com/video/43963590.
+(ref:liminal-hierarchical) Screenshots of the \pkg{liminal} interface applied to sub-clustered data, a video of the tour animation is available at https://player.vimeo.com/video/439635905.
 
 ```{r hierarchical, fig.cap="(ref:liminal-hierarchical)", out.height = "75%"}
 display_screenshot("hierarchical", vid_lookup)
@@ -607,8 +607,8 @@ display_vid_html("hierarchical", vid_lookup)
 
 ## Case Study 3: Exploring data with piecewise linear structure
 
-Next we explore some simulated noisy tree structured data (figure
-\@ref(fig:fake-trees)), our interest here is how t-SNE visualisations break
+Next we explore some simulated noisy tree structured data (Figure
+\@ref(fig:fake-trees)). Our interest here is how t-SNE visualisations break
 topology of the data, and then seeing if we can resolve this by tweaking the
 default parameters with reference to the global view of the data set. 
 This simulation aims to mimic branching trajectories of cell differentiation:
@@ -616,7 +616,7 @@ if there were only mature cells, we would just see the tips of the branches
 which have a hierarchical pattern of clustering.
 
 
-(ref:fake-trees) Example high-dimensional tree shaped data, $n = 3000$ and $p = 100$. *(a)* The true data lies on 2-$d$ tree consisting of ten branches. This data is available in the \pkg{phateR} package and is simulated via diffusion-limited aggregation (a random walk along the branches of the tree) with Gaussian noise added [@Moon2019-ce]. *(b)* The first two principal components, which form the initial projection for the tour, note that the backbone of the tree is obscured by this view. *(c)* The default t-SNE view breaks the global structure of the tree. *(d)* Altering t-SNE using the first two principal components as the starting coordinates for the embedding, results in clustering the tree at its branching points.
+(ref:fake-trees) Example high-dimensional tree shaped data, $n = 3000$ and $p = 100$. *(a)* The true data lies on 2-$d$ tree consisting of ten branches. This data is available in the **phateR** package and is simulated via diffusion-limited aggregation (a random walk along the branches of the tree) with Gaussian noise added [@Moon2019-ce]. *(b)* The first two principal components, which form the initial projection for the tour, note that the backbone of the tree is obscured by this view. *(c)* The default t-SNE view breaks the global structure of the tree. *(d)* Altering t-SNE using the first two principal components as the starting coordinates for the embedding, results in clustering the tree at its branching points.
 
 ```{r fake-trees, echo = FALSE, fig.align = "center", fig.cap="(ref:fake-trees)"}
 knitr::include_graphics(here::here("img", "tree-view.png"))
@@ -629,7 +629,7 @@ explained in the data) to use with the grand tour.
 Moreover, we run t-SNE using the default arguments on the complete data (this
 keeps the first 50 PCs, sets the perplexity to equal 30 and performs random
 initialisation). We then create a linked
-tour with t-SNE layout with \pkg{liminal} as shown in figure \@ref(fig:trees-01).
+tour with t-SNE layout with \pkg{liminal} as shown in Figure \@ref(fig:trees-01).
 
 (ref:trees-01) Screenshots of the \pkg{liminal} interface applied to tree structured data, a video of the tour animation is available at https://player.vimeo.com/video/439635892.    
 
@@ -643,7 +643,7 @@ display_vid_html("trees-01", vid_lookup)
 
 From the linked video, we see that the t-SNE view has been unable to 
 recapitulate the topology of the tree - the backbone (blue) branch has been 
-split into three fragments (figure \@ref(fig:trees-01)a). We can see 
+split into three fragments (Figure \@ref(fig:trees-01)a). We can see 
 this immediately via the linked highlighting over both
 plots. If we click on the legend for the zero branch, the blue coloured points
 on each view are highlighted and the remaining points are made transparent.
@@ -651,7 +651,7 @@ From, here it becomes apparent from the tour view that the blue branch forms
 the backbone of the tree and is connected to all other branches. From the video 
 it is easy to see that cluster sizes formed via t-SNE can be misleading; from the tour
 view there is a lot of noise along the branches, while this does not appear to
-be the case for the t-SNE result (figure \@ref(fig:trees-01)b).
+be the case for the t-SNE result (Figure \@ref(fig:trees-01)b).
 
 From the first view, we modify the inputs to the t-SNE view, to try and produce
 a better trade-off between local structure and retain the topology of the data.
@@ -659,7 +659,7 @@ We keep every parameter the same except that we initialise $Y$ with the first
 two PCs (scaled to have standard deviation 1e-4) instead of the default random
 initialisation and increase the perplexity from 30 to 100. We then combine
 these results with our tour view as displayed in the linked video in the caption
-of figure \@ref(fig:trees-02).
+of Figure \@ref(fig:trees-02).
 
 
 (ref:trees-02) Screenshots of the \pkg{liminal} interface applied to tree structured data, a video of the tour animation is available at https://player.vimeo.com/video/439635863.  
@@ -672,9 +672,9 @@ display_screenshot("trees-02", vid_lookup)
 display_vid_html("trees-02", vid_lookup)
 ```
 
-The video linked in figure \@ref(fig:trees-02) shows that this selection of 
+The video linked in Figure \@ref(fig:trees-02) shows that this selection of 
 parameters results in the 
-tips of the branches (the three black dots in figure \@ref(fig:fake-trees)a) 
+tips of the branches (the three black dots in Figure \@ref(fig:fake-trees)a) 
 being split into three clusters representing the terminal branches of the tree. 
 However, there are perceptual issues following the placement of the three 
 groupings on the t-SNE view that become apparent via simple linked brushing. 
@@ -682,7 +682,7 @@ If we brush the
 tips of the yellow and brown branches (which appear to be close to each other
 on the t-SNE view), we immediately see the placement is distorted in the t-SNE
 view, and in the tour view these tips are at opposite ends of the tree 
-(figure \@ref(fig:trees-02)b).
+(Figure \@ref(fig:trees-02)b).
 Although, this is a known issue of the t-SNE algorithm, we can easily identify
 it via simple interactivity without knowing the inner workings of the method.
 
@@ -704,12 +704,12 @@ selected for this case study has features similar to those found in case studies
 2 and 3.
 
 First, we downloaded the raw mouse retinal single cell RNA-seq data from
-@Macosko2015-ot using the \pkg{scRNAseq} Bioconductor package [@scRNAseq-d]. We
+@Macosko2015-ot using the **scRNAseq** Bioconductor package [@scRNAseq-d]. We
 have followed a standard workflow for pre-processing and normalizing this data 
-(described by @Amezquita2020-at): we performed QC using the \pkg{scater} package
+(described by @Amezquita2020-at): we performed QC using the **scater** package
 by removing cells with high proportion of mitochondrial gene expression and low
 numbers of genes detected, we log-transformed and normalised the expression 
-values and  finally selected highly variable genes (HVGs) using \pkg{scran} 
+values and  finally selected highly variable genes (HVGs) using **scran** 
 [@McCarthy2017; @Lun2016]. The top ten percent of HVGs were used to subset
 the normalised expression matrix and compute PCA using the first 25 components.
 Using the PCs we built a shared nearest neighbours graph (with $k = 10$) and 
@@ -717,16 +717,18 @@ used Louvain clustering to generate clusters [@Blondel2008-bx].
 
 To check and verify the clustering we construct a \pkg{liminal} view. 
 We tour the first five PCs (approximately 20% of the variance in expression),
-alongside the t-SNE view which was computed from all 25 PCs. 
-Due to latency of the interface we do a weighted sample of  the rows based on
+alongside the t-SNE view which was computed from all 25 PCs. We have selected only the first five PCs because there is a large drop in the percentage of variance explained after the fifth component, with each component after contributing less than one percent of variance.
+Consequently, increasing the number of PCs to tour would increase the dimensionality and volume of the subspace we are touring but without adding any additional signal to the view.
+
+Due to latency of the \pkg{liminal} interface we do a weighted sample of  the rows based on
 cluster membership, leaving us with approximately 10 per cent of the original
 data size - 4,590 cells. Although this is not ideal, it still allows us to
-get a sense of the shape of the clusters as seen from the linked video in figure \@ref(fig:mouse-01).
+get a sense of the shape of the clusters as seen from the linked video in Figure \@ref(fig:mouse-01). If one was interested in performing more in-depth cluster analysis we recommend an iterative approach of removing large clusters and then re-running the \pkg{liminal} view as a way finding more granular cluster structure.
 
 
 (ref:mouse-01) Screenshots of the \pkg{liminal} interface applied to single cell data, a video of the tour animation is available at https://player.vimeo.com/video/439635812. 
 
-```{r mouse-01, fig.cap = "(ref:mouse-01)", out.height = "85%"}
+```{r mouse-01, fig.cap = "(ref:mouse-01)", out.height = "90%"}
 display_screenshot("mouse-01", vid_lookup)
 ```
 
@@ -734,19 +736,19 @@ display_screenshot("mouse-01", vid_lookup)
 display_vid_html("mouse-01", vid_lookup)
 ```
 
-From the video linked in figure \@ref(fig:mouse-01), we learn that the embedding has mostly captured the
+From the video linked in Figure \@ref(fig:mouse-01), we learn that the embedding has mostly captured the
 clusters relative location to each other to their location in high dimensional space, with a notable exception of points in cluster 3 and 10 as shown with
-linked brushing (figure \@ref(fig:mouse-01)a). As expected, t-SNE mitigates the crowding problem that is
+linked brushing (Figure \@ref(fig:mouse-01)a). As expected, t-SNE mitigates the crowding problem that is
 an issue for tour in this case, where points in clusters 2,4,6, and 11 are
-clumped together in tour view, but are blown up in the embedding view (figure \@ref(fig:mouse-01)b). 
+clumped together in tour view, but are blown up in the embedding view (Figure \@ref(fig:mouse-01)b). 
 The tour appears to form a tetrahedron like shape, with points lying on
 surface and along the vertices of the tetrahedron in 5-$d$ PCA space -
 a phenomena that has also been observed in @Korem2015-af 
-(figure \@ref(fig:mouse-01)c). Brushing on
+(Figure \@ref(fig:mouse-01)c). Brushing on
 the tour view, reveals points in cluster 9 that are diffuse in the embedding 
 view, points in cluster 9 are relatively far away and spread apart from other 
 clusters in the tour view, but has points placed in cluster 3 and 9 in the embedding
-(figure \@ref(fig:mouse-01)d). 
+(Figure \@ref(fig:mouse-01)d). 
 
 Next, we identify marker genes for clusters using one sided Welch t-tests with
 a minimum log fold change of one as recommended by @Amezquita2020-at, which
@@ -769,15 +771,15 @@ display_screenshot("mouse-02", vid_lookup)
 display_vid_html("mouse-02", vid_lookup)
 ```
 
-From the video linked in figure \@ref(fig:mouse-02), we see that the 
+From the video linked in Figure \@ref(fig:mouse-02), we see that the 
 expression of the marker genes, appear to separate
 the previously clumped clusters 2,4,6, and 11 from the other clusters, 
-indicating that these genes are expressed in all four clusters (figure \@ref(fig:mouse-02)a). After zooming, we can see a trajectory forming along
+indicating that these genes are expressed in all four clusters (Figure \@ref(fig:mouse-02)a). After zooming, we can see a trajectory forming along
 the clusters, while the axis view shows that magnitude of expression in 
 the marker genes is similar across these separated clusters which is 
-consistent with the results of marker gene analysis (figure \@ref(fig:mouse-02)b).
+consistent with the results of marker gene analysis (Figure \@ref(fig:mouse-02)b).
 
-## Discussion
+# Discussion
 
 We have shown that the use of tours as a tool for interacting with
 high dimensional data provides an additional insight for interrogating views
@@ -808,7 +810,7 @@ nearest neighbours (for example a distance matrix, or the complete data matrix)
 can be independent of the tour or embedding views. In place of 
 highlighting, one  could use opacity or binned colour scales to encode 
 distances or ranks instead of the neighbouring points. We have begun 
-implementing this brush in \pkg{liminal},  using the  \pkg{FNN} or \pkg{RcppAnnoy}
+implementing this brush in \pkg{liminal},  using the  **FNN** or **RcppAnnoy**
 packages for fast neighbourhood estimation on the server side, however there
 are still technicalities that need be resolved [@fnn-pkg; @rcpp-annoy-pkg]. 
 Brush composition, such as 'and', 'or', or 'not' brushes, could be used to 
@@ -818,11 +820,10 @@ further investigate mismatches between the $k$-nn graphs estimated from both the
 There are some limitations
 in using the \pkg{liminal} interface for larger datasets. First,
 t-SNE avoids the crowding problem, points are separated into distinct regions
-on the display canvas, while for the tour, points are concentrated in the
-centre of the projection and become difficult to see. 
-Second, as $n$ increases the animation becomes slower as there is more data
-passing from the server to the client. Both of these issues could be mitigated
-through alternate tour paths and displays. The recent work
+on the display canvas. For the tour, points are concentrated in the
+centre of the projection and become difficult to see. We have recently proposed a simple non-linear transformation for the tour called a sage tour that aims to fix this problem [@Laa2020-vk]. 
+Second, as $n$ increases both the embedding view and tour view become harder to read due to over-plotting, while the interactivity and animation become slower as there is more data passing from the server to the client.
+For the tasks we have looked at in this paper, where shape and density are important to the analyst, we think that better displays and sub-sampling strategies are more useful than being able to look at every single point on the canvas. We showed in our single cell clustering case study that doing a weighted sample based on cluster membership still allowed us to get a sense of relative cluster orientation, however there are alternative sampling approaches that could be applied, like selecting points close to the cluster centres. Alternative displays via statistical transformations could also mitigate the need to show all of the data. Recent work
 by @Laa2020-wr is a promising area for further investigation, as well as
 work from topological statistics [@Rieck2017-kk; @Genovese2017-iq]. 
 
