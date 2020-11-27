@@ -26,7 +26,7 @@ title:
   # For running headers, if needed
   short:     "\\pkg{liminal}: High-Dimensional Interactive Data Visualisation"
 abstract: >
-  Non-linear dimensionality reduction (NLDR) methods such as t-distributed stochastic neighbour embedding (t-SNE) are ubiquitous in the natural sciences as part of cluster orientation and dimension reduction workflows. The appropriate use of these methods is difficult because of their complex parameterisations; analysts must make trade-offs in order to identify structure in the visualisation of an NLDR technique. We present visual diagnostics for the pragmatic usage of NLDR methods by combining them with a technique called the tour. A tour is a sequence of interpolated linear projections of multivariate data onto a lower dimensional space. The sequence is displayed as a dynamic visualisation, allowing a user to see the shadows the high-dimensional data casts in a lower dimensional view. By linking the tour to an NLDR view, we can preserve global structure and through user interactions like linked brushing observe where the NLDR view may be misleading. We display several case studies from both simulateions and single cell transcriptomics, that shows our approach is useful for cluster orientation tasks. The implementation of our framework is available as an \proglang{R} package called \pkg{liminal} available at \url{https://github.com/sa-lee/liminal}.
+  Non-linear dimensionality reduction (NLDR) methods such as t-distributed stochastic neighbour embedding (t-SNE) are ubiquitous in the natural sciences, however, the appropriate use of these methods is difficult because of their complex parameterisations; analysts must make trade-offs in order to identify structure in the visualisation of an NLDR technique. We present visual diagnostics for the pragmatic usage of NLDR methods by combining them with a technique called the tour. A tour is a sequence of interpolated linear projections of multivariate data onto a lower dimensional space. The sequence is displayed as a dynamic visualisation, allowing a user to see the shadows the high-dimensional data casts in a lower dimensional view. By linking the tour to an NLDR view, we can preserve global structure and through user interactions like linked brushing observe where the NLDR view may be misleading. We display several case studies from both simulateions and single cell transcriptomics, that shows our approach is useful for cluster orientation tasks. The implementation of our framework is available as an \proglang{R} package called \pkg{liminal} available at \url{https://github.com/sa-lee/liminal}.
 keywords:
   # at least one keyword must be supplied
   formatted: [dimensionality reduction, high-dimensional data, interactive graphics, t-SNE, grand tour, "\\proglang{R}"]
@@ -44,7 +44,11 @@ knitr::opts_chunk$set(
   echo = FALSE,
   message = FALSE,
   warning = FALSE,
-  fig.align = "center"
+  fig.align = "center",
+  fig.show = 'hold',
+  dpi = 300,
+  out.width = "\\textwidth",
+  fig.path = here::here('img/')
 )
 ```
 
@@ -798,3 +802,5 @@ knitr::kable(dplyr::select(vid_lookup, `Case Study`,
              caption = "Case Study Videos",
              booktabs = TRUE)
 ```
+
+# References {-}
