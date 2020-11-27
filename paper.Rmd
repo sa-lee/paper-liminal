@@ -89,20 +89,13 @@ cluster orientation. The first relates to dimension reduction achieved by using
 an embedding method, here an analyst wants to characterise and map meaning onto
 the embedded form, for example identifying batch effects from a high throughput
 sequencing experiment, or identifying a gradient or trajectory along the
-embedded form [@Nguyen2019-yh]. The second relates to using embeddings as part of
+embedded form like changes in cell development or species abundance [@Nguyen2019-yh]. The second relates to using embeddings as part of
 a clustering workflow. Here analysts are interested in identifying and naming
 clusters and verifying them by either applying known labels or colouring by
-variables that are a-priori known to distinguish clusters. Both of these
-workflow steps rely on the embedding being representative of the original high
-dimensional dataset, and becomes much more difficult when there is no underlying
-ground truth.
-\textcolor{red}{Ursula: maybe work out the "dimension reduction" examples in a
-bit more detail? They are difficult to understand for someone who does not know
-about them already (or at least for me), and it wasn't very clear why clustering
-is not part of that (I guess because we want to actually tag clusters for further
-analysis down the line?).}
+variables that are a-priori known to distinguish clusters like the expression of a marker gene to identify a cell type. Once clusters are identified they are used for further analysis to identify what features in the data make them distinguishable. Both of these
+workflow steps rely on the embedding being representative of the original high dimensional dataset, and becomes much more difficult when there is no underlying ground truth.
 
-As part of a visualization workflow, it's important to consider the perception
+As part of a visualization workflow, it is important to consider the perception
 and interpretation of embedding methods as well. @Sedlmair2013-pn showed that
 scatter plots were mostly sufficient for detecting class separation, however
 they also noted that often multiple embeddings were required. For the task of
@@ -112,20 +105,11 @@ points on a scatter plot to be the result of a spurious embedding compared
 to advanced users who were aware of the inner workings of the embedding
 algorithm.
 
-\textcolor{red}{Ursula: suggestion for the structure of the following paragraphs:
-start with "no one-size fits all", then talk about interactive interfaces to assess
-embeddings, and introduce tours when talking about existing interfaces, and finish by
-talking about liminal approach.}
 
-A complementary approach for visualizing structure in high dimensional data is 
-the tour. A tour is a sequence of projections of a high dimensional dataset
-onto a low-dimensional basis matrix, and is represented as an
-animated visualization [@Asimov1985-vp; @Buja1986-zr]. Given the dynamic 
-nature of the tour, user interaction is  important for controlling and 
-exploring the visualisation: the tour has been used previously by 
-@Wickham2015-cx for exploring statistical model fits and by @Buja1996-fk for 
-exploring the space of factorial experimental designs.
-
+There is no one-size fits all: finding an appropriate embedding for a given
+dataset is a difficult and a somewhat poorly defined problem. For non-linear
+methods, there are a lot of parameters to explore that can have an effect on
+the resulting visualisation and interpretation. 
 While there has been much work on the algorithmic details of
 embedding methods, there are relatively few tools designed to assist users
 to interact with these techniques: when is an embedding sufficient for the
@@ -149,15 +133,21 @@ provides interactions to colour points, and select nearest neighbours
 guided and modified form of the  t-SNE algorithm, that allows users to modify 
 optimisation parameters in real-time. 
 
-There is no one-size fits all: finding an appropriate embedding for a given
-dataset is a difficult and a somewhat poorly defined problem. For non-linear
-methods, there are a lot of parameters to explore that can have an effect on
-the resulting visualisation and interpretation. Interfaces for evaluating
+
+A complementary approach for visualizing structure in high dimensional data is 
+the tour. A tour is a sequence of projections of a high dimensional dataset
+onto a low-dimensional basis matrix, and is represented as an
+animated visualization [@Asimov1985-vp; @Buja1986-zr]. Given the dynamic 
+nature of the tour, user interaction is  important for controlling and 
+exploring the visualisation: the tour has been used previously by 
+@Wickham2015-cx for exploring statistical model fits and by @Buja1996-fk for 
+exploring the space of factorial experimental designs.
+
+The approach used in this paper is to augment the results of an NLDR method with the tour with our  \proglang{R} package called \pkg{liminal}. Interfaces for evaluating
 embeddings require interaction but should also be able to be incorporated into
-an analysts workflow. Instead, we implement a more pragmatic workflow by
+an analysts workflow. Here we implement a more pragmatic workflow by
 incorporating interactive graphics and tours with embeddings that allows users
-to see a global overview of their high dimensional data and assists them with
-cluster orientation tasks.
+to see a global overview of their high dimensional data and assists them with cluster orientation tasks.
 
 The rest of the paper is organised as follows. The next section provides
 background on dimension reduction methods, including an overview of the tour.
@@ -169,16 +159,6 @@ in using embedding methods. Finally, we describe the insights gained by using
 
 # Overview of Dimension Reduction
 
-<!--
-Ursula: I don't think this paragraph is needed.
-
-In the following section, we provide a brief overview of the goals of DR
-methods with respect to the data analyst, in addition to their high level the
-mathematical details. Here we restrict our attention to two recent methods that
-are commonly used in the literature: t-distributed stochastic neighbour embedding 
-(t-SNE) and uniform manifold alignment and projection (UMAP); however we do 
-mention several other techniques [@Maaten2008-sk; @McInnes2018-co]. 
---> 
 
 To begin we suppose the data is in the form of a rectangular
 matrix of real numbers, $X = [\mathbf{x_1}, \dots, \mathbf{x_n}]$, where $n$ is
@@ -216,19 +196,7 @@ A related technique is Isomap which uses a $k$-nearest neighbour graph
 to estimate the pair-wise geodesic distance of points in $X$ then uses classical 
 MDS to construct $Y$ [@Silva2003-xw]. Other approaches are based on diffusion
 processes such as diffusion maps [@Coifman2005-ak]. A recent example of this 
-approach is the PHATE algorithm [@Moon2019-ce]. Here an affinity matrix is 
-estimated via the pair-wise distance matrix and k-nearest neighbours graph of $X$. 
-
-<!--
-Ursula: too much detail?
-
-The algorithm de-noises estimated distances in high-dimensional space via 
-transforming the affinity matrix into a Markov transition probability matrix 
-and diffusing this matrix over a fixed number of time steps. Then the diffused 
-probabilities are  transformed once more to construct a distance matrix, 
-and classical MDS is  used to generate $Y$.
--->
-
+approach is the PHATE algorithm [@Moon2019-ce]. 
 
 A general difficulty with using 
 non-linear DR methods for exploratory data analysis is selecting and tuning 
@@ -265,8 +233,7 @@ The variance parameter of the Gaussian kernel is controlled by the analyst
 using a fixed value of perplexity for all observations:
 
 $$ \text{perplexity}_i = \exp(-\log(2) \sum_{i \ne j}p_{j|i}\log_2(p_{j|i})) $$
-\textcolor{red}{Ursula: is there an intuitive explanation why we want to tune
-perplexity rather than working with sigma directly?}
+
 As the perplexity increases, $\sigma^2_{i}$ increases, until its bounded above
 by the number of observations , $n-1$, in the data, corresponding to
 $\sigma^2_{i} \rightarrow \infty$. This essentially turns t-SNE into a
@@ -371,15 +338,6 @@ This approach allows our interface to achieve
 the three principles for interactive high-dimensional data visualisation outlined
 by @Buja1996-fk:  finding gestalt (identifying patterns in visual forms), posing queries, and making comparisons.
 
-\textcolor{red}{Ursula: here you are following the ordering from the cited
-paper, but maybe it makes sense to discuss making comparisons before
-talking about posing queries?}
-
-<!--
-Ursula: I think for these subsections we need to have a first paragraph
-that specifies what the concept means and why it is important here,
-before describing how it is incorporated in liminal
--->
 
 ## Finding Gestalt: focus and context
 
@@ -398,12 +356,9 @@ layout displaying the magnitude and direction of each basis vector. Since the
 tour is dynamic, it is useful to be able to pause and highlight a
 particular view. In addition to pause, play and reset buttons, brushing will 
 pause the tour path, allowing users to identify 'interesting' projections. 
-\textcolor{red}{Interesting projections or interesting points?}
 The
 domain of the axis scales from running a tour is called the half range, and is 
-computed by rescaling the input data onto hyper-dimensional
-\textcolor{red}{d-dimensional?}
-unit cube. We bind 
+computed by rescaling the input data onto $d$-dimensional unit cube. We bind 
 the half range to a mouse wheel event, allowing a user to pan and zoom on the 
 tour view dynamically. This is useful for peeling back dense clumps of points 
 to reveal structure.
@@ -504,8 +459,6 @@ of bases ahead of time. Additionally, once the user has identified an
 interesting projection or is done with the tour, the interface will return the 
 current basis for use downstream.
 
-\textcolor{red}{Ursula: can I use restart to replay the same tour path (i.e. find a
-previously seen projection), or will it start a new random selection of bases?}
 
 ## Linking and highlighting views via interactions
 
@@ -616,7 +569,7 @@ if there were only mature cells, we would just see the tips of the branches
 which have a hierarchical pattern of clustering.
 
 
-(ref:fake-trees) Example high-dimensional tree shaped data, $n = 3000$ and $p = 100$. *(a)* The true data lies on 2-$d$ tree consisting of ten branches. This data is available in the **phateR** package and is simulated via diffusion-limited aggregation (a random walk along the branches of the tree) with Gaussian noise added [@Moon2019-ce]. *(b)* The first two principal components, which form the initial projection for the tour, note that the backbone of the tree is obscured by this view. *(c)* The default t-SNE view breaks the global structure of the tree. *(d)* Altering t-SNE using the first two principal components as the starting coordinates for the embedding, results in clustering the tree at its branching points.
+(ref:fake-trees) Example high-dimensional tree shaped data, $n = 3000$ and $p = 100$. *(a)* The true data lies on 2-$d$ tree consisting of ten branches. This data is available in the \pkg{phateR} package and is simulated via diffusion-limited aggregation (a random walk along the branches of the tree) with Gaussian noise added [@Moon2019-ce]. *(b)* The first two principal components, which form the initial projection for the tour, note that the backbone of the tree is obscured by this view. *(c)* The default t-SNE view breaks the global structure of the tree. *(d)* Altering t-SNE using the first two principal components as the starting coordinates for the embedding, results in clustering the tree at its branching points.
 
 ```{r fake-trees, echo = FALSE, fig.align = "center", fig.cap="(ref:fake-trees)"}
 knitr::include_graphics(here::here("img", "tree-view.png"))
@@ -836,7 +789,7 @@ their feedback on this work. The screenshots and images were compiled using the
 # Supplementary Materials {-}
 
 Code, data, and video for reproducing this paper are available at https://github.com/sa-lee/paper-liminal. Direct links to videos for viewing
-online are available in table \@ref(tab:vimeo).
+online are available in Table \@ref(tab:vimeo).
 
 ```{r vimeo}
 vid_lookup$`Case Study` <- c(1, 2, 3,3,4,4)
