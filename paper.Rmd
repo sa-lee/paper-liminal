@@ -786,6 +786,7 @@ work from topological statistics [@Rieck2017-kk; @Genovese2017-iq].
 
 # Acknowledgements {-}
 
+The authors gratefully acknowledge the support of the Australian Research Council.
 We would like to thank Dr David Frazier and Dr Paul Harrison for 
 their feedback on this work. The screenshots and images were compiled using the 
 \pkg{cowplot} and \pkg{ggplot2} packages [@r-cowplot; @Wickham2016-gz].

@@ -30,7 +30,7 @@ Stuart Lee\\Monash University \And Ursula Laa\\Monash University \And Dianne Coo
 \Shorttitle{\pkg{liminal}: High-Dimensional Interactive Data Visualisation}
 
 \Abstract{
-Non-linear dimensionality reduction (NLDR) methods such as t-distributed stochastic neighbour embedding (t-SNE) are ubiquitous in the natural sciences, however, the appropriate use of these methods is difficult because of their complex parameterisations; analysts must make trade-offs in order to identify structure in the visualisation of an NLDR technique. We present visual diagnostics for the pragmatic usage of NLDR methods by combining them with a technique called the tour. A tour is a sequence of interpolated linear projections of multivariate data onto a lower dimensional space. The sequence is displayed as a dynamic visualisation, allowing a user to see the shadows the high-dimensional data casts in a lower dimensional view. By linking the tour to an NLDR view, we can preserve global structure and through user interactions like linked brushing observe where the NLDR view may be misleading. We display several case studies from both simulateions and single cell transcriptomics, that shows our approach is useful for cluster orientation tasks. The implementation of our framework is available as an \proglang{R} package called \pkg{liminal} available at \url{https://github.com/sa-lee/liminal}.
+Non-linear dimensionality reduction (NLDR) methods such as t-distributed stochastic neighbour embedding (t-SNE) are ubiquitous in the natural sciences, however, the appropriate use of these methods is difficult because of their complex parameterisations; analysts must make trade-offs in order to identify structure in the visualisation of an NLDR technique. We present visual diagnostics for the pragmatic usage of NLDR methods by combining them with a technique called the tour. A tour is a sequence of interpolated linear projections of multivariate data onto a lower dimensional space. The sequence is displayed as a dynamic visualisation, allowing a user to see the shadows the high-dimensional data casts in a lower dimensional view. By linking the tour to an NLDR view, we can preserve global structure and through user interactions like linked brushing observe where the NLDR view may be misleading. We display several case studies from both simulations and single cell transcriptomics, that shows our approach is useful for cluster orientation tasks. The implementation of our framework is available as an \proglang{R} package called \pkg{liminal} available at \url{https://github.com/sa-lee/liminal}.
 }
 
 \Keywords{dimensionality reduction, high-dimensional data, interactive graphics, t-SNE, grand tour, \proglang{R}}
@@ -177,7 +177,7 @@ dimensions, as described below.
 
 For non-linear methods \(Y\) is generated via a pre-processed form of the input
 \(X\) such as the \(k\)-nearest neighbours graph or via a kernel transformation.
-Multidimensional scaling (MDS) is a class of DR method that aims to construct
+Multidimensional scaling (MDS) is a class of DR methods that aims to construct
 an embedding \(Y\) such that the pair-wise distances (inner products) in \(Y\)
 approximate the pair-wise distances (inner products) in \(X\)
 (Torgerson 1952; Kruskal 1964a). There are many
@@ -519,7 +519,7 @@ observations.
 
 From the video linked in Figure \ref{fig:gaussian}, we learn that t-SNE has
 correctly split out each cluster and laid them out in a star like formation.
-This is agrees with the tour view,
+This agrees with the tour view,
 where once we start the animation, the five clusters begin to appear but
 generally points are more concentrated in the projection view compared to
 the t-SNE layout (Figure \ref{fig:gaussian}a).
@@ -576,7 +576,7 @@ which have a hierarchical pattern of clustering.
 
 }
 
-\caption{Example high-dimensional tree shaped data, \(n = 3000\) and \(p = 100\). \emph{(a)} The true data lies on 2-\(d\) tree consisting of ten branches. This data is available in the \pkg{phateR} package and is simulated via diffusion-limited aggregation (a random walk along the branches of the tree) with Gaussian noise added (Moon et al. 2019). \emph{(b)} The first two principal components, which form the initial projection for the tour, note that the backbone of the tree is obscured by this view. \emph{(c)} The default t-SNE view breaks the global structure of the tree. \emph{(d)} Altering t-SNE using the first two principal components as the starting coordinates for the embedding, results in clustering the tree at its branching points.}\label{fig:fake-trees}
+\caption{Example high-dimensional tree shaped data, \(n = 3000\) and \(p = 100\). \emph{(a)} The true data lies on a 2-\(d\) tree consisting of ten branches. This data is available in the \pkg{phateR} package and is simulated via diffusion-limited aggregation (a random walk along the branches of the tree) with Gaussian noise added (Moon et al. 2019). \emph{(b)} The first two principal components, which form the initial projection for the tour, note that the backbone of the tree is obscured by this view. \emph{(c)} The default t-SNE view breaks the global structure of the tree. \emph{(d)} Altering t-SNE using the first two principal components as the starting coordinates for the embedding, results in clustering the tree at its branching points.}\label{fig:fake-trees}
 \end{figure}
 
 First, we apply principal components and restrict the results down to the first
@@ -605,7 +605,7 @@ split into three fragments (Figure \ref{fig:trees-01}a). We can see
 this immediately via the linked highlighting over both
 plots. If we click on the legend for the zero branch, the blue coloured points
 on each view are highlighted and the remaining points are made transparent.
-From, here it becomes apparent from the tour view that the blue branch forms
+From here it becomes apparent from the tour view that the blue branch forms
 the backbone of the tree and is connected to all other branches. From the video
 it is easy to see that cluster sizes formed via t-SNE can be misleading; from the tour
 view there is a lot of noise along the branches, while this does not appear to
@@ -697,10 +697,10 @@ get a sense of the shape of the clusters as seen from the linked video in Figure
 From the video linked in Figure \ref{fig:mouse-01}, we learn that the embedding has mostly captured the
 clusters relative location to each other to their location in high dimensional space, with a notable exception of points in cluster 3 and 10 as shown with
 linked brushing (Figure \ref{fig:mouse-01}a). As expected, t-SNE mitigates the crowding problem that is
-an issue for tour in this case, where points in clusters 2,4,6, and 11 are
+an issue for tour in this case, where points in clusters 2, 4, 6, and 11 are
 clumped together in tour view, but are blown up in the embedding view (Figure \ref{fig:mouse-01}b).
 The tour appears to form a tetrahedron like shape, with points lying on
-surface and along the vertices of the tetrahedron in 5-\(d\) PCA space -
+the surface and along the vertices of the tetrahedron in 5-\(d\) PCA space -
 a phenomena that has also been observed in Korem et al. (2015)
 (Figure \ref{fig:mouse-01}c). Brushing on
 the tour view, reveals points in cluster 9 that are diffuse in the embedding
@@ -731,7 +731,7 @@ log normalised expression values using the same subset as before.
 
 From the video linked in Figure \ref{fig:mouse-02}, we see that the
 expression of the marker genes, appear to separate
-the previously clumped clusters 2,4,6, and 11 from the other clusters,
+the previously clumped clusters 2, 4, 6, and 11 from the other clusters,
 indicating that these genes are expressed in all four clusters (Figure \ref{fig:mouse-02}a). After zooming, we can see a trajectory forming along
 the clusters, while the axis view shows that magnitude of expression in
 the marker genes is similar across these separated clusters which is
@@ -789,6 +789,7 @@ work from topological statistics (Rieck 2017; Genovese et al. 2017).
 \section*{Acknowledgements}\label{acknowledgements}}
 \addcontentsline{toc}{section}{Acknowledgements}
 
+The authors gratefully acknowledge the support of the Australian Research Council.
 We would like to thank Dr David Frazier and Dr Paul Harrison for
 their feedback on this work. The screenshots and images were compiled using the
 \pkg{cowplot} and \pkg{ggplot2} packages (Wilke 2019; Wickham 2016).
