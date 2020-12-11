@@ -57,12 +57,12 @@ knitr::opts_chunk$set(
 ```{r setup-videos, cache = FALSE, echo = FALSE}
 vid_lookup <- tibble::tribble(
   ~key, ~url, ~path,
-  "gaussian",  "https://player.vimeo.com/video/439635921", here::here("img", "liminal-screenshot-gaussian.png"),
-  "hierarchical", "https://player.vimeo.com/video/439635905", here::here("img", "liminal-screenshot-hierarchical.png"),
-  "trees-01", "https://player.vimeo.com/video/439635892", here::here("img", "liminal-screenshot-trees-01.png"),
-  "trees-02", "https://player.vimeo.com/video/439635863", here::here("img", "liminal-screenshot-trees-02.png"),
-  "mouse-01", "https://player.vimeo.com/video/439635812", here::here("img", "liminal-screenshot-mouse-01.png"),
-  "mouse-02", "https://player.vimeo.com/video/439635843", here::here("img", "liminal-screenshot-mouse-02.png")
+  "gaussian",  "https://player.vimeo.com/video/439635921", "./img/liminal-screenshot-gaussian.png",
+  "hierarchical", "https://player.vimeo.com/video/439635905", "./img/liminal-screenshot-hierarchical.png",
+  "trees-01", "https://player.vimeo.com/video/439635892", "./img/liminal-screenshot-trees-01.png",
+  "trees-02", "https://player.vimeo.com/video/439635863","./img/liminal-screenshot-trees-02.png",
+  "mouse-01", "https://player.vimeo.com/video/439635812","img/liminal-screenshot-mouse-01.png",
+  "mouse-02", "https://player.vimeo.com/video/439635843", "./img/liminal-screenshot-mouse-02.png"
 )
 
 
@@ -578,7 +578,7 @@ which have a hierarchical pattern of clustering.
 (ref:fake-trees) Example high-dimensional tree shaped data, $n = 3000$ and $p = 100$. *(a)* The true data lies on a 2-$d$ tree consisting of ten branches. This data is available in the \pkg{phateR} package and is simulated via diffusion-limited aggregation (a random walk along the branches of the tree) with Gaussian noise added [@Moon2019-ce]. *(b)* The first two principal components, which form the initial projection for the tour, note that the backbone of the tree is obscured by this view. *(c)* The default t-SNE view breaks the global structure of the tree. *(d)* Altering t-SNE using the first two principal components as the starting coordinates for the embedding, results in clustering the tree at its branching points.
 
 ```{r fake-trees, echo = FALSE, fig.align = "center", fig.cap="(ref:fake-trees)"}
-knitr::include_graphics(here::here("img", "tree-view.png"))
+knitr::include_graphics("./img/tree-view.png")
 ```
 
 First, we apply principal components and restrict the results down to the first
