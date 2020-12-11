@@ -77,23 +77,23 @@ for downstream analysis .
 Choosing an appropriate embedding presents a challenge to the analyst. How does
 an analyst know whether the embedding has captured the underlying topology and
 geometry of the high dimensional space? The answer depends on the analyst's
-workflow. Brehmer et al. (2014) characterised two main workflow steps that an
+workflow. \citet{Brehmer2014-hk} characterised two main workflow steps that an
 analyst performs when using embedding techniques: dimension reduction and
 cluster orientation. The first relates to dimension reduction achieved by using
 an embedding method, here an analyst wants to characterise and map meaning onto
 the embedded form, for example identifying batch effects from a high throughput
 sequencing experiment, or identifying a gradient or trajectory along the
-embedded form like changes in cell development or species abundance (Nguyen and Holmes 2019). The second relates to using embeddings as part of
+embedded form like changes in cell development or species abundance \citep{Nguyen2019-yh}. The second relates to using embeddings as part of
 a clustering workflow. Here analysts are interested in identifying and naming
 clusters and verifying them by either applying known labels or colouring by
 variables that are a-priori known to distinguish clusters like the expression of a marker gene to identify a cell type. Once clusters are identified they are used for further analysis to identify what features in the data make them distinguishable. Both of these
 workflow steps rely on the embedding being representative of the original high dimensional dataset, and becomes much more difficult when there is no underlying ground truth.
 
 As part of a visualization workflow, it is important to consider the perception
-and interpretation of embedding methods as well. Sedlmair, Munzner, and Tory (2013) showed that
+and interpretation of embedding methods as well. \citet{Sedlmair2013-pn} showed that
 scatter plots were mostly sufficient for detecting class separation, however
 they also noted that often multiple embeddings were required. For the task of
-cluster identification, Lewis, Van der Maaten, and Sa (2012) showed experimentally that novice users
+cluster identification, \citet{Lewis2012-ai} showed experimentally that novice users
 of non-linear embedding techniques were more likely to consider clusters of
 points on a scatter plot to be the result of a spurious embedding compared
 to advanced users who were aware of the inner workings of the embedding
@@ -108,31 +108,31 @@ embedding methods, there are relatively few tools designed to assist users
 to interact with these techniques: when is an embedding sufficient for the
 task at hand? Several
 interactive interfaces have been proposed for evaluating or using embedding
-techniques. Buja et al. (2008) used tours to guide analysts during the optimisation
+techniques. \citet{Buja2008-fn} used tours to guide analysts during the optimisation
 of multidimensional scaling methods by extending their interactive visualisation
 software called \pkg{XGobi} and \pkg{GGobi} into a new tool called \pkg{GGvis}
-(Swayne, Cook, and Buja 1998; Swayne et al. 2003; Swayne and Buja 2004).
+\citep{Swayne1998-uq, Swayne2003-qd, Swayne2004-ua}.
 Their interface allows the analyst to dynamically modify and check whether
 an MDS configuration has preserved the locality and closeness
 of points between the configuration and the original data.
-Ovchinnikova and Anders (2020) created the \pkg{Sleepwalk} interface for checking
+\citet{Ovchinnikova2020-sy} created the \pkg{Sleepwalk} interface for checking
 non-linear embeddings in single cell RNA-seq data. It provides a click and
 highlight visualisation for colouring points in an embedding according to an
 estimated pairwise distance in the original high-dimensional space.
 Similarly, the \pkg{TensorFlow} embedding projector is a web interface to
 running some non-liner embedding methods live in the browser and
 provides interactions to colour points, and select nearest neighbours
-(Smilkov et al. 2016). Finally, the work by Pezzotti et al. (2017) provides a user
+\citep{Smilkov2016-hp}. Finally, the work by \citet{Pezzotti2017-cz} provides a user
 guided and modified form of the t-SNE algorithm, that allows users to modify
 optimisation parameters in real-time.
 
 A complementary approach for visualizing structure in high dimensional data is
 the tour. A tour is a sequence of projections of a high dimensional dataset
 onto a low-dimensional basis matrix, and is represented as an
-animated visualization (Asimov 1985; Buja and Asimov 1986). Given the dynamic
+animated visualization \citep{Asimov1985-vp, Buja1986-zr}. Given the dynamic
 nature of the tour, user interaction is important for controlling and
 exploring the visualisation: the tour has been used previously by
-Wickham, Cook, and Hofmann (2015) for exploring statistical model fits and by Buja, Cook, and Swayne (1996) for
+\citet{Wickham2015-cx} for exploring statistical model fits and by \citet{Buja1996-fk} for
 exploring the space of factorial experimental designs.
 
 The approach used in this paper is to augment the results of an NLDR method with the tour with our \proglang{R} package called \pkg{liminal}. Interfaces for evaluating
@@ -171,7 +171,7 @@ to plot the proportion of variance explained by each component and choose a
 cut-off.
 When working with linear transformations we often need more than two dimensions
 to capture the latent structure. In this case we can use tour methods
-(Asimov 1985; Buja and Asimov 1986) to show interpolated sequences of projections,
+\citep{Asimov1985-vp, Buja1986-zr} to show interpolated sequences of projections,
 providing the viewer with intuition about structure in more than two
 dimensions, as described below.
 
@@ -180,21 +180,21 @@ For non-linear methods \(Y\) is generated via a pre-processed form of the input
 Multidimensional scaling (MDS) is a class of DR methods that aims to construct
 an embedding \(Y\) such that the pair-wise distances (inner products) in \(Y\)
 approximate the pair-wise distances (inner products) in \(X\)
-(Torgerson 1952; Kruskal 1964a). There are many
+\citep{Torgerson1952-am, Kruskal1964-cz}. There are many
 variants of MDS, such as non-metric scaling which amounts to replacing
-distances with ranks instead (Kruskal 1964b).
+distances with ranks instead \citep{Kruskal1964-cw}.
 A related technique is Isomap which uses a \(k\)-nearest neighbour graph
 to estimate the pair-wise geodesic distance of points in \(X\) then uses classical
-MDS to construct \(Y\) (Silva and Tenenbaum 2003). Other approaches are based on diffusion
-processes such as diffusion maps (Coifman et al. 2005). A recent example of this
-approach is the PHATE algorithm (Moon et al. 2019).
+MDS to construct \(Y\) \citep{Silva2003-xw}. Other approaches are based on diffusion
+processes such as diffusion maps \citep{Coifman2005-ak}. A recent example of this
+approach is the PHATE algorithm \citep{Moon2019-ce}.
 
 A general difficulty with using
 non-linear DR methods for exploratory data analysis is selecting and tuning
 appropriate parameters. For concreteness here we focus on t-distributed
 stochastic neighbour embedding (t-SNE), and we will examine
-its underpinning in some detail below (Maaten and Hinton 2008). Similar considerations hold for related
-methods, for example UMAP (McInnes, Healy, and Melville 2018).
+its underpinning in some detail below \citep{Maaten2008-sk}. Similar considerations hold for related
+methods, for example UMAP \citep{McInnes2018-co}.
 
 \hypertarget{introduction-to-t-sne}{%
 \subsection{Introduction to t-SNE}\label{introduction-to-t-sne}}
@@ -203,7 +203,7 @@ The t-SNE algorithm estimates the pair-wise similarity of points in a high
 dimensional space based on their (Euclidean) distances using a Gaussian
 distribution. A configuration in the low dimensional embedding space is then
 estimated by modelling similarities using a t-distribution with 1 degree of
-freedom (Maaten and Hinton 2008). There are several subtleties
+freedom \citep{Maaten2008-sk}. There are several subtleties
 to the to use of the algorithm that are revealed by stepping through its
 machinery.
 
@@ -231,7 +231,7 @@ by the number of observations , \(n-1\), in the data, corresponding to
 \(\sigma^2_{i} \rightarrow \infty\). This essentially turns t-SNE into a
 nearest neighbours algorithm, \(p_{i|j}\) will be close to zero for all
 observations that are not in the \(\mathcal{O}(\text{perplexity}_i)\)
-neighbourhood graph of the \(i\)th observation (Maaten 2014).
+neighbourhood graph of the \(i\)th observation \citep{Van_Der_Maaten2014-zn}.
 
 Next, in the target low-dimensional space, \(Y\), pair-wise distances between
 \(\mathbf{y_i}\) and \(\mathbf{y_j}\) are modelled as a symmetric probability
@@ -272,28 +272,28 @@ parameters that control the optimisation of the loss function?
 It is a known problem that
 t-SNE can have trouble recovering topology and that configurations can be
 highly dependent on how the algorithm is initialised and parameterized
-(Wattenberg, Viégas, and Johnson 2016; Kobak and Berens 2019; Melville 2020). If the goal is cluster
-orientation a recent theoretical contribution by Linderman and Steinerberger (2019) proved that
+\citep{Wattenberg2016-ji, Kobak2019-lm, Melville2020}. If the goal is cluster
+orientation a recent theoretical contribution by \citet{Linderman2019-dq} proved that
 t-SNE can recover spherical and well separated cluster shapes, and proposed new
 approaches for tuning the optimisation parameters. However, the cluster sizes
 and their relative orientation from a t-SNE view can be misleading
 perceptually, due to the algorithms emphasis on locality.
 
 Another recent method, UMAP, has seen a large rise in popularity (at least in
-single cell transcriptomics) (McInnes, Healy, and Melville 2018). It is a method that is related to
-LargeVis (Tang et al. 2016), and like t-SNE acts on the k-nearest neighbour graph.
+single cell transcriptomics) \citep{McInnes2018-co}. It is a method that is related to
+LargeVis \citep{Tang2016-oz}, and like t-SNE acts on the k-nearest neighbour graph.
 Its main differences are that it uses a different cost function (cross entropy)
 which is optimized using stochastic gradient descent and defines a different
 kernel for similarities in the low dimensional space. Due to its computational
 speed it is possible to generate UMAP embeddings in more than three dimensions.
-It appears to suffer from the same perceptual issues as t-SNE, however it supposedly preserves global structure better than t-SNE (Coenen and Pearce 2019).
+It appears to suffer from the same perceptual issues as t-SNE, however it supposedly preserves global structure better than t-SNE \citep{Coenen2019-to}.
 
 \hypertarget{tours-explore-the-subspace-of-low-dimensional-projections}{%
 \subsection{Tours explore the subspace of low dimensional projections}\label{tours-explore-the-subspace-of-low-dimensional-projections}}
 
 The tour is a visualisation technique that is grounded in
 mathematical theory, and allows the viewer to ascertain
-the shape and global structure of a dataset via inspection of the subspace generated by the set of low-dimensional projections (Asimov 1985; Buja and Asimov 1986).
+the shape and global structure of a dataset via inspection of the subspace generated by the set of low-dimensional projections \citep{Asimov1985-vp, Buja1986-zr}.
 
 As with other DR techniques, the tour assumes we have a real data matrix
 \(X\) consisting of \(n\) observations in \(p\) dimensions. First, the tour generates
@@ -312,7 +312,7 @@ subspace of \(d\)-dimensional projections. In practice, we first sphere
 our data via principal components to reduce dimensionality of \(X\) prior to
 running the tour. Instead of picking projections at
 random, a \emph{guided tour} can be used to generate a sequence of `interesting'
-projections as quantified by an index function (Cook et al. 1995). While our software,
+projections as quantified by an index function \citep{Cook1995-bi}. While our software,
 \pkg{liminal} is able to visualise guided tours, our focus in the case studies
 uses the grand tour to see global structure in the data.
 
@@ -326,10 +326,10 @@ views from embedding methods and see how an embedding method
 preserves or alters the geometry of their data. Using multiple concatenated and
 linked views with the tour enhances interaction techniques, and allows
 analysts to perform cluster orientation tasks via linked highlighting and
-brushing (McDonald 1982; Becker and Cleveland 1987).
+brushing \citep{McDonald1982-ew, Becker1987-gd}.
 This approach allows our interface to achieve
 the three principles for interactive high-dimensional data visualisation outlined
-by Buja, Cook, and Swayne (1996): finding gestalt (identifying patterns in visual forms), posing queries, and making comparisons.
+by \citet{Buja1996-fk}: finding gestalt (identifying patterns in visual forms), posing queries, and making comparisons.
 
 \hypertarget{finding-gestalt-focus-and-context}{%
 \subsection{Finding Gestalt: focus and context}\label{finding-gestalt-focus-and-context}}
@@ -367,7 +367,7 @@ features observed in a NLDR display.
 
 We have combined the tour view in a side by side layout with a scatter plot
 view as has been done in previous tour interfaces \pkg{XGobi} and \pkg{DataViewer}
-(Buja, Hurley, and McDonald 1986; Swayne, Cook, and Buja 1998). These views are
+\citep{Buja1986-ku, Swayne1998-uq}. These views are
 linked; analysts can brush regions or highlight collections of points in either
 view. Linked highlighting can be performed when points have been previously
 labelled according to some discrete structure, i.e.~cluster labels are
@@ -408,7 +408,7 @@ near in the original data. Whether, points are near, or far is reliant on the
 distance metric used; distortions and diffusions can be thought of as the
 preservation of distances or the nearest neighbours graphs between the
 high-dimensional space and the embedding space. As distances can be noisy in
-high-dimensions, ranks can be used instead as has been proposed by Lee and Verleysen (2009).
+high-dimensions, ranks can be used instead as has been proposed by \citet{Lee2009-zb}.
 Identifying distortions and diffusions allows an analyst to investigate the
 quality of their embedding and revise them iteratively.
 
@@ -422,12 +422,12 @@ in the embedding view.
 \section{Software Infrastructure}\label{software-infrastructure}}
 
 We have implemented the above design as an open source \proglang{R} package called
-\pkg{liminal} (Lee and Cook 2020). The package allows analysts to construct concatenated
+\pkg{liminal} \citep{r-liminal}. The package allows analysts to construct concatenated
 visualisations, drawn with the \pkg{Vega-Lite} grammar of interactive graphics via
-the \pkg{vegawidget} package (Satyanarayan et al. 2017; Lyttle and Vega/Vega-Lite Developers 2020). It provides
+the \pkg{vegawidget} package \citep{Satyanarayan2017-gs, Lyttle2020-hp}. It provides
 an interface for constructing linked and stand alone interfaces for
 manipulating tour paths via the \pkg{shiny} and \pkg{tourr} packages
-(Chang et al. 2020; Wickham et al. 2011).
+\citep{Chang2020-bq, Wickham2011-st}.
 
 \hypertarget{tours-as-a-streaming-data-problem}{%
 \subsection{Tours as a streaming data problem}\label{tours-as-a-streaming-data-problem}}
@@ -484,7 +484,7 @@ as clusters that have substructure and where there is more complex geometry
 in the data.
 
 In the final case study, we apply our approach to clustering
-the mouse retina data from Macosko et al. (2015), and apply the tour
+the mouse retina data from \citet{Macosko2015-ot}, and apply the tour
 to the process of verifying marker genes that separate clusters.
 
 We \emph{strongly} recommend viewing the linked videos for each case study
@@ -502,7 +502,7 @@ To begin we look at simulated datasets that reproduce known facts
 about the t-SNE algorithm. Our first data set consists of five spherical 5-\(d\)
 Gaussian clusters embedded in 10-\(d\) space, each cluster has the same
 covariance matrix. We then computed a t-SNE layout with default settings
-using the \pkg{Rtsne} package (Krijthe 2015),
+using the \pkg{Rtsne} package \citep{Rtsne},
 and set up the \pkg{liminal} linked interface with grand tour on the 10-\(d\)
 observations.
 
@@ -530,7 +530,7 @@ This can be seen via brushing the t-SNE view (Figure \ref{fig:gaussian}b).
 
 Next we view Gaussian clusters from the
 \emph{Multi Challenge Dataset}, a benchmark simulation data set for clustering tasks
-(Rauber 2009). This dataset has two Gaussian clusters with equal covariance
+\citep{Rauber2009-vh}. This dataset has two Gaussian clusters with equal covariance
 embedded in 10-\(d\), and a third cluster
 with hierarchical structure. This cluster has two 3-\(d\) clusters embedded in
 10-\(d\), where the second cluster is subdivided into three smaller clusters,
@@ -576,7 +576,7 @@ which have a hierarchical pattern of clustering.
 
 }
 
-\caption{Example high-dimensional tree shaped data, \(n = 3000\) and \(p = 100\). \emph{(a)} The true data lies on a 2-\(d\) tree consisting of ten branches. This data is available in the \pkg{phateR} package and is simulated via diffusion-limited aggregation (a random walk along the branches of the tree) with Gaussian noise added (Moon et al. 2019). \emph{(b)} The first two principal components, which form the initial projection for the tour, note that the backbone of the tree is obscured by this view. \emph{(c)} The default t-SNE view breaks the global structure of the tree. \emph{(d)} Altering t-SNE using the first two principal components as the starting coordinates for the embedding, results in clustering the tree at its branching points.}\label{fig:fake-trees}
+\caption{Example high-dimensional tree shaped data, \(n = 3000\) and \(p = 100\). \emph{(a)} The true data lies on a 2-\(d\) tree consisting of ten branches. This data is available in the \pkg{phateR} package and is simulated via diffusion-limited aggregation (a random walk along the branches of the tree) with Gaussian noise added \citep{Moon2019-ce}. \emph{(b)} The first two principal components, which form the initial projection for the tour, note that the backbone of the tree is obscured by this view. \emph{(c)} The default t-SNE view breaks the global structure of the tree. \emph{(d)} Altering t-SNE using the first two principal components as the starting coordinates for the embedding, results in clustering the tree at its branching points.}\label{fig:fake-trees}
 \end{figure}
 
 First, we apply principal components and restrict the results down to the first
@@ -662,16 +662,16 @@ selected for this case study has features similar to those found in case studies
 2 and 3.
 
 First, we downloaded the raw mouse retinal single cell RNA-seq data from
-Macosko et al. (2015) using the \textbf{scRNAseq} Bioconductor package (Risso and Cole 2019). We
+\citet{Macosko2015-ot} using the \textbf{scRNAseq} Bioconductor package \citep{scRNAseq-d}. We
 have followed a standard workflow for pre-processing and normalizing this data
-(described by Amezquita et al. (2020)): we performed QC using the \textbf{scater} package
+(described by \citet{Amezquita2020-at}): we performed QC using the \textbf{scater} package
 by removing cells with high proportion of mitochondrial gene expression and low
 numbers of genes detected, we log-transformed and normalised the expression
 values and finally selected highly variable genes (HVGs) using \textbf{scran}
-(McCarthy et al. 2017; Lun, McCarthy, and Marioni 2016). The top ten percent of HVGs were used to subset
+\citep{McCarthy2017, Lun2016}. The top ten percent of HVGs were used to subset
 the normalised expression matrix and compute PCA using the first 25 components.
 Using the PCs we built a shared nearest neighbours graph (with \(k = 10\)) and
-used Louvain clustering to generate clusters (Blondel et al. 2008).
+used Louvain clustering to generate clusters \citep{Blondel2008-bx}.
 
 To check and verify the clustering we construct a \pkg{liminal} view.
 We tour the first five PCs (approximately 20\% of the variance in expression),
@@ -701,7 +701,7 @@ an issue for tour in this case, where points in clusters 2, 4, 6, and 11 are
 clumped together in tour view, but are blown up in the embedding view (Figure \ref{fig:mouse-01}b).
 The tour appears to form a tetrahedron like shape, with points lying on
 the surface and along the vertices of the tetrahedron in 5-\(d\) PCA space -
-a phenomena that has also been observed in Korem et al. (2015)
+a phenomena that has also been observed in \citet{Korem2015-af}
 (Figure \ref{fig:mouse-01}c). Brushing on
 the tour view, reveals points in cluster 9 that are diffuse in the embedding
 view, points in cluster 9 are relatively far away and spread apart from other
@@ -709,8 +709,8 @@ clusters in the tour view, but has points placed in cluster 3 and 9 in the embed
 (Figure \ref{fig:mouse-01}d).
 
 Next, we identify marker genes for clusters using one sided Welch t-tests with
-a minimum log fold change of one as recommended by Amezquita et al. (2020), which
-uses the testing framework from McCarthy and Smyth (2009). We select the top 10 marker
+a minimum log fold change of one as recommended by \citet{Amezquita2020-at}, which
+uses the testing framework from \citet{McCarthy2009-qx}. We select the top 10 marker
 genes that are upregulated in cluster 2, which was one of the clumped clusters
 when we toured on principal components. Here the tour becomes an alternative
 to a standard heatmap view for assessing shared markers; the basis
@@ -771,7 +771,7 @@ highlighting, one could use opacity or binned colour scales to encode
 distances or ranks instead of the neighbouring points. We have begun
 implementing this brush in \pkg{liminal}, using the \textbf{FNN} or \textbf{RcppAnnoy}
 packages for fast neighbourhood estimation on the server side, however there
-are still technicalities that need be resolved (Beygelzimer et al. 2019; Eddelbuettel 2020).
+are still technicalities that need be resolved \citep{fnn-pkg, rcpp-annoy-pkg}.
 Brush composition, such as `and', `or', or `not' brushes, could be used to
 further investigate mismatches between the \(k\)-nn graphs estimated from both the embedding and tour views.
 
@@ -779,11 +779,11 @@ There are some limitations
 in using the \pkg{liminal} interface for larger datasets. First,
 t-SNE avoids the crowding problem, points are separated into distinct regions
 on the display canvas. For the tour, points are concentrated in the
-centre of the projection and become difficult to see. We have recently proposed a simple non-linear transformation for the tour called a sage tour that aims to fix this problem (Laa, Cook, and Lee 2020).
+centre of the projection and become difficult to see. We have recently proposed a simple non-linear transformation for the tour called a sage tour that aims to fix this problem \citep{Laa2020-vk}.
 Second, as \(n\) increases both the embedding view and tour view become harder to read due to over-plotting, while the interactivity and animation become slower as there is more data passing from the server to the client.
 For the tasks we have looked at in this paper, where shape and density are important to the analyst, we think that better displays and sub-sampling strategies are more useful than being able to look at every single point on the canvas. We showed in our single cell clustering case study that doing a weighted sample based on cluster membership still allowed us to get a sense of relative cluster orientation, however there are alternative sampling approaches that could be applied, like selecting points close to the cluster centres. Alternative displays via statistical transformations could also mitigate the need to show all of the data. Recent work
-by Laa et al. (2020) is a promising area for further investigation, as well as
-work from topological statistics (Rieck 2017; Genovese et al. 2017).
+by \citet{Laa2020-wr} is a promising area for further investigation, as well as
+work from topological statistics \citep{Rieck2017-kk, Genovese2017-iq}.
 
 \hypertarget{acknowledgements}{%
 \section*{Acknowledgements}\label{acknowledgements}}
@@ -792,7 +792,7 @@ work from topological statistics (Rieck 2017; Genovese et al. 2017).
 The authors gratefully acknowledge the support of the Australian Research Council.
 We would like to thank Dr David Frazier and Dr Paul Harrison for
 their feedback on this work. The screenshots and images were compiled using the
-\pkg{cowplot} and \pkg{ggplot2} packages (Wilke 2019; Wickham 2016).
+\pkg{cowplot} and \pkg{ggplot2} packages \citep{r-cowplot, Wickham2016-gz}.
 
 \hypertarget{supplementary-materials}{%
 \section*{Supplementary Materials}\label{supplementary-materials}}
@@ -820,185 +820,8 @@ Case Study & Example & URL\\
 \end{tabular}
 \end{table}
 
-\hypertarget{references}{%
-\section*{References}\label{references}}
-\addcontentsline{toc}{section}{References}
-
-\hypertarget{refs}{}
-\leavevmode\hypertarget{ref-Amezquita2020-at}{}%
-Amezquita, Robert A, Aaron T L Lun, Etienne Becht, Vince J Carey, Lindsay N Carpp, Ludwig Geistlinger, Federico Marini, et al. 2020. ``Orchestrating Single-Cell Analysis with Bioconductor.'' \emph{Nat. Methods} 17 (2): 137--45. \url{https://doi.org/10.1038/s41592-019-0654-x}.
-
-\leavevmode\hypertarget{ref-Asimov1985-vp}{}%
-Asimov, Daniel. 1985. ``The Grand Tour: A Tool for Viewing Multidimensional Data.'' \emph{SIAM J. Sci. And Stat. Comput.} 6 (1): 128--43. \url{https://doi.org/10.1137/0906011}.
-
-\leavevmode\hypertarget{ref-Becker1987-gd}{}%
-Becker, Richard A, and William S Cleveland. 1987. ``Brushing Scatterplots.'' \emph{Technometrics} 29 (2): 127--42. \url{https://doi.org/10.2307/1269768}.
-
-\leavevmode\hypertarget{ref-fnn-pkg}{}%
-Beygelzimer, Alina, Sham Kakadet, John Langford, Sunil Arya, David Mount, and Shengqiao Li. 2019. \emph{FNN: Fast Nearest Neighbor Search Algorithms and Applications}. \url{https://CRAN.R-project.org/package=FNN}.
-
-\leavevmode\hypertarget{ref-Blondel2008-bx}{}%
-Blondel, Vincent D, Jean-Loup Guillaume, Renaud Lambiotte, and Etienne Lefebvre. 2008. ``Fast Unfolding of Communities in Large Networks.'' \emph{J. Stat. Mech.} 2008 (10): P10008. \url{https://doi.org/10.1088/1742-5468/2008/10/P10008}.
-
-\leavevmode\hypertarget{ref-Brehmer2014-hk}{}%
-Brehmer, Matthew, Michael Sedlmair, Stephen Ingram, and Tamara Munzner. 2014. ``Visualizing Dimensionally-Reduced Data: Interviews with Analysts and a Characterization of Task Sequences.'' In \emph{Proceedings of the Fifth Workshop on Beyond Time and Errors: Novel Evaluation Methods for Visualization}, 1--8. dl.acm.org. \url{https://dl.acm.org/doi/abs/10.1145/2669557.2669559}.
-
-\leavevmode\hypertarget{ref-Buja1986-zr}{}%
-Buja, Andreas, and Daniel Asimov. 1986. ``Grand Tour Methods: An Outline.'' In \emph{Proceedings of the Seventeenth Symposium on the Interface of Computer Sciences and Statistics on Computer Science and Statistics}, 63--67. USA: Elsevier North-Holland, Inc. \url{https://dl.acm.org/doi/10.5555/26036.26046}.
-
-\leavevmode\hypertarget{ref-Buja1996-fk}{}%
-Buja, Andreas, Dianne Cook, and Deborah F Swayne. 1996. ``Interactive High-Dimensional Data Visualization.'' \emph{J. Comput. Graph. Stat.} 5 (1): 78--99. \url{https://doi.org/10.2307/1390754}.
-
-\leavevmode\hypertarget{ref-Buja1986-ku}{}%
-Buja, Andreas, Catherine Hurley, and John McDonald. 1986. ``A Data Viewer for Multivariate Data.'' In \emph{Computing Science and Statistics: Proceedings of the 18th Symposium on the Interface}, 171--74. Washington: American Statistical Association.
-
-\leavevmode\hypertarget{ref-Buja2008-fn}{}%
-Buja, Andreas, Deborah F Swayne, Michael L Littman, Nathaniel Dean, Heike Hofmann, and Lisha Chen. 2008. ``Data Visualization with Multidimensional Scaling.'' \emph{J. Comput. Graph. Stat.} 17 (2): 444--72. \url{https://doi.org/10.1198/106186008X318440}.
-
-\leavevmode\hypertarget{ref-Chang2020-bq}{}%
-Chang, Winston, Joe Cheng, J J Allaire, Yihui Xie, and Jonathan McPherson. 2020. ``Shiny: Web Application Framework for R.'' \url{https://CRAN.R-project.org/package=shiny}.
-
-\leavevmode\hypertarget{ref-Coenen2019-to}{}%
-Coenen, Andy, and Adam Pearce. 2019. ``Understanding UMAP.'' \url{https://pair-code.github.io/understanding-umap/}. \url{https://pair-code.github.io/understanding-umap/}.
-
-\leavevmode\hypertarget{ref-Coifman2005-ak}{}%
-Coifman, R R, S Lafon, A B Lee, M Maggioni, B Nadler, F Warner, and S W Zucker. 2005. ``Geometric Diffusions as a Tool for Harmonic Analysis and Structure Definition of Data: Diffusion Maps.'' \emph{Proc. Natl. Acad. Sci. U. S. A.} 102 (21): 7426--31. \url{https://doi.org/10.1073/pnas.0500334102}.
-
-\leavevmode\hypertarget{ref-Cook1995-bi}{}%
-Cook, Dianne, Andreas Buja, Javier Cabrera, and Catherine Hurley. 1995. ``Grand Tour and Projection Pursuit.'' \emph{J. Comput. Graph. Stat.} 4 (3): 155--72. \url{https://doi.org/10.1080/10618600.1995.10474674}.
-
-\leavevmode\hypertarget{ref-rcpp-annoy-pkg}{}%
-Eddelbuettel, Dirk. 2020. \emph{RcppAnnoy: 'Rcpp' Bindings for 'Annoy', a Library for Approximate Nearest Neighbors}. \url{https://CRAN.R-project.org/package=RcppAnnoy}.
-
-\leavevmode\hypertarget{ref-Genovese2017-iq}{}%
-Genovese, Christopher, Marco Perone-Pacifico, Isabella Verdinelli, and Larry Wasserman. 2017. ``Finding Singular Features.'' \emph{J. Comput. Graph. Stat.} 26 (3): 598--609. \url{https://doi.org/10.1080/10618600.2016.1260472}.
-
-\leavevmode\hypertarget{ref-Kobak2019-lm}{}%
-Kobak, Dmitry, and Philipp Berens. 2019. ``The Art of Using t-SNE for Single-Cell Transcriptomics.'' \emph{Nat. Commun.} 10 (1): 5416. \url{https://doi.org/10.1038/s41467-019-13056-x}.
-
-\leavevmode\hypertarget{ref-Korem2015-af}{}%
-Korem, Yael, Pablo Szekely, Yuval Hart, Hila Sheftel, Jean Hausser, Avi Mayo, Michael E Rothenberg, Tomer Kalisky, and Uri Alon. 2015. ``Geometry of the Gene Expression Space of Individual Cells.'' \emph{PLoS Comput. Biol.} 11 (7): e1004224. \url{https://doi.org/10.1371/journal.pcbi.1004224}.
-
-\leavevmode\hypertarget{ref-Rtsne}{}%
-Krijthe, Jesse H. 2015. \emph{Rtsne: T-Distributed Stochastic Neighbor Embedding Using Barnes-Hut Implementation}. \url{https://github.com/jkrijthe/Rtsne}.
-
-\leavevmode\hypertarget{ref-Kruskal1964-cz}{}%
-Kruskal, J B. 1964a. ``Multidimensional Scaling by Optimizing Goodness of Fit to a Nonmetric Hypothesis.'' \emph{Psychometrika} 29 (1): 1--27. \url{https://doi.org/10.1007/BF02289565}.
-
-\leavevmode\hypertarget{ref-Kruskal1964-cw}{}%
----------. 1964b. ``Nonmetric Multidimensional Scaling: A Numerical Method.'' \emph{Psychometrika} 29 (2): 115--29. \url{https://doi.org/10.1007/BF02289694}.
-
-\leavevmode\hypertarget{ref-Laa2020-wr}{}%
-Laa, Ursula, Dianne Cook, Andreas Buja, and German Valencia. 2020. ``Hole or Grain? A Section Pursuit Index for Finding Hidden Structure in Multiple Dimensions,'' April. \url{http://arxiv.org/abs/2004.13327}.
-
-\leavevmode\hypertarget{ref-Laa2020-vk}{}%
-Laa, Ursula, Dianne Cook, and Stuart Lee. 2020. ``Burning Sage: Reversing the Curse of Dimensionality in the Visualization of High-Dimensional Data,'' September. \url{http://arxiv.org/abs/2009.10979}.
-
-\leavevmode\hypertarget{ref-Lee2009-zb}{}%
-Lee, John A, and Michel Verleysen. 2009. ``Quality Assessment of Dimensionality Reduction: Rank-Based Criteria.'' \emph{Neurocomputing} 72 (7): 1431--43. \url{https://doi.org/10.1016/j.neucom.2008.12.017}.
-
-\leavevmode\hypertarget{ref-r-liminal}{}%
-Lee, Stuart, and Dianne Cook. 2020. \emph{Liminal: Multivariate Data Visualization with Tours and Embeddings}. \url{https://github.com/sa-lee/liminal}.
-
-\leavevmode\hypertarget{ref-Lewis2012-ai}{}%
-Lewis, Joshua, Laurens Van der Maaten, and Virginia de Sa. 2012. ``A Behavioral Investigation of Dimensionality Reduction.'' In \emph{Proceedings of the Annual Meeting of the Cognitive Science Society}. Vol. 34.
-
-\leavevmode\hypertarget{ref-Linderman2019-dq}{}%
-Linderman, George C, and Stefan Steinerberger. 2019. ``Clustering with t-SNE, Provably.'' \emph{SIAM Journal on Mathematics of Data Science} 1 (2): 313--32. \url{https://doi.org/10.1137/18M1216134}.
-
-\leavevmode\hypertarget{ref-Lun2016}{}%
-Lun, Aaron T. L., Davis J. McCarthy, and John C. Marioni. 2016. ``A Step-by-Step Workflow for Low-Level Analysis of Single-Cell Rna-Seq Data with Bioconductor.'' \emph{F1000Res.} 5: 2122. \url{https://doi.org/10.12688/f1000research.9501.2}.
-
-\leavevmode\hypertarget{ref-Lyttle2020-hp}{}%
-Lyttle, Ian, and Vega/Vega-Lite Developers. 2020. ``Vegawidget: 'Htmlwidget' for 'Vega' and 'Vega-Lite'.'' \url{https://CRAN.R-project.org/package=vegawidget}.
-
-\leavevmode\hypertarget{ref-Van_Der_Maaten2014-zn}{}%
-Maaten, Laurens van der. 2014. ``Accelerating t-SNE Using Tree-Based Algorithms.'' \emph{J. Mach. Learn. Res.} \url{http://www.jmlr.org/papers/volume15/vandermaaten14a/vandermaaten14a.pdf}.
-
-\leavevmode\hypertarget{ref-Maaten2008-sk}{}%
-Maaten, Laurens van der, and Geoffrey Hinton. 2008. ``Visualizing Data Using t-SNE.'' \emph{J. Mach. Learn. Res.} 9 (Nov): 2579--2605. \url{http://www.jmlr.org/papers/v9/vandermaaten08a.html}.
-
-\leavevmode\hypertarget{ref-Macosko2015-ot}{}%
-Macosko, Evan Z, Anindita Basu, Rahul Satija, James Nemesh, Karthik Shekhar, Melissa Goldman, Itay Tirosh, et al. 2015. ``Highly Parallel Genome-Wide Expression Profiling of Individual Cells Using Nanoliter Droplets.'' \emph{Cell} 161 (5): 1202--14. \url{https://doi.org/10.1016/j.cell.2015.05.002}.
-
-\leavevmode\hypertarget{ref-McCarthy2017}{}%
-McCarthy, Davis J., Kieran R. Campbell, Aaron T. L. Lun, and Quin F. Willis. 2017. ``Scater: Pre-Processing, Quality Control, Normalisation and Visualisation of Single-Cell RNA-Seq Data in R.'' \emph{Bioinformatics} 33 (8): 1179--86. \url{https://doi.org/10.1093/bioinformatics/btw777}.
-
-\leavevmode\hypertarget{ref-McCarthy2009-qx}{}%
-McCarthy, Davis J, and Gordon K Smyth. 2009. ``Testing Significance Relative to a Fold-Change Threshold Is a TREAT.'' \emph{Bioinformatics} 25 (6): 765--71. \url{https://doi.org/10.1093/bioinformatics/btp053}.
-
-\leavevmode\hypertarget{ref-McDonald1982-ew}{}%
-McDonald, J A. 1982. ``Interactive Graphics for Data Analysis.'' PhD thesis, Stanford University. \url{http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.331.6673\&rep=rep1\&type=pdf}.
-
-\leavevmode\hypertarget{ref-McInnes2018-co}{}%
-McInnes, Leland, John Healy, and James Melville. 2018. ``UMAP: Uniform Manifold Approximation and Projection for Dimension Reduction,'' February. \url{http://arxiv.org/abs/1802.03426}.
-
-\leavevmode\hypertarget{ref-Melville2020}{}%
-Melville, James. 2020. ``t-SNE Initialization Options.'' \url{https://jlmelville.github.io/smallvis/init.html}. \url{https://jlmelville.github.io/smallvis/init.html}.
-
-\leavevmode\hypertarget{ref-Moon2019-ce}{}%
-Moon, Kevin R, David van Dijk, Zheng Wang, Scott Gigante, Daniel B Burkhardt, William S Chen, Kristina Yim, et al. 2019. ``Visualizing Structure and Transitions for Biological Data Exploration.'' \emph{bioRxiv}. \url{https://doi.org/10.1101/120378}.
-
-\leavevmode\hypertarget{ref-Nguyen2019-yh}{}%
-Nguyen, Lan Huong, and Susan Holmes. 2019. ``Ten Quick Tips for Effective Dimensionality Reduction.'' \emph{PLoS Comput. Biol.} 15 (6): e1006907. \url{https://doi.org/10.1371/journal.pcbi.1006907}.
-
-\leavevmode\hypertarget{ref-Ovchinnikova2020-sy}{}%
-Ovchinnikova, Svetlana, and Simon Anders. 2020. ``Exploring Dimension-Reduced Embeddings with Sleepwalk.'' \emph{Genome Res.} 30 (5): 749--56. \url{https://doi.org/10.1101/gr.251447.119}.
-
-\leavevmode\hypertarget{ref-Pezzotti2017-cz}{}%
-Pezzotti, Nicola, Boudewijn P F Lelieveldt, Laurens Van Der Maaten, Thomas Hollt, Elmar Eisemann, and Anna Vilanova. 2017. ``Approximated and User Steerable tSNE for Progressive Visual Analytics.'' \emph{IEEE Trans. Vis. Comput. Graph.} 23 (7): 1739--52. \url{https://doi.org/10.1109/TVCG.2016.2570755}.
-
-\leavevmode\hypertarget{ref-Rauber2009-vh}{}%
-Rauber, Andreas. 2009. ``Multi-Challenge Data Set.'' \url{http://ifs.tuwien.ac.at/dm/dataSets.html}. \url{http://ifs.tuwien.ac.at/dm/dataSets.html}.
-
-\leavevmode\hypertarget{ref-Rieck2017-kk}{}%
-Rieck, Bastian. 2017. ``Persistent Homology in Multivariate Data Visualization.'' Edited by Heike Little and Michael Gertz. PhD thesis, Ruprecht-Karls-Universität Heidelberg.
-
-\leavevmode\hypertarget{ref-scRNAseq-d}{}%
-Risso, Davide, and Michael Cole. 2019. \emph{ScRNAseq: Collection of Public Single-Cell Rna-Seq Datasets}.
-
-\leavevmode\hypertarget{ref-Satyanarayan2017-gs}{}%
-Satyanarayan, Arvind, Dominik Moritz, Kanit Wongsuphasawat, and Jeffrey Heer. 2017. ``Vega-Lite: A Grammar of Interactive Graphics.'' \emph{IEEE Trans. Vis. Comput. Graph.} 23 (1): 341--50. \url{https://doi.org/10.1109/TVCG.2016.2599030}.
-
-\leavevmode\hypertarget{ref-Sedlmair2013-pn}{}%
-Sedlmair, Michael, Tamara Munzner, and Melanie Tory. 2013. ``Empirical Guidance on Scatterplot and Dimension Reduction Technique Choices.'' \emph{IEEE Trans. Vis. Comput. Graph.} 19 (12): 2634--43. \url{https://doi.org/10.1109/TVCG.2013.153}.
-
-\leavevmode\hypertarget{ref-Silva2003-xw}{}%
-Silva, V D, and J B Tenenbaum. 2003. ``Global Versus Local Methods in Nonlinear Dimensionality Reduction.'' \emph{Adv. Neural Inf. Process. Syst.} \url{http://papers.nips.cc/paper/2141-global-versus-local-methods-in-nonlinear-dimensionality-reduction.pdf}.
-
-\leavevmode\hypertarget{ref-Smilkov2016-hp}{}%
-Smilkov, Daniel, Nikhil Thorat, Charles Nicholson, Emily Reif, Fernanda B Viégas, and Martin Wattenberg. 2016. ``Embedding Projector: Interactive Visualization and Interpretation of Embeddings,'' November. \url{http://arxiv.org/abs/1611.05469}.
-
-\leavevmode\hypertarget{ref-Swayne2004-ua}{}%
-Swayne, Deborah F, and Andreas Buja. 2004. ``Exploratory Visual Analysis of Graphs in GGOBI.'' In \emph{COMPSTAT 2004 --- Proceedings in Computational Statistics}, 477--88. Physica-Verlag HD. \url{https://doi.org/10.1007/978-3-7908-2656-2/_39}.
-
-\leavevmode\hypertarget{ref-Swayne1998-uq}{}%
-Swayne, Deborah F, Dianne Cook, and Andreas Buja. 1998. ``XGobi: Interactive Dynamic Data Visualization in the X Window System.'' \emph{J. Comput. Graph. Stat.} 7 (1): 113--30. \url{https://doi.org/10.1080/10618600.1998.10474764}.
-
-\leavevmode\hypertarget{ref-Swayne2003-qd}{}%
-Swayne, Deborah F, Duncan Temple Lang, Andreas Buja, and Dianne Cook. 2003. ``GGobi: Evolving from XGobi into an Extensible Framework for Interactive Data Visualization.'' \emph{Comput. Stat. Data Anal.} 43 (4): 423--44. \url{https://doi.org/10.1016/S0167-9473(02)00286-4}.
-
-\leavevmode\hypertarget{ref-Tang2016-oz}{}%
-Tang, Jian, Jingzhou Liu, Ming Zhang, and Qiaozhu Mei. 2016. ``Visualizing Large-Scale and High-Dimensional Data,'' February. \url{http://arxiv.org/abs/1602.00370}.
-
-\leavevmode\hypertarget{ref-Torgerson1952-am}{}%
-Torgerson, Warren S. 1952. ``Multidimensional Scaling: I. Theory and Method.'' \emph{Psychometrika} 17 (4): 401--19. \url{https://doi.org/10.1007/BF02288916}.
-
-\leavevmode\hypertarget{ref-Wattenberg2016-ji}{}%
-Wattenberg, Martin, Fernanda Viégas, and Ian Johnson. 2016. ``How to Use t-SNE Effectively.'' \emph{Distill} 1 (10). \url{https://doi.org/10.23915/distill.00002}.
-
-\leavevmode\hypertarget{ref-Wickham2016-gz}{}%
-Wickham, Hadley. 2016. \emph{Ggplot2: Elegant Graphics for Data Analysis}. Use R! Springer International Publishing. \url{https://doi.org/10.1007/978-3-319-24277-4}.
-
-\leavevmode\hypertarget{ref-Wickham2015-cx}{}%
-Wickham, Hadley, Dianne Cook, and Heike Hofmann. 2015. ``Visualizing Statistical Models: Removing the Blindfold.'' \emph{Statistical Analysis and Data Mining: The ASA Data Science Journal} 8 (4): 203--25. \url{https://doi.org/10.1002/sam.11271}.
-
-\leavevmode\hypertarget{ref-Wickham2011-st}{}%
-Wickham, Hadley, Dianne Cook, Heike Hofmann, and Andreas Buja. 2011. ``Tourr: An R Package for Exploring Multivariate Data with Projections.'' \emph{Journal of Statistical Software, Articles} 40 (2): 1--18. \url{https://doi.org/10.18637/jss.v040.i02}.
-
-\leavevmode\hypertarget{ref-r-cowplot}{}%
-Wilke, Clause O. 2019. \emph{Cowplot: Streamlined Plot Theme and Plot Annotations for 'Ggplot2'}. \url{https://CRAN.R-project.org/package=cowplot}.
-
+\renewcommand\refname{References}
+\bibliography{liminal.bib}
 
 
 \end{document}

@@ -36,10 +36,12 @@ output:
     template: template/jdssv_template.tex
     keep_tex: true
     toc: false
+    citation_package: natbib
 bibliography: liminal.bib
 biblio-style: apalike
 ---
 ```{r setup, include = FALSE}
+options(tinytex.clean = FALSE)
 knitr::opts_chunk$set(
   echo = FALSE,
   message = FALSE,

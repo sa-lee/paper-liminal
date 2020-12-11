@@ -79,7 +79,7 @@
   \usepackage[authoryear,round,longnamesfirst]{natbib}
 \fi
 \bibpunct{(}{)}{;}{a}{}{,}
-\bibliographystyle{apalike-refs}
+\bibliographystyle{apalike}
 %% page layout
 \topmargin 0pt
 \textheight 46\baselineskip
