@@ -13,7 +13,7 @@ slice_bitmap <- function(a, row_number) {
   res <- qd_read_bitmap(a)
   colnames(res) <- paste0("px", seq_len(ncol(res)))
   dplyr::as_tibble(res[row_number, , drop = FALSE])
-} 
+}
 
 tidy_tsne <- function(model, data) {
   enframe <- as.data.frame(model[["Y"]])
@@ -27,12 +27,12 @@ tidy_var_explained <- function(object) {
     component <- seq_len(length(pve))
     c_pve <- cumsum(pve)
   }
-  
+
   if (methods::is(object, "prcomp")) {
     component <- seq_len(length(object$sdev))
     var <- object$sdev^2
     pve <- (var / sum(var)) * 100
-    c_pve <- cumsum(var) / sum(var)            
+    c_pve <- cumsum(var) / sum(var)
   }
   data.frame(
     component = component,
