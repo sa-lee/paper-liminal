@@ -168,7 +168,7 @@ in using embedding methods. Finally, we describe the insights gained by using
 
 To begin we suppose the data is in the form of a rectangular
 matrix of real numbers, $X = [\mathbf{x_1}, \dots, \mathbf{x_n}]$, where $n$ is
-the number of observations in $p$ dimensions.  The purpose of any DR algorithm
+the number of observations in $p$ dimensions.  The purpose of any dimension reduction (DR) algorithm
 is to find a low-dimensional representation of the data, 
 $Y = [\mathbf{y_1}, \dots, \mathbf{y_n}]$, such that $Y$ is an $n \times d$
 matrix where $d \ll p$. The hope of the analyst is that the DR procedure to 
@@ -217,9 +217,8 @@ The t-SNE algorithm estimates the pair-wise similarity of points in a high
 dimensional space based on their (Euclidean) distances using a Gaussian
 distribution. A configuration in the low dimensional embedding space is then
 estimated by modelling similarities using a t-distribution with 1 degree of
-freedom [@Maaten2008-sk]. There are several subtleties
-to the to use of the algorithm that are revealed by stepping through its
-machinery.
+freedom [@Maaten2008-sk]. There are several subtleties of the algorithm that 
+are revealed by stepping through its machinery.
 
 To begin, t-SNE transforms pair-wise distances between $\mathbf{x_i}$ and
 $\mathbf{x_j}$ to similarities using a Gaussian kernel:
@@ -463,7 +462,7 @@ or mouse-dragging and reacts by pausing the stream. This process allows the
 user to manipulate the tour in real time rather than having to fix the number
 of bases ahead of time. Additionally, once the user has identified an 
 interesting projection or is done with the tour, the interface will return the 
-current basis for use downstream.
+current basis (as a matrix) for use downstream.
 
 
 ## Linking and highlighting views via interactions
@@ -547,7 +546,7 @@ From the video linked in Figure \@ref(fig:hierarchical), we see
 that t-SNE has correctly identified the sub-clusters. However, their relative 
 locations to each other is distorted, with the orange and blue groups being
 far from each other in the tour view (Figure \@ref(fig:hierarchical)a). We see 
-in this case that is difficult
+in this case that it is difficult
 to see the sub-clusters in the tour view, however, once we zoom and highlight
 they become more apparent (Figure \@ref(fig:hierarchical)b). When we brush 
 the sub-clusters in the t-SNE, their
@@ -652,7 +651,7 @@ A common analysis task in single cell studies is performing clustering to
 identify groupings  of cells with similar expression profiles. Analysts
 in this area generally use non linear DR methods for verification and identification
 of clusters and developmental trajectories (i.e., case study 1). For clustering
-workflows the primary task is verify the existence of clusters and then begin to 
+workflows the primary task is to verify the existence of clusters and then begin to 
 identify the clusters as cell types using the expression of "known" 
 marker genes. Here a 'faithful' a embedding should ideally preserve the topology
 of the data; cells that correspond to a cell type should lie in the same
@@ -665,7 +664,7 @@ selected for this case study has features similar to those found in case studies
 First, we downloaded the raw mouse retinal single cell RNA-seq data from
 @Macosko2015-ot using the **scRNAseq** Bioconductor package [@scRNAseq-d]. We
 have followed a standard workflow for pre-processing and normalizing this data 
-(described by @Amezquita2020-at): we performed QC using the **scater** package
+(described by @Amezquita2020-at): we performed quality control using the **scater** package
 by removing cells with high proportion of mitochondrial gene expression and low
 numbers of genes detected, we log-transformed and normalised the expression 
 values and  finally selected highly variable genes (HVGs) using **scran** 
