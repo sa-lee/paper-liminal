@@ -1,0 +1,21 @@
+WEBVTT
+
+00:01.000 --> 00:03.000
+This dataset has two Gaussian clusters with equal covariance embedded in 10 dimensions. 
+
+00:06.000 --> 00:08.000
+And a third cluster with hierarchical structure. 
+This cluster itself has two 3 dimensional clusters embedded in 10 dimensions.
+
+00:09.000 --> 00:11.000
+The second cluster is subdivided into three smaller clusters, that are each equidistant from each other and have the same covariance structure
+
+00:12.000 --> 00:16.000
+Brushing on the t-SNE view shows that, we see that the relative distance between clusters is exaggerated.
+
+00:17.000 --> 00:21.000
+In the tour view the blue clusters are closer together, while t-SNE has pushed them apart.
+
+
+00:30.000 --> 00:35.000
+As we zoom in and perform more brushing the extent of the distortion in the t-SNE embedding becomes more apparent.
