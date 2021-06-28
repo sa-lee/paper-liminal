@@ -1,0 +1,11 @@
+WEBVTT
+
+00:01.000 --> 00:05.000
+This is the liminal interface, which is currently showing a view of five spherical Gaussian clusters, which have been embedded using t-SNE on the left, and a grand tour on the right.
+
+00:06.000 --> 00:20.000
+We have pushed the play button and begun the tour. We can see that t-SNE on the left has correctly identified the clusters and split them apart. The tour on the other hand shows that the clusters are actually quite close together in high dimensional space and more concentrated than t-SNE would have you believe.
+
+
+00:22.000 --> 00:28.000
+This can be verified by brushing cluster 3 (red points) on the t-SNE view, we see that this cluster is less spread in the tour view and closer to the other groups.
