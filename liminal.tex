@@ -30,7 +30,7 @@ Stuart Lee\\Monash University \And Ursula Laa\\Monash University \And Dianne Coo
 \Shorttitle{\pkg{liminal}: High-Dimensional Interactive Data Visualisation}
 
 \Abstract{
-Non-linear dimensionality reduction (NLDR) methods such as t-distributed stochastic neighbour embedding (t-SNE) are ubiquitous in the natural sciences, however, the appropriate use of these methods is difficult because of their complex parameterisations; analysts must make trade-offs in order to identify structure in the visualisation of an NLDR technique. We present visual diagnostics for the pragmatic usage of NLDR methods by combining them with a technique called the tour. A tour is a sequence of interpolated linear projections of multivariate data onto a lower dimensional space. The sequence is displayed as a dynamic visualisation, allowing a user to see the shadows the high-dimensional data casts in a lower dimensional view. By linking the tour to an NLDR view, we can preserve global structure and through user interactions like linked brushing observe where the NLDR view may be misleading. We display several case studies from both simulations and single cell transcriptomics, that shows our approach is useful for cluster orientation tasks. The implementation of our framework is available as an \proglang{R} package called \pkg{liminal} available at \url{https://github.com/sa-lee/liminal}.
+Non-linear dimensionality reduction (NLDR) methods such as t-distributed stochastic neighbour embedding (t-SNE) are ubiquitous in the natural sciences, however, the appropriate use of these methods is difficult because of their complexity; analysts must make trade-offs in order to identify structure in the visualisation of an NLDR technique. We present visual diagnostics for the usage of NLDR methods by combining them with a technique called the tour. A tour is a sequence of interpolated linear projections of multivariate data onto a lower dimensional space. The sequence is displayed as a dynamic visualisation, allowing a user to see the shadows the high-dimensional data casts in a lower dimensional view. By linking the tour to an NLDR view, we can preserve global structure and through user interactions like linked brushing observe where the NLDR view may be misleading. We display several case studies from both simulations and single cell transcriptomics, that shows our approach is useful for cluster orientation tasks and for correcting an NLDR embedding. The implementation of our framework is available as an \proglang{R} package called \pkg{liminal}.
 }
 
 \Keywords{dimensionality reduction, high-dimensional data, interactive graphics, t-SNE, grand tour, \proglang{R}}
@@ -41,7 +41,7 @@ Non-linear dimensionality reduction (NLDR) methods such as t-distributed stochas
     Monash University\\
     Department of Econometrics and Business Statistics,\\
 Monash University\\
-  E-mail: \email{stuart.lee1@monash.edu}\\
+  E-mail: \email{stuart.andrew.lee@gmail.com}\\
   
       Ursula Laa\\
     Monash University\\
@@ -67,16 +67,16 @@ Monash University\\
 \hypertarget{introduction}{%
 \section{Introduction}\label{introduction}}
 
-High dimensional data is increasingly prevalent in the natural sciences and
+High-dimensional data is increasingly prevalent in the natural sciences and
 beyond but presents a challenge to the analyst in terms of data cleaning,
 pre-processing and visualisation. Methods to embed data from a high-dimensional
 space into a low-dimensional one now form a core step of the data analysis
 workflow where they are used to ascertain hidden structure and de-noise data
-for downstream analysis .
+for downstream analysis.
 
 Choosing an appropriate embedding presents a challenge to the analyst. How does
 an analyst know whether the embedding has captured the underlying topology and
-geometry of the high dimensional space? The answer depends on the analyst's
+geometry of the high-dimensional space? The answer depends on the analyst's
 workflow. \citet{Brehmer2014-hk} characterised two main workflow steps that an
 analyst performs when using embedding techniques: dimension reduction and
 cluster orientation. The first relates to dimension reduction achieved by using
@@ -87,7 +87,7 @@ embedded form like changes in cell development or species abundance \citep{Nguye
 a clustering workflow. Here analysts are interested in identifying and naming
 clusters and verifying them by either applying known labels or colouring by
 variables that are a-priori known to distinguish clusters like the expression of a marker gene to identify a cell type. Once clusters are identified they are used for further analysis to identify what features in the data make them distinguishable. Both of these
-workflow steps rely on the embedding being representative of the original high dimensional dataset, and becomes much more difficult when there is no underlying ground truth.
+workflow steps rely on the embedding being representative of the original high-dimensional dataset, and becomes much more difficult when there is no underlying ground truth.
 
 As part of a visualization workflow, it is important to consider the perception
 and interpretation of embedding methods as well. \citet{Sedlmair2013-pn} showed that
@@ -126,8 +126,8 @@ provides interactions to colour points, and select nearest neighbours
 guided and modified form of the t-SNE algorithm, that allows users to modify
 optimisation parameters in real-time.
 
-A complementary approach for visualizing structure in high dimensional data is
-the tour. A tour is a sequence of projections of a high dimensional dataset
+A complementary approach for visualizing structure in high-dimensional data is
+the tour. A tour is a sequence of projections of a high-dimensional dataset
 onto a low-dimensional basis matrix, and is represented as an
 animated visualization \citep{Asimov1985-vp, Buja1986-zr}. Given the dynamic
 nature of the tour, user interaction is important for controlling and
@@ -135,25 +135,28 @@ exploring the visualisation: the tour has been used previously by
 \citet{Wickham2015-cx} for exploring statistical model fits and by \citet{Buja1996-fk} for
 exploring the space of factorial experimental designs.
 
-The approach used in this paper is to augment the results of an NLDR method with the tour with our \proglang{R} package called \pkg{liminal}. Interfaces for evaluating
+The approach used in this paper is to augment the results of an NLDR method with the tour with our\proglang{R} package called \pkg{liminal}. Interfaces for evaluating
 embeddings require interaction but should also be able to be incorporated into
 an analysts workflow. Here we implement a more pragmatic workflow by
 incorporating interactive graphics and tours with embeddings that allows users
-to see a global overview of their high dimensional data and assists them with cluster orientation tasks.
+to see a global overview of their high-dimensional data, allowing them to
+adjust an NLDR view and assist them with cluster orientation tasks.
 
 The rest of the paper is organised as follows. The next section provides
 background on dimension reduction methods, including an overview of the tour.
 Then we describe the visual design of \pkg{liminal}, followed by implementation
 details. Next we provide case studies that show how our interface assists
 in using embedding methods. Finally, we describe the insights gained by using
-\pkg{liminal} and plans for extensions to the software.
+\pkg{liminal} and plans for extensions to the software. Throughout the paper
+when we refer to high-dimensional data, we mean it in a broad sense not
+specifically referring to the case of small \(N\) large \(p\) data.
 
 \hypertarget{overview-of-dimension-reduction}{%
 \section{Overview of Dimension Reduction}\label{overview-of-dimension-reduction}}
 
 To begin we suppose the data is in the form of a rectangular
 matrix of real numbers, \(X = [\mathbf{x_1}, \dots, \mathbf{x_n}]\), where \(n\) is
-the number of observations in \(p\) dimensions. The purpose of any DR algorithm
+the number of observations in \(p\) dimensions. The purpose of any dimension reduction (DR) algorithm
 is to find a low-dimensional representation of the data,
 \(Y = [\mathbf{y_1}, \dots, \mathbf{y_n}]\), such that \(Y\) is an \(n \times d\)
 matrix where \(d \ll p\). The hope of the analyst is that the DR procedure to
@@ -203,9 +206,8 @@ The t-SNE algorithm estimates the pair-wise similarity of points in a high
 dimensional space based on their (Euclidean) distances using a Gaussian
 distribution. A configuration in the low dimensional embedding space is then
 estimated by modelling similarities using a t-distribution with 1 degree of
-freedom \citep{Maaten2008-sk}. There are several subtleties
-to the to use of the algorithm that are revealed by stepping through its
-machinery.
+freedom \citep{Maaten2008-sk}. There are several subtleties of the algorithm that
+are revealed by stepping through its machinery.
 
 To begin, t-SNE transforms pair-wise distances between \(\mathbf{x_i}\) and
 \(\mathbf{x_j}\) to similarities using a Gaussian kernel:
@@ -339,7 +341,7 @@ To understand the data structure, we look for Gestalt features such as
 preferred for this task, since it accurately captures the geometry, while NLDR
 methods typically introduce distortions.
 
-To investigate latent structure and the shape of a high dimensional dataset in
+To investigate latent structure and the shape of a high-dimensional dataset in
 \pkg{liminal}, a tour can be run without the use of an external embedding.
 It is often useful to
 first run principal components on the input as an initial dimension reduction
@@ -453,7 +455,7 @@ or mouse-dragging and reacts by pausing the stream. This process allows the
 user to manipulate the tour in real time rather than having to fix the number
 of bases ahead of time. Additionally, once the user has identified an
 interesting projection or is done with the tour, the interface will return the
-current basis for use downstream.
+current basis (as a matrix) for use downstream.
 
 \hypertarget{linking-and-highlighting-views-via-interactions}{%
 \subsection{Linking and highlighting views via interactions}\label{linking-and-highlighting-views-via-interactions}}
@@ -539,7 +541,7 @@ From the video linked in Figure \ref{fig:hierarchical}, we see
 that t-SNE has correctly identified the sub-clusters. However, their relative
 locations to each other is distorted, with the orange and blue groups being
 far from each other in the tour view (Figure \ref{fig:hierarchical}a). We see
-in this case that is difficult
+in this case that it is difficult
 to see the sub-clusters in the tour view, however, once we zoom and highlight
 they become more apparent (Figure \ref{fig:hierarchical}b). When we brush
 the sub-clusters in the t-SNE, their
@@ -651,7 +653,7 @@ A common analysis task in single cell studies is performing clustering to
 identify groupings of cells with similar expression profiles. Analysts
 in this area generally use non linear DR methods for verification and identification
 of clusters and developmental trajectories (i.e., case study 1). For clustering
-workflows the primary task is verify the existence of clusters and then begin to
+workflows the primary task is to verify the existence of clusters and then begin to
 identify the clusters as cell types using the expression of ``known''
 marker genes. Here a `faithful' a embedding should ideally preserve the topology
 of the data; cells that correspond to a cell type should lie in the same
@@ -664,8 +666,8 @@ selected for this case study has features similar to those found in case studies
 First, we downloaded the raw mouse retinal single cell RNA-seq data from
 \citet{Macosko2015-ot} using the \textbf{scRNAseq} Bioconductor package \citep{scRNAseq-d}. We
 have followed a standard workflow for pre-processing and normalizing this data
-(described by \citet{Amezquita2020-at}): we performed QC using the \textbf{scater} package
-by removing cells with high proportion of mitochondrial gene expression and low
+(described by \citet{Amezquita2020-at}): we performed quality control using the \textbf{scater} package
+by removing cells with high proportion of mitochondrial gene expression (as this indicates poor sample quality) and low
 numbers of genes detected, we log-transformed and normalised the expression
 values and finally selected highly variable genes (HVGs) using \textbf{scran}
 \citep{McCarthy2017, Lun2016}. The top ten percent of HVGs were used to subset
@@ -681,7 +683,7 @@ Consequently, increasing the number of PCs to tour would increase the dimensiona
 Due to latency of the \pkg{liminal} interface we do a weighted sample of the rows based on
 cluster membership, leaving us with approximately 10 per cent of the original
 data size - 4,590 cells. Although this is not ideal, it still allows us to
-get a sense of the shape of the clusters as seen from the linked video in Figure \ref{fig:mouse-01}. If one was interested in performing more in-depth cluster analysis we recommend an iterative approach of removing large clusters and then re-running the \pkg{liminal} view as a way finding more granular cluster structure.
+get a sense of the shape of the clusters as seen from the linked video in Figure \ref{fig:mouse-01}. If one was interested in performing more in-depth cluster analysis we recommend an iterative approach of removing large clusters and then re-running the \pkg{liminal} view as a way finding more granular cluster structure. One could perform this approach manually via the \pkg{liminal} interface by returning the regions identified by brushing on the tour or embedding view.
 
 
 
@@ -695,7 +697,7 @@ get a sense of the shape of the clusters as seen from the linked video in Figure
 \end{figure}
 
 From the video linked in Figure \ref{fig:mouse-01}, we learn that the embedding has mostly captured the
-clusters relative location to each other to their location in high dimensional space, with a notable exception of points in cluster 3 and 10 as shown with
+clusters relative location to each other to their location in high-dimensional space, with a notable exception of points in cluster 3 and 10 as shown with
 linked brushing (Figure \ref{fig:mouse-01}a). As expected, t-SNE mitigates the crowding problem that is
 an issue for tour in this case, where points in clusters 2, 4, 6, and 11 are
 clumped together in tour view, but are blown up in the embedding view (Figure \ref{fig:mouse-01}b).
@@ -711,7 +713,7 @@ clusters in the tour view, but has points placed in cluster 3 and 9 in the embed
 Next, we identify marker genes for clusters using one sided Welch t-tests with
 a minimum log fold change of one as recommended by \citet{Amezquita2020-at}, which
 uses the testing framework from \citet{McCarthy2009-qx}. We select the top 10 marker
-genes that are upregulated in cluster 2, which was one of the clumped clusters
+genes that are expressed in relatively larger quantities (upregulated) in cluster 2, which was one of the clumped clusters
 when we toured on principal components. Here the tour becomes an alternative
 to a standard heatmap view for assessing shared markers; the basis
 generation (shown as the biplot on the left view) reflects the relative
@@ -741,7 +743,7 @@ consistent with the results of marker gene analysis (Figure \ref{fig:mouse-02}b)
 \section{Discussion}\label{discussion}}
 
 We have shown that the use of tours as a tool for interacting with
-high dimensional data provides an additional insight for interrogating views
+high-dimensional data provides an additional insight for interrogating views
 generated from embeddings. The interface we have designed in the \pkg{liminal}
 package, allows a user to gain a deeper understanding of an embedding
 algorithm, and rectifies perceptual issues associated with NLDR methods via
