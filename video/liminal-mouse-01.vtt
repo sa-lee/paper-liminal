@@ -1,0 +1,40 @@
+WEBVTT
+
+00:01.000 --> 00:05.000
+This is the liminal interface applied to single cell RNA-seq data. 
+
+00:06.000 --> 00:10.000
+Here we are interested in learning cell types and their relations by first clustering the gene expression counts. 
+
+00:11.000 --> 00:15.000
+On the left hand side we have an embedding of this data using t-SNE. On the right a grand tour.
+
+00:16.000 --> 00:20.000
+We learn that the embedding has mostly captured the clusters relative location to each other to their location. 
+
+00:25.000 --> 00:32.000
+With a notable exception of points in cluster 3 and 10 as shown with linked brushing, we can see that the edges of these clusters are far apart.
+
+00:35.000 --> 00:38.000
+t-SNE mitigates the crowding problem that is an issue for tour. 
+
+00:39.000 --> 00:42.000
+Points in clusters 2, 4, 6, and 11 are clumped together in tour view, but are blown up in the embedding view.
+
+00:46.000 --> 00:52.000
+Brushing on the tour view, reveals points in cluster 9 that are diffuse in the embedding 
+view.
+
+00:55.000 --> 00:59.000
+Points in cluster 9 are relatively far away and spread apart from other 
+clusters in the tour view
+
+01:00.000 --> 01:04.000
+But has points placed in cluster 3 and 9 in the embedding.
+
+01:11.000 --> 01:16.000
+Letting the tour animation play out, we see the structure of the data appear.
+
+01:17.000 --> 01:22.000
+The cells form a tetrahedron, with points lying along the surface and the vertices.
+

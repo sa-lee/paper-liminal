@@ -1,0 +1,27 @@
+WEBVTT
+
+00:01.000 --> 00:05.000
+This is the liminal interface applied to looking at marker genes in single cell RNA-seq data. 
+
+00:06.000 --> 00:10.000
+We select the top 10 marker genes that are upregulated in cluster 2. 
+
+00:11.000 --> 00:15.000
+The basis generation (shown as the biplot on the left view) reflects the relative weighting of each gene.
+
+00:16.000 --> 00:20.000
+The tour becomes an alternative to a standard heatmap view for assessing shared markers.
+
+00:30.000 --> 00:35.000 
+After zooming, we can see a trajectory forming along the clusters.
+
+00:39.000 --> 00:42.000
+Using linked highlighting we can view clusters individually or together to see if these markers separate them.
+
+01:00.000 --> 01:04.000
+The expression of the marker genes, appear to separate clusters 2, 4, 6, and 11.
+
+01:11.000 --> 01:16.000
+This indicates that these genes are expressed in all four clusters.
+
+
