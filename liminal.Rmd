@@ -7,7 +7,7 @@ author:
     address: |
       | Department of Econometrics and Business Statistics,
       | Monash University
-    email: \email{stuart.lee1@monash.edu}
+    email: \email{stuart.andrew.lee@gmail.com}
   - name: Ursula Laa 
     affiliation: Monash University
     address: |
@@ -26,7 +26,7 @@ title:
   # For running headers, if needed
   short:     "\\pkg{liminal}: High-Dimensional Interactive Data Visualisation"
 abstract: >
-  Non-linear dimensionality reduction (NLDR) methods such as t-distributed stochastic neighbour embedding (t-SNE) are ubiquitous in the natural sciences, however, the appropriate use of these methods is difficult because of their complex parameterisations; analysts must make trade-offs in order to identify structure in the visualisation of an NLDR technique. We present visual diagnostics for the pragmatic usage of NLDR methods by combining them with a technique called the tour. A tour is a sequence of interpolated linear projections of multivariate data onto a lower dimensional space. The sequence is displayed as a dynamic visualisation, allowing a user to see the shadows the high-dimensional data casts in a lower dimensional view. By linking the tour to an NLDR view, we can preserve global structure and through user interactions like linked brushing observe where the NLDR view may be misleading. We display several case studies from both simulations and single cell transcriptomics, that shows our approach is useful for cluster orientation tasks and for correcting an NLDR method. The implementation of our framework is available as an \proglang{R} package called \pkg{liminal} available on CRAN.
+  Non-linear dimensionality reduction (NLDR) methods such as t-distributed stochastic neighbour embedding (t-SNE) are ubiquitous in the natural sciences, however, the appropriate use of these methods is difficult because of their complexity; analysts must make trade-offs in order to identify structure in the visualisation of an NLDR technique. We present visual diagnostics for the usage of NLDR methods by combining them with a technique called the tour. A tour is a sequence of interpolated linear projections of multivariate data onto a lower dimensional space. The sequence is displayed as a dynamic visualisation, allowing a user to see the shadows the high-dimensional data casts in a lower dimensional view. By linking the tour to an NLDR view, we can preserve global structure and through user interactions like linked brushing observe where the NLDR view may be misleading. We display several case studies from both simulations and single cell transcriptomics, that shows our approach is useful for cluster orientation tasks and for correcting an NLDR embedding. The implementation of our framework is available as an \proglang{R} package called \pkg{liminal}.
 keywords:
   # at least one keyword must be supplied
   formatted: [dimensionality reduction, high-dimensional data, interactive graphics, t-SNE, grand tour, "\\proglang{R}"]
@@ -665,7 +665,7 @@ First, we downloaded the raw mouse retinal single cell RNA-seq data from
 @Macosko2015-ot using the **scRNAseq** Bioconductor package [@scRNAseq-d]. We
 have followed a standard workflow for pre-processing and normalizing this data 
 (described by @Amezquita2020-at): we performed quality control using the **scater** package
-by removing cells with high proportion of mitochondrial gene expression and low
+by removing cells with high proportion of mitochondrial gene expression (as this indicates poor sample quality) and low
 numbers of genes detected, we log-transformed and normalised the expression 
 values and  finally selected highly variable genes (HVGs) using **scran** 
 [@McCarthy2017; @Lun2016]. The top ten percent of HVGs were used to subset
@@ -681,7 +681,7 @@ Consequently, increasing the number of PCs to tour would increase the dimensiona
 Due to latency of the \pkg{liminal} interface we do a weighted sample of  the rows based on
 cluster membership, leaving us with approximately 10 per cent of the original
 data size - 4,590 cells. Although this is not ideal, it still allows us to
-get a sense of the shape of the clusters as seen from the linked video in Figure \@ref(fig:mouse-01). If one was interested in performing more in-depth cluster analysis we recommend an iterative approach of removing large clusters and then re-running the \pkg{liminal} view as a way finding more granular cluster structure.
+get a sense of the shape of the clusters as seen from the linked video in Figure \@ref(fig:mouse-01). If one was interested in performing more in-depth cluster analysis we recommend an iterative approach of removing large clusters and then re-running the \pkg{liminal} view as a way finding more granular cluster structure. One could perform this approach manually via the \pkg{liminal} interface by returning the regions identified by brushing on the tour or embedding view. 
 
 
 (ref:mouse-01) Screenshots of the \pkg{liminal} interface applied to single cell data, a video of the tour animation is available at https://player.vimeo.com/video/439635812. 
@@ -711,7 +711,7 @@ clusters in the tour view, but has points placed in cluster 3 and 9 in the embed
 Next, we identify marker genes for clusters using one sided Welch t-tests with
 a minimum log fold change of one as recommended by @Amezquita2020-at, which
 uses the testing framework from @McCarthy2009-qx. We select the top 10 marker 
-genes that are upregulated in cluster 2, which was one of the clumped clusters
+genes that are expressed in relatively larger quantities (upregulated) in cluster 2, which was one of the clumped clusters
 when we toured on principal components. Here the tour becomes an alternative
 to a standard heatmap view for assessing shared markers; the basis
 generation (shown as the biplot on the left view) reflects the relative 
