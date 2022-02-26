@@ -1,0 +1,331 @@
+\begin{thebibliography}{}
+
+\bibitem[Amezquita et~al., 2020]{Amezquita2020-at}
+Amezquita, R.~A., Lun, A. T.~L., Becht, E., Carey, V.~J., Carpp, L.~N.,
+  Geistlinger, L., Marini, F., Rue-Albrecht, K., Risso, D., Soneson, C.,
+  Waldron, L., Pag{\`e}s, H., Smith, M.~L., Huber, W., Morgan, M., Gottardo,
+  R., and Hicks, S.~C. (2020).
+\newblock Orchestrating single-cell analysis with bioconductor.
+\newblock {\em Nat. Methods}, 17(2):137--145.
+
+\bibitem[Asimov, 1985]{Asimov1985-vp}
+Asimov, D. (1985).
+\newblock The grand tour: A tool for viewing multidimensional data.
+\newblock {\em SIAM J. Sci. and Stat. Comput.}, 6(1):128--143.
+
+\bibitem[Becker and Cleveland, 1987]{Becker1987-gd}
+Becker, R.~A. and Cleveland, W.~S. (1987).
+\newblock Brushing scatterplots.
+\newblock {\em Technometrics}, 29(2):127--142.
+
+\bibitem[Beygelzimer et~al., 2019]{fnn-pkg}
+Beygelzimer, A., Kakadet, S., Langford, J., Arya, S., Mount, D., and Li, S.
+  (2019).
+\newblock {\em FNN: Fast Nearest Neighbor Search Algorithms and Applications}.
+\newblock R package version 1.1.3.
+
+\bibitem[Blondel et~al., 2008]{Blondel2008-bx}
+Blondel, V.~D., Guillaume, J.-L., Lambiotte, R., and Lefebvre, E. (2008).
+\newblock Fast unfolding of communities in large networks.
+\newblock {\em J. Stat. Mech.}, 2008(10):P10008.
+
+\bibitem[Brehmer et~al., 2014]{Brehmer2014-hk}
+Brehmer, M., Sedlmair, M., Ingram, S., and Munzner, T. (2014).
+\newblock Visualizing dimensionally-reduced data: Interviews with analysts and
+  a characterization of task sequences.
+\newblock In {\em Proceedings of the Fifth Workshop on Beyond Time and Errors:
+  Novel Evaluation Methods for Visualization}, pages 1--8. dl.acm.org.
+
+\bibitem[Buja and Asimov, 1986]{Buja1986-zr}
+Buja, A. and Asimov, D. (1986).
+\newblock Grand tour methods: an outline.
+\newblock In {\em Proceedings of the Seventeenth Symposium on the interface of
+  computer sciences and statistics on Computer science and statistics}, pages
+  63--67, USA. Elsevier North-Holland, Inc.
+
+\bibitem[Buja et~al., 1996]{Buja1996-fk}
+Buja, A., Cook, D., and Swayne, D.~F. (1996).
+\newblock Interactive {High-Dimensional} data visualization.
+\newblock {\em J. Comput. Graph. Stat.}, 5(1):78--99.
+
+\bibitem[Buja et~al., 1986]{Buja1986-ku}
+Buja, A., Hurley, C., and McDonald, J. (1986).
+\newblock A data viewer for multivariate data.
+\newblock In {\em Computing Science and Statistics: Proceedings of the 18th
+  Symposium on the Interface}, pages 171--174. American Statistical
+  Association.
+
+\bibitem[Buja et~al., 2008]{Buja2008-fn}
+Buja, A., Swayne, D.~F., Littman, M.~L., Dean, N., Hofmann, H., and Chen, L.
+  (2008).
+\newblock Data visualization with multidimensional scaling.
+\newblock {\em J. Comput. Graph. Stat.}, 17(2):444--472.
+
+\bibitem[Chang et~al., 2020]{Chang2020-bq}
+Chang, W., Cheng, J., Allaire, J.~J., Xie, Y., and McPherson, J. (2020).
+\newblock shiny: Web application framework for {R}.
+
+\bibitem[Coenen and Pearce, 2019]{Coenen2019-to}
+Coenen, A. and Pearce, A. (2019).
+\newblock Understanding {UMAP}.
+\newblock \url{https://pair-code.github.io/understanding-umap/}.
+\newblock Accessed: 2020-4-17.
+
+\bibitem[Coifman et~al., 2005]{Coifman2005-ak}
+Coifman, R.~R., Lafon, S., Lee, A.~B., Maggioni, M., Nadler, B., Warner, F.,
+  and Zucker, S.~W. (2005).
+\newblock Geometric diffusions as a tool for harmonic analysis and structure
+  definition of data: diffusion maps.
+\newblock {\em Proc. Natl. Acad. Sci. U. S. A.}, 102(21):7426--7431.
+
+\bibitem[Cook et~al., 1995]{Cook1995-bi}
+Cook, D., Buja, A., Cabrera, J., and Hurley, C. (1995).
+\newblock Grand tour and projection pursuit.
+\newblock {\em J. Comput. Graph. Stat.}, 4(3):155--172.
+
+\bibitem[Eddelbuettel, 2020]{rcpp-annoy-pkg}
+Eddelbuettel, D. (2020).
+\newblock {\em RcppAnnoy: 'Rcpp' Bindings for 'Annoy', a Library for
+  Approximate Nearest Neighbors}.
+\newblock R package version 0.0.16.
+
+\bibitem[Genovese et~al., 2017]{Genovese2017-iq}
+Genovese, C., Perone-Pacifico, M., Verdinelli, I., and Wasserman, L. (2017).
+\newblock Finding singular features.
+\newblock {\em J. Comput. Graph. Stat.}, 26(3):598--609.
+
+\bibitem[Kobak and Berens, 2019]{Kobak2019-lm}
+Kobak, D. and Berens, P. (2019).
+\newblock The art of using {t-SNE} for single-cell transcriptomics.
+\newblock {\em Nat. Commun.}, 10(1):5416.
+
+\bibitem[Korem et~al., 2015]{Korem2015-af}
+Korem, Y., Szekely, P., Hart, Y., Sheftel, H., Hausser, J., Mayo, A.,
+  Rothenberg, M.~E., Kalisky, T., and Alon, U. (2015).
+\newblock Geometry of the gene expression space of individual cells.
+\newblock {\em PLoS Comput. Biol.}, 11(7):e1004224.
+
+\bibitem[Krijthe, 2015]{Rtsne}
+Krijthe, J.~H. (2015).
+\newblock {\em {Rtsne}: T-Distributed Stochastic Neighbor Embedding using
+  Barnes-Hut Implementation}.
+\newblock R package version 0.15.
+
+\bibitem[Kruskal, 1964a]{Kruskal1964-cz}
+Kruskal, J.~B. (1964a).
+\newblock Multidimensional scaling by optimizing goodness of fit to a nonmetric
+  hypothesis.
+\newblock {\em Psychometrika}, 29(1):1--27.
+
+\bibitem[Kruskal, 1964b]{Kruskal1964-cw}
+Kruskal, J.~B. (1964b).
+\newblock Nonmetric multidimensional scaling: A numerical method.
+\newblock {\em Psychometrika}, 29(2):115--129.
+
+\bibitem[Laa et~al., 2020a]{Laa2020-wr}
+Laa, U., Cook, D., Buja, A., and Valencia, G. (2020a).
+\newblock Hole or grain? a section pursuit index for finding hidden structure
+  in multiple dimensions.
+
+\bibitem[Laa et~al., 2020b]{Laa2020-vk}
+Laa, U., Cook, D., and Lee, S. (2020b).
+\newblock Burning sage: Reversing the curse of dimensionality in the
+  visualization of high-dimensional data.
+
+\bibitem[Lee and Verleysen, 2009]{Lee2009-zb}
+Lee, J.~A. and Verleysen, M. (2009).
+\newblock Quality assessment of dimensionality reduction: Rank-based criteria.
+\newblock {\em Neurocomputing}, 72(7):1431--1443.
+
+\bibitem[Lee and Cook, 2020]{r-liminal}
+Lee, S. and Cook, D. (2020).
+\newblock {\em liminal: Multivariate Data Visualization With Tours and
+  Embeddings}.
+\newblock R package version 0.0.5.9999.
+
+\bibitem[Lewis et~al., 2012]{Lewis2012-ai}
+Lewis, J., Van~der Maaten, L., and de~Sa, V. (2012).
+\newblock A behavioral investigation of dimensionality reduction.
+\newblock In {\em Proceedings of the Annual Meeting of the Cognitive Science
+  Society}, volume~34.
+
+\bibitem[Linderman and Steinerberger, 2019]{Linderman2019-dq}
+Linderman, G.~C. and Steinerberger, S. (2019).
+\newblock Clustering with {t-SNE}, provably.
+\newblock {\em SIAM Journal on Mathematics of Data Science}, 1(2):313--332.
+
+\bibitem[Lun et~al., 2016]{Lun2016}
+Lun, A. T.~L., McCarthy, D.~J., and Marioni, J.~C. (2016).
+\newblock A step-by-step workflow for low-level analysis of single-cell rna-seq
+  data with bioconductor.
+\newblock {\em F1000Res.}, 5:2122.
+
+\bibitem[Lyttle and {Vega/Vega-Lite Developers}, 2020]{Lyttle2020-hp}
+Lyttle, I. and {Vega/Vega-Lite Developers} (2020).
+\newblock vegawidget: 'htmlwidget' for 'vega' and {'Vega-Lite'}.
+
+\bibitem[Macosko et~al., 2015]{Macosko2015-ot}
+Macosko, E.~Z., Basu, A., Satija, R., Nemesh, J., Shekhar, K., Goldman, M.,
+  Tirosh, I., Bialas, A.~R., Kamitaki, N., Martersteck, E.~M., Trombetta,
+  J.~J., Weitz, D.~A., Sanes, J.~R., Shalek, A.~K., Regev, A., and McCarroll,
+  S.~A. (2015).
+\newblock Highly parallel genome-wide expression profiling of individual cells
+  using nanoliter droplets.
+\newblock {\em Cell}, 161(5):1202--1214.
+
+\bibitem[McCarthy et~al., 2017]{McCarthy2017}
+McCarthy, D.~J., Campbell, K.~R., Lun, A. T.~L., and Willis, Q.~F. (2017).
+\newblock Scater: pre-processing, quality control, normalisation and
+  visualisation of single-cell {R}{N}{A}-seq data in {R}.
+\newblock {\em Bioinformatics}, 33:1179--1186.
+
+\bibitem[McCarthy and Smyth, 2009]{McCarthy2009-qx}
+McCarthy, D.~J. and Smyth, G.~K. (2009).
+\newblock Testing significance relative to a fold-change threshold is a
+  {TREAT}.
+\newblock {\em Bioinformatics}, 25(6):765--771.
+
+\bibitem[McDonald, 1982]{McDonald1982-ew}
+McDonald, J.~A. (1982).
+\newblock {\em Interactive graphics for data analysis}.
+\newblock PhD thesis, Stanford University.
+
+\bibitem[McInnes et~al., 2018]{McInnes2018-co}
+McInnes, L., Healy, J., and Melville, J. (2018).
+\newblock {UMAP}: Uniform manifold approximation and projection for dimension
+  reduction.
+
+\bibitem[Melville, 2020]{Melville2020}
+Melville, J. (2020).
+\newblock {t-SNE} initialization options.
+\newblock \url{https://jlmelville.github.io/smallvis/init.html}.
+\newblock Accessed: 2020-3-23.
+
+\bibitem[Moon et~al., 2019]{Moon2019-ce}
+Moon, K.~R., van Dijk, D., Wang, Z., Gigante, S., Burkhardt, D.~B., Chen,
+  W.~S., Yim, K., van~den Elzen, A., Hirn, M.~J., Coifman, R.~R., Ivanova,
+  N.~B., Wolf, G., and Krishnaswamy, S. (2019).
+\newblock Visualizing structure and transitions for biological data
+  exploration.
+
+\bibitem[Nguyen and Holmes, 2019]{Nguyen2019-yh}
+Nguyen, L.~H. and Holmes, S. (2019).
+\newblock Ten quick tips for effective dimensionality reduction.
+\newblock {\em PLoS Comput. Biol.}, 15(6):e1006907.
+
+\bibitem[Ovchinnikova and Anders, 2020]{Ovchinnikova2020-sy}
+Ovchinnikova, S. and Anders, S. (2020).
+\newblock Exploring dimension-reduced embeddings with sleepwalk.
+\newblock {\em Genome Res.}, 30(5):749--756.
+
+\bibitem[Pezzotti et~al., 2017]{Pezzotti2017-cz}
+Pezzotti, N., Lelieveldt, B. P.~F., Van Der~Maaten, L., Hollt, T., Eisemann,
+  E., and Vilanova, A. (2017).
+\newblock Approximated and user steerable {tSNE} for progressive visual
+  analytics.
+\newblock {\em IEEE Trans. Vis. Comput. Graph.}, 23(7):1739--1752.
+
+\bibitem[Rauber, 2009]{Rauber2009-vh}
+Rauber, A. (2009).
+\newblock Multi-challenge data set.
+\newblock \url{http://ifs.tuwien.ac.at/dm/dataSets.html}.
+\newblock Accessed: 2020-09-17.
+
+\bibitem[Rieck, 2017]{Rieck2017-kk}
+Rieck, B. (2017).
+\newblock {\em Persistent Homology in Multivariate Data Visualization}.
+\newblock PhD thesis, Ruprecht-Karls-Universit{\"a}t Heidelberg.
+
+\bibitem[Risso and Cole, 2019]{scRNAseq-d}
+Risso, D. and Cole, M. (2019).
+\newblock {\em scRNAseq: Collection of Public Single-Cell RNA-Seq Datasets}.
+\newblock R package version 2.0.2.
+
+\bibitem[Satyanarayan et~al., 2017]{Satyanarayan2017-gs}
+Satyanarayan, A., Moritz, D., Wongsuphasawat, K., and Heer, J. (2017).
+\newblock {Vega-Lite}: A grammar of interactive graphics.
+\newblock {\em IEEE Trans. Vis. Comput. Graph.}, 23(1):341--350.
+
+\bibitem[Sedlmair et~al., 2013]{Sedlmair2013-pn}
+Sedlmair, M., Munzner, T., and Tory, M. (2013).
+\newblock Empirical guidance on scatterplot and dimension reduction technique
+  choices.
+\newblock {\em IEEE Trans. Vis. Comput. Graph.}, 19(12):2634--2643.
+
+\bibitem[Silva and Tenenbaum, 2003]{Silva2003-xw}
+Silva, V.~D. and Tenenbaum, J.~B. (2003).
+\newblock Global versus local methods in nonlinear dimensionality reduction.
+\newblock {\em Adv. Neural Inf. Process. Syst.}
+
+\bibitem[Smilkov et~al., 2016]{Smilkov2016-hp}
+Smilkov, D., Thorat, N., Nicholson, C., Reif, E., Vi{\'e}gas, F.~B., and
+  Wattenberg, M. (2016).
+\newblock Embedding projector: Interactive visualization and interpretation of
+  embeddings.
+
+\bibitem[Swayne and Buja, 2004]{Swayne2004-ua}
+Swayne, D.~F. and Buja, A. (2004).
+\newblock Exploratory visual analysis of graphs in {GGOBI}.
+\newblock In {\em {COMPSTAT} 2004 --- Proceedings in Computational Statistics},
+  pages 477--488. Physica-Verlag HD.
+
+\bibitem[Swayne et~al., 1998]{Swayne1998-uq}
+Swayne, D.~F., Cook, D., and Buja, A. (1998).
+\newblock {XGobi}: Interactive dynamic data visualization in the {X} window
+  system.
+\newblock {\em J. Comput. Graph. Stat.}, 7(1):113--130.
+
+\bibitem[Swayne et~al., 2003]{Swayne2003-qd}
+Swayne, D.~F., Lang, D.~T., Buja, A., and Cook, D. (2003).
+\newblock {GGobi}: Evolving from {XGobi} into an extensible framework for
+  interactive data visualization.
+\newblock {\em Comput. Stat. Data Anal.}, 43(4):423--444.
+
+\bibitem[Tang et~al., 2016]{Tang2016-oz}
+Tang, J., Liu, J., Zhang, M., and Mei, Q. (2016).
+\newblock Visualizing large-scale and high-dimensional data.
+
+\bibitem[Torgerson, 1952]{Torgerson1952-am}
+Torgerson, W.~S. (1952).
+\newblock Multidimensional scaling: I. theory and method.
+\newblock {\em Psychometrika}, 17(4):401--419.
+
+\bibitem[van~der Maaten, 2014]{Van_Der_Maaten2014-zn}
+van~der Maaten, L. (2014).
+\newblock Accelerating {t-SNE} using tree-based algorithms.
+\newblock {\em J. Mach. Learn. Res.}
+
+\bibitem[van~der Maaten and Hinton, 2008]{Maaten2008-sk}
+van~der Maaten, L. and Hinton, G. (2008).
+\newblock Visualizing data using {t-SNE}.
+\newblock {\em J. Mach. Learn. Res.}, 9(Nov):2579--2605.
+
+\bibitem[Wattenberg et~al., 2016]{Wattenberg2016-ji}
+Wattenberg, M., Vi{\'e}gas, F., and Johnson, I. (2016).
+\newblock How to use {t-SNE} effectively.
+\newblock {\em Distill}, 1(10).
+
+\bibitem[Wickham, 2016]{Wickham2016-gz}
+Wickham, H. (2016).
+\newblock {\em ggplot2: Elegant Graphics for Data Analysis}.
+\newblock Use R! Springer International Publishing.
+
+\bibitem[Wickham et~al., 2015]{Wickham2015-cx}
+Wickham, H., Cook, D., and Hofmann, H. (2015).
+\newblock Visualizing statistical models: Removing the blindfold.
+\newblock {\em Statistical Analysis and Data Mining: The ASA Data Science
+  Journal}, 8(4):203--225.
+
+\bibitem[Wickham et~al., 2011]{Wickham2011-st}
+Wickham, H., Cook, D., Hofmann, H., and Buja, A. (2011).
+\newblock tourr: An {R} package for exploring multivariate data with
+  projections.
+\newblock {\em Journal of Statistical Software, Articles}, 40(2):1--18.
+
+\bibitem[Wilke, 2019]{r-cowplot}
+Wilke, C.~O. (2019).
+\newblock {\em cowplot: Streamlined Plot Theme and Plot Annotations for
+  'ggplot2'}.
+\newblock R package version 1.0.0.
+
+\end{thebibliography}

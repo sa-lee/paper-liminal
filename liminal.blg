@@ -1,0 +1,53 @@
+This is BibTeX, Version 0.99d (TeX Live 2021)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: liminal.aux
+The style file: apalike.bst
+Database file #1: liminal.bib
+Warning--empty note in Laa2020-wr
+Warning--empty note in Laa2020-vk
+Warning--empty note in McInnes2018-co
+Warning--empty note in Moon2019-ce
+Warning--empty note in Smilkov2016-hp
+Warning--empty note in Tang2016-oz
+You've used 58 entries,
+            1935 wiz_defined-function locations,
+            843 strings with 14628 characters,
+and the built_in function-call counts, 23680 in all, are:
+= -- 2287
+> -- 1181
+< -- 33
++ -- 420
+- -- 408
+* -- 2123
+:= -- 4220
+add.period$ -- 174
+call.type$ -- 58
+change.case$ -- 485
+chr.to.int$ -- 56
+cite$ -- 64
+duplicate$ -- 799
+empty$ -- 1485
+format.name$ -- 496
+if$ -- 4485
+int.to.chr$ -- 3
+int.to.str$ -- 0
+missing$ -- 40
+newline$ -- 288
+num.names$ -- 174
+pop$ -- 395
+preamble$ -- 1
+purify$ -- 494
+quote$ -- 0
+skip$ -- 617
+stack$ -- 0
+substring$ -- 1539
+swap$ -- 84
+text.length$ -- 5
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 346
+warning$ -- 6
+while$ -- 182
+width$ -- 0
+write$ -- 732
+(There were 6 warnings)
